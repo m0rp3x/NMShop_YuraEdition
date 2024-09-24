@@ -1,0 +1,51 @@
+﻿@using NMShop.Client.Data
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-10">
+
+    <MudStack Row="true">
+        <MudText Align="Align.Left" Typo="Typo.h5">
+            @CategoryType.ToString()
+        </MudText>
+
+        <MudSpacer/>
+
+        <MudButton>
+            <MudText>Каталог</MudText>
+            <MudIcon Icon="@Icons.Material.Filled.ArrowOutward" Size="Size.Medium"/>
+        </MudButton>
+    </MudStack>
+
+    <MudGrid Spacing="20" >
+        
+        @foreach(Product p in Products)
+        {
+            var (minPrice, minDiscountPrice) = p.GetMinPriceAndDiscount();
+            bool willShowDiscountPrice = minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
+
+            <MudItem xs="6" md="4" lg="3" Class="p-0">
+                <MudButton FullWidth=true Class="d-block">
+                    <MudImage Src=@p.ImageUrl ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center" Style="width: 100%; height: auto;"/>
+
+                    <MudText Typo="Typo.h2">@p.Name</MudText>
+
+                    @if (willShowDiscountPrice)
+                    {
+                        <MudText Typo="Typo.body1" Color="Color.Warning">от @minDiscountPrice ₽</MudText>
+                    }
+
+                    <MudText Typo="Typo.body2" Color="Color.Dark" Style=@(willShowDiscountPrice ? "text-decoration: line-through" : null)>от @minPrice ₽</MudText>
+                </MudButton>
+            </MudItem>
+        }
+
+    </MudGrid>
+
+</MudContainer>
+
+@code {
+    [Parameter]
+    public ProductType CategoryType { get; set; }
+
+    [Parameter]
+    public IEnumerable<Product> Products { get; set; }
+}

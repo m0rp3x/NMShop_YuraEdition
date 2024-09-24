@@ -1,0 +1,42 @@
+﻿@using NMShop.Client.Components
+@using NMShop.Client.Data
+
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<MudCarousel Class="mud-width-full" Style="aspect-ratio: 4375 / 1100;" ShowArrows=true ShowBullets=true EnableSwipeGesture=true AutoCycle=true TData="object">
+    <MudCarouselItem Transition=@Transition.Slide Color="@Color.Primary">
+        <MudImage Src="/banners/YandexSplit.png" Style="width:100%; height:auto; aspect-ratio: 4375 / 1100;" ObjectFit="ObjectFit.Cover" />
+    </MudCarouselItem>
+    <MudCarouselItem Transition=@Transition.Slide Color="@Color.Primary">
+        <MudImage Src="/banners/CDEK.png" Style="width:100%; height:auto; aspect-ratio: 4375 / 1100;" ObjectFit="ObjectFit.Cover" />
+    </MudCarouselItem>
+</MudCarousel>
+
+<CategoryPreview CategoryType="ProductType.Shoe" Products="TestDataProvider.GetTestProducts().Where(p => p.ProductType == ProductType.Shoe)" />
+
+<CategoryPreview CategoryType="ProductType.Clothing" Products="TestDataProvider.GetTestProducts().Where(p => p.ProductType == ProductType.Clothing)" />
+
+<CategoryPreview CategoryType="ProductType.Accessory" Products="TestDataProvider.GetTestProducts().Where(p => p.ProductType == ProductType.Accessory)" />
+
+<MudPaper Width="100%" Class="d-flex flex-column align-center py-10 mt-10" Style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), linear-gradient(82.03deg, #DCE7D7 17.85%, #C5C390 33.14%, #C4944D 41.79%, #D9558E 49.88%, #36376F 57.42%, #008B87 66.4%, #4D295A 81.36%);">
+    <MudImage Src="/icons/logo.svg" Width="120" Height="120"/>
+
+    <MudText Align="Align.Center" Typo="Typo.h3" Class="mt-5">
+        в каталоге нет интересующей модели?<br/>
+        вы всегда можете оформить<br />
+        индивидуальный заказ
+    </MudText>
+
+    <MudButton Color="Color.Primary" DropShadow="true" Variant="Variant.Filled" Class="mt-5">
+        оформить индивидуальный заказ
+    </MudButton>
+
+    <MudButton Class="mt-5">
+        <MudIcon Icon="@Icons.Material.Outlined.Info" Size="Size.Medium" />
+        <MudText Typo="Typo.h2">как это работает?</MudText>
+    </MudButton>
+
+
+</MudPaper>
