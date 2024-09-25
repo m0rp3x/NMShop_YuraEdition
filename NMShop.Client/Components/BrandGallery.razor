@@ -1,0 +1,108 @@
+﻿//ахахаха
+
+<MudGrid Class="image-grid" Spacing="0">
+    <MudItem xs="4">
+        <div class="image-container">
+            <img src="BrandGalleryImages/zachary-keimig-wT_vI.jpg" alt="Zalupa1" />
+            <div class="overlay">
+                <div class="brand-info">
+                    <h1 class="no-select">Air Jordan</h1>
+                    <br/>
+                    <MudButton  Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
+                </div>
+            </div>
+        </div>
+    </MudItem>
+    <MudItem xs="4">
+        <div class="image-container">
+            <img src="BrandGalleryImages/zachary-keimig-o_U0k.jpg" alt="Zalupa2" />
+            <div class="overlay">
+                <div class="brand-info">
+                    <h1 class="no-select" >Adidas</h1>
+                    <br/>
+                    <MudButton  Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
+                </div>
+            </div>
+        </div>
+    </MudItem>
+    <MudItem xs="4">
+        <div class="image-container">
+            <img src="BrandGalleryImages/zell-3JCykI6YHRE-uns.jpg" alt="Zalupa3" />
+            <div class="overlay">
+                <div class="brand-info">
+                    <h1 class="no-select">Puma</h1>
+                    <br/>
+                    <MudButton  Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
+                </div>
+            </div>
+        </div>
+    </MudItem>
+</MudGrid>
+
+<style>
+    .image-grid {
+        gap: -1px; /* Убирает пробелы между элементами сетки */
+    }
+
+    .image-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.5s ease;
+        filter: brightness(100%);
+        max-width: 640px;
+        max-height: 842px;
+        min-width: 640px;
+        min-height: 842px;
+    }
+
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.6); /* Полупрозрачный фон для выделения текста */
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .image-container:hover .overlay {
+        opacity: 1; /* Появление текста и кнопки при наведении */
+    }
+
+    .brand-info {
+        text-align: center;
+        color: white;
+    }
+
+    .brand-info h1 {
+        margin: 0;
+        font-size: 2.5rem; /* Увеличенный размер текста */
+    }
+
+    .large-button {
+        font-size: 1.25rem; /* Увеличенный размер текста кнопки */
+        padding: 0.75rem 2rem; /* Увеличенные отступы у кнопки */
+    }
+
+    .image-container:hover img {
+        filter: brightness(50%);
+    }
+
+    .no-select {
+        user-select: none; /* Запрещает выделение текста */
+    }
+</style>

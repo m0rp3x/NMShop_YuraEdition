@@ -15,7 +15,9 @@
         </MudCarouselItem>
     </MudCarousel>
 
-    <CategoryPreview CategoryType="ProductType.Shoe" Products="TestDataProvider.GetTestProducts().Where(p => p.ProductType == ProductType.Shoe).Take(4)" />
+<BrandGallery />
+
+<CategoryPreview CategoryType="ProductType.Shoe" Products="TestDataProvider.GetTestProducts().Where(p => p.ProductType == ProductType.Shoe)" />
 
     <CategoryPreview CategoryType="ProductType.Clothing" Products="TestDataProvider.GetTestProducts().Where(p => p.ProductType == ProductType.Clothing).Take(4)" />
 

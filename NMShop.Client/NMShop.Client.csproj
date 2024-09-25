@@ -21,4 +21,8 @@
     <PackageReference Include="MudBlazor" Version="7.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\BrandGalleryImages\" />
+  </ItemGroup>
+
 </Project>
