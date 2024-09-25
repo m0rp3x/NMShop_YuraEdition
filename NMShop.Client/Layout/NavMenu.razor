@@ -1,22 +1,195 @@
-﻿<MudAppBar Elevation="1">
-    <MudImage Src="/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="39" Height="39" />
+﻿
+<MudAppBar Elevation="0" Class="pa-3">
 
-    <MudSpacer />
+    <div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
+        <!-- Логотип слева -->
+        <div style="justify-self: start;">
+            <MudImage Src="/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="45" Height="45" />
+        </div>
 
-    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
-        <MudButton>Одежда</MudButton>
-        <MudButton>Обувь</MudButton>
-        <MudButton>Аксессуары</MudButton>
-    </MudStack>
+        <!-- Навигационные кнопки по центру -->
+        <div style="display: flex; justify-content: center; gap: 20px;">
+            <MudButton Style="font-size: 18px; font-weight: 700;" @onmouseover="() => ShowMenu(ClothingCategory)">Одежда</MudButton>
+            <MudButton Style="font-size: 18px; font-weight: 700;" @onmouseover="() => ShowMenu(ShoesCategory)">Обувь</MudButton>
+            <MudButton Style="font-size: 18px; font-weight: 700;" @onmouseover="() => ShowMenu(AccessoriesCategory)">Аксессуары</MudButton>
+            <MudButton Style="font-size: 18px; font-weight: 700;" @onmouseover="() => ShowMenu(BrandsCategory)">Бренды</MudButton>
+            <MudButton Style="font-size: 18px; font-weight: 700;" @onmouseover="() => ShowMenu(InfoCategory)">Информация</MudButton>
+        </div>
 
-    <MudSpacer />
+        <!-- Иконки справа -->
+        <div style="justify-self: end; display: flex; gap: 10px;">
+            <MudIconButton Icon="@Icons.Material.Outlined.FavoriteBorder" />
+            <MudIconButton Icon="@Icons.Material.Filled.Search" />
+            <MudIconButton Icon="@Icons.Material.Filled.PersonOutline" />
+            <MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" />
+        </div>
+    </div>
 
-    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
-        <MudIconButton Icon=@Icons.Material.Outlined.FavoriteBorder />
-        <MudIconButton Icon=@Icons.Material.Filled.Search />
-        <MudIconButton Icon=@Icons.Material.Filled.PersonOutline />
-        <MudIconButton Icon=@Icons.Material.Outlined.ShoppingCart />
-    </MudStack>
+    <!-- Выпадающее меню -->
+    @if (!_menuHidden)
+    {
+        <MudPaper Class="d-flex justify-center absolute" 
+        Style=@($"top: 100%; left: 0; right: 0; z-index: {(int)ZEnum.AppBar}; background-color: #F8F8F8; width: 100%; padding: 20px;")
+        Elevation="1"
+        @onmouseleave="HideMenu">
+            <div style="display: grid; grid-template-columns: repeat(@_menuSubCategoriesBatchAmount, 1fr); justify-content: center; gap: 20px; text-align: center; width: fit-content;">
+
+                <!-- Первый столбец с названием категории -->
+                <div style="font-size: 24px; font-weight: 700; text-align: left;">
+                    @_currentCategory.Name
+                </div>
+
+                <!-- Столбцы с подкатегориями -->
+                @for (int i = 0; i < _menuSubCategoriesBatchAmount; i++)
+                {
+                    var LocalCopy = i;
+                    int SubCategoriesCount = _currentCategory.SubCategories.Count();
+
+                    <div style="color: #BDBDBD; font-size: 15px; font-weight: 700; text-align: left;">
+                        @if (SubCategoriesCount - LocalCopy * _menuSubCategoriesBatchCount > 0)
+                        {
+                            foreach ((string Name, string Path) in _currentCategory.SubCategories.Skip(LocalCopy * _menuSubCategoriesBatchCount).Take(_menuSubCategoriesBatchCount))
+                            {
+                                <MudButton Href="@Path" Style="display: block; margin: 5px 0;">@Name</MudButton>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        </MudPaper>
+    }
+
 </MudAppBar>
 
+@code {
+    private Category _currentCategory;
+    private bool _menuHidden = true;
+    private static int _menuSubCategoriesBatchCount = 4;
+    private static int _menuSubCategoriesBatchAmount = 5;
 
+    private void ShowMenu(Category cat)
+    {
+        if (cat.SubCategories.Count() > 0)
+        {
+            _currentCategory = cat;
+            _menuHidden = false;
+        }
+    }
+
+    private void HideMenu()
+    {
+        _menuHidden = true;
+    }
+
+    public enum MenuCategory
+    {
+        Clothing,
+        Shoes,
+        Accessories,
+        Brands,
+        Info,
+    }
+
+    public class Category
+    {
+        public string Name = "Unitialized";
+        public List<(string, string)> SubCategories = new();
+        public string Path = "Unitialized";
+    }
+
+    // Обувь
+    Category ShoesCategory = new()
+        {
+            Name = "Обувь",
+            SubCategories = new()
+    {
+        ("Смотреть всё", "shoes-all"),
+        ("Кеды и кроссовки", "shoes-sneakers"),
+        ("Ботинки и угги", "shoes-boots"),
+        ("Слайды", "shoes-slides"),
+        ("Детское", "shoes-kids")
+    }
+        };
+
+    // Одежда
+    Category ClothingCategory = new()
+        {
+            Name = "Одежда",
+            SubCategories = new()
+    {
+        ("Смотреть всё", "clothing-all"),
+        ("Ботинки и угги", "clothing-boots"),
+        ("Куртки и пуховики", "clothing-jackets"),
+        ("Футболки и лонгсливы", "clothing-tshirts"),
+        ("Штаны и джинсы", "clothing-pants"),
+        ("Шорты", "clothing-shorts"),
+        ("Худи и свитшоты", "clothing-hoodies"),
+        ("Белье", "clothing-underwear")
+    }
+        };
+
+    // Аксессуары
+    Category AccessoriesCategory = new()
+        {
+            Name = "Аксессуары",
+            SubCategories = new()
+    {
+        ("Смотреть всё", "accessories-all"),
+        ("Кошельки", "accessories-wallets"),
+        ("Очки", "accessories-glasses"),
+        ("Головные уборы", "accessories-hats"),
+        ("Рюкзаки и сумки", "accessories-bags"),
+        ("Другие аксессуары", "accessories-other")
+    }
+        };
+
+    // Коллекции
+    Category CollectionsCategory = new()
+        {
+            Name = "Коллекции",
+            SubCategories = new()
+    {
+        ("Смотреть всё", "collections-all"),
+        ("Bearbricks", "collections-bearbricks"),
+        ("Kaws", "collections-kaws"),
+        ("Фигурки", "collections-figures"),
+        ("Предметы интерьера", "collections-furniture"),
+        ("Другой арт", "collections-other-art")
+    }
+        };
+
+    // Бренды
+    Category BrandsCategory = new()
+        {
+            Name = "Бренды",
+            SubCategories = new()
+    {
+        ("GOYARD", "brands-goyard"),
+        ("YEEZY", "brands-yeezy"),
+        ("TRAVIS SCOTT", "brands-travis-scott"),
+        ("SUPREME", "brands-supreme"),
+        ("STONE ISLAND", "brands-stone-island"),
+        ("NIKE", "brands-nike"),
+        ("MEDICOM TOY", "brands-medicom-toy"),
+        ("LOUIS VUITTON", "brands-louis-vuitton"),
+        ("ADIDAS", "brands-adidas"),
+        ("CHROME HEARTS", "brands-chrome-hearts")
+    }
+        };
+
+    // Информация
+    Category InfoCategory = new()
+        {
+            Name = "Информация",
+            SubCategories = new()
+    {
+        ("Контакты", "info-contacts"),
+        ("Доставка", "info-delivery"),
+        ("Оплата", "info-payment"),
+        ("Возврат", "info-returns"),
+        ("FAQ", "info-faq"),
+        ("О нас", "info-about")
+    }
+        };
+
+}
