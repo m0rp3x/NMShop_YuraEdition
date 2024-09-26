@@ -1,0 +1,57 @@
+﻿@using NMShop.Client.Data
+
+<MudGrid Spacing="20">
+
+    @foreach (Product p in _productsSlice)
+    {
+        var (minPrice, minDiscountPrice) = p.GetMinPriceAndDiscount();
+        bool willShowDiscountPrice = minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
+
+        <MudItem xs="6" md="4" lg="3">
+            <div class="cursor-pointer">
+                
+                <div class="relative">
+                    <MudImage Class="hovering mb-7" Src=@p.ImageUrl ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center" Style="aspect-ratio: 1 / 0.8; width: 100%; height: auto;" />
+
+                    @if (minDiscountPrice is not null)
+                    {
+                        <MudText Typo="Typo.body1" Style="border-radius: 8px; bottom: 0px; left: 0px; background-color: #ff6b3150;" Class="absolute px-2 py-1">Sale</MudText>
+                    }
+                </div>
+
+                <MudText Style="font-weight: 700; text-transform: uppercase;" Typo="Typo.h5">@p.Name</MudText>
+
+                @if (willShowDiscountPrice)
+                {
+                    <MudText Typo="Typo.h6" Style="line-height: 100%;" Color="Color.Error">
+                        от <MudText Inline="true" Typo="Typo.h6" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@minDiscountPrice</MudText> ₽
+                    </MudText>
+                }
+
+                <MudText Typo="Typo.body1" Color="Color.Dark" Style=@( "line-height: 100%; font-weight: 700;" + (willShowDiscountPrice ? "text-decoration: line-through; text-decoration-color: red;" : null))>от @minPrice ₽</MudText>
+            </div>
+        </MudItem>
+    }
+
+</MudGrid>
+
+@code {
+    [Parameter]
+    public IEnumerable<Product> Products { get; set; } = new List<Product>();
+    [Parameter]
+    public int Skip { get; set; } = 0;
+    [Parameter]
+    public int Take { get; set; } = 0;
+
+    private IEnumerable<Product> _productsSlice { 
+        get
+        {
+            if( Skip > 0 )
+            {
+                if (Take > 0) return Products.Skip(Skip).Take(Take);
+                return Products.Skip(Skip);
+            }
+            return Products;
+        } 
+    }
+}

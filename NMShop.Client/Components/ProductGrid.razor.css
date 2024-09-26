@@ -1,0 +1,8 @@
+﻿.hovering {
+    transition: all 0.6s ease 0s;
+    -webkit-transition: all 0.6s ease 0s;
+}
+
+    .hovering:hover {
+        transform: scale3d(1.05, 1.05, 1.05);
+    }

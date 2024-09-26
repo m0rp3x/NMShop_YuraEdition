@@ -1,7 +1,7 @@
-﻿<MudGrid Class="footer" Spacing="0">
+﻿<MudGrid Class="footer px-5 py-4" Spacing="0">
     <!-- Разделы -->
     <MudItem xs="12" sm="3">
-        <h3>РАЗДЕЛЫ</h3>
+        <h4>РАЗДЕЛЫ</h4>
         <ul>
             <li><a href="#">SALE</a></li>
             <li><a href="#">ОБУВЬ</a></li>
@@ -12,7 +12,7 @@
 
     <!-- Информация -->
     <MudItem xs="12" sm="3" Class="footer-item">
-        <h3>ИНФОРМАЦИЯ</h3>
+        <h4>ИНФОРМАЦИЯ</h4>
         <ul>
             <li><a href="#">КОНТАКТЫ</a></li>
             <li><a href="#">ДОСТАВКА</a></li>
@@ -24,28 +24,30 @@
 
     <!-- Контакты -->
     <MudItem xs="12" sm="3">
-        <h3>КОНТАКТЫ</h3>
-        <p>8 (800) 535-35-35</p>
-        <p>ЧАСЫ РАБОТЫ (С 11:00 ДО 22:00)</p>
-        <p>SUPPORT@EXAMPLE.COM</p>
+        <h4>КОНТАКТЫ</h4>
+        <ul>
+            <li>8 (800) 535-35-35</li>
+            <li>ЧАСЫ РАБОТЫ (С 11:00 ДО 22:00)</li>
+            <li>SUPPORT@EXAMPLE.COM</li>
+        </ul>
     </MudItem>
 
     <!-- Социальные иконки -->
     <MudItem xs="12" sm="3">
-        <MudButton Color="Color.Primary" Size="Size.Large">
-            <img src="icons/vk.svg" alt="VK" style="width:24px;height:24px;" />
+        <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
+            <img src="icons/vk.svg" alt="VK" style="width:100%; aspect-ratio: 1/1;" />
         </MudButton>
 
-        <MudButton Color="Color.Primary" Size="Size.Large">
-            <img src="icons/telegram.svg" alt="Telegram" style="width:24px;height:24px;" />
+        <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
+            <img src="icons/telegram.svg" alt="Telegram" style="width:100%; aspect-ratio: 1/1; " />
         </MudButton>
 
-        <MudButton Color="Color.Primary" Size="Size.Large">
-            <img src="icons/youtube.svg" alt="YouTube" style="width:24px;height:24px;" />
+        <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
+            <img src="icons/youtube.svg" alt="YouTube" style="width:100%; aspect-ratio: 1/1; " />
         </MudButton>
 
-        <MudButton Color="Color.Primary" Size="Size.Large">
-            <img src="icons/whatsapp.svg" alt="WhatsApp" style="width:24px;height:24px;" />
+        <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
+            <img src="icons/whatsapp.svg" alt="WhatsApp" style="width:100%; aspect-ratio: 1/1; " />
         </MudButton>
     </MudItem>
 </MudGrid>
@@ -55,7 +57,7 @@
     <!-- Копирайт под блоком "Разделы" -->
     <MudItem xs="12" sm="6" Class="footer-item">
         <div class="footer-copyright" style="display: flex; justify-content: space-between; align-items: center;">
-            <p>2018-2024 © EXAMPLE EXAMPLE</p>
+            <p>2018-2024 © Neo Mei</p>
             <p style="margin-right: 310px;">ВСЕ ПРАВА ЗАЩИЩЕНЫ</p> <!-- Перемещаем правее -->
         </div>
     </MudItem>
@@ -73,13 +75,18 @@
 </MudGrid>
 
 <style>
+
+    li, p {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
     .footer {
         background-color: black;
         color: white;
-        padding: 20px;
     }
 
-    .footer h3 {
+    .footer h4 {
         margin-bottom: 10px;
         font-weight: bold;
     }
@@ -90,7 +97,7 @@
     }
 
     .footer li {
-        margin-bottom: 8px;
+            margin-bottom: 8px;
     }
 
     .footer li a {
