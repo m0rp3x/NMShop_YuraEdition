@@ -4,13 +4,13 @@ namespace NMShop.Client.Data
 {
     public static class Extensions
     {
-        public static string ToString(this ProductType type)
+        public static string ToRuString(this ProductType type)
         {
             return type switch
             {
-                ProductType.Clothing => "clothing",
-                ProductType.Shoe => "shoe",
-                ProductType.Accessory => "accessory",
+                ProductType.Clothing => "Одежда",
+                ProductType.Shoe => "Обувь",
+                ProductType.Accessory => "Аксессуары",
                 _ => "error invalid ProductType"
             };
         }
