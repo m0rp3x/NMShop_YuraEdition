@@ -1,36 +1,149 @@
-﻿<div class="px-9 py-7" style="width: 100%; background-color: black; color: white;">
-    <MudGrid>
+﻿<MudGrid Class="footer" Spacing="0">
+    <!-- Разделы -->
+    <MudItem xs="12" sm="3">
+        <h3>РАЗДЕЛЫ</h3>
+        <ul>
+            <li><a href="#">SALE</a></li>
+            <li><a href="#">ОБУВЬ</a></li>
+            <li><a href="#">ОДЕЖДА</a></li>
+            <li><a href="#">АКСЕССУАРЫ</a></li>
+        </ul>
+    </MudItem>
 
-        <MudItem xs="6" md="3">
-            <MudText Typo="Typo.h5">РАЗДЕЛЫ</MudText>
+    <!-- Информация -->
+    <MudItem xs="12" sm="3" Class="footer-item">
+        <h3>ИНФОРМАЦИЯ</h3>
+        <ul>
+            <li><a href="#">КОНТАКТЫ</a></li>
+            <li><a href="#">ДОСТАВКА</a></li>
+            <li><a href="#">ОПЛАТА</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">О НАС</a></li>
+        </ul>
+    </MudItem>
 
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Sale</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Обувь</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Одежда</MudLink>
-        </MudItem>
+    <!-- Контакты -->
+    <MudItem xs="12" sm="3">
+        <h3>КОНТАКТЫ</h3>
+        <p>8 (800) 535-35-35</p>
+        <p>ЧАСЫ РАБОТЫ (С 11:00 ДО 22:00)</p>
+        <p>SUPPORT@EXAMPLE.COM</p>
+    </MudItem>
 
-        <MudItem xs="6" md="3">
-            <MudText Typo="Typo.h5">РАЗДЕЛЫ</MudText>
+    <!-- Социальные иконки -->
+    <MudItem xs="12" sm="3">
+        <MudButton Color="Color.Primary" Size="Size.Large">
+            <img src="icons/vk.svg" alt="VK" style="width:24px;height:24px;" />
+        </MudButton>
 
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Sale</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Обувь</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Одежда</MudLink>
-        </MudItem>
+        <MudButton Color="Color.Primary" Size="Size.Large">
+            <img src="icons/telegram.svg" alt="Telegram" style="width:24px;height:24px;" />
+        </MudButton>
 
-        <MudItem xs="6" md="3">
-            <MudText Typo="Typo.h5">РАЗДЕЛЫ</MudText>
+        <MudButton Color="Color.Primary" Size="Size.Large">
+            <img src="icons/youtube.svg" alt="YouTube" style="width:24px;height:24px;" />
+        </MudButton>
 
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Sale</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Обувь</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Одежда</MudLink>
-        </MudItem>
+        <MudButton Color="Color.Primary" Size="Size.Large">
+            <img src="icons/whatsapp.svg" alt="WhatsApp" style="width:24px;height:24px;" />
+        </MudButton>
+    </MudItem>
+</MudGrid>
 
-        <MudItem xs="6" md="3">
-            <MudText Typo="Typo.h5">РАЗДЕЛЫ</MudText>
+<!-- Грид для копирайта и политики -->
+<MudGrid Class="footer-bottom" Spacing="0">
+    <!-- Копирайт под блоком "Разделы" -->
+    <MudItem xs="12" sm="6" Class="footer-item">
+        <div class="footer-copyright" style="display: flex; justify-content: space-between; align-items: center;">
+            <p>2018-2024 © EXAMPLE EXAMPLE</p>
+            <p style="margin-right: 310px;">ВСЕ ПРАВА ЗАЩИЩЕНЫ</p> <!-- Перемещаем правее -->
+        </div>
+    </MudItem>
 
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Sale</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Обувь</MudLink>
-            <MudLink Typo="Typo.h6" Color="Color.Info" Class="d-block">Одежда</MudLink>
-        </MudItem>
-    </MudGrid>
-</div>
+    <!-- Политики и соглашения под блоком "Контакты" -->
+    <MudItem xs="12" sm="6">
+        <div class="footer-policies">
+            <ul>
+                <li><a href="#">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a></li>
+                <li><a href="#">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</a></li>
+                <li><a href="#">ДОГОВОР ОФЕРТЫ</a></li>
+            </ul>
+        </div>
+    </MudItem>
+</MudGrid>
+
+<style>
+    .footer {
+        background-color: black;
+        color: white;
+        padding: 20px;
+    }
+
+    .footer h3 {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .footer ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer li {
+        margin-bottom: 8px;
+    }
+
+    .footer li a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .footer li a:hover {
+        text-decoration: underline;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Грид для копирайта и политики */
+    .footer-bottom {
+        background-color: black;
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Вертикальное выравнивание всех элементов на одной высоте */
+    }
+
+    .footer-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .footer-policies ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-policies li {
+        margin-bottom: 8px;
+    }
+
+    .footer-policies li a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .footer-policies li a:hover {
+        text-decoration: underline;
+    }
+
+    .footer-rights {
+        margin-top: 30px; /* Отступ сверху для размещения под блоком "Информация" */
+        padding-top: 10px;
+    }
+</style>
