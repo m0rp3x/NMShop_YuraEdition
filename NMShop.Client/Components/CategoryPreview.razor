@@ -4,7 +4,7 @@
 
     <MudStack Row="true">
         <MudText Align="Align.Left" Typo="Typo.h4" Style="font-weight: 800; text-transform: uppercase;">
-            @CategoryType.ToRuString()
+            @CategoryType.Localize()
         </MudText>
 
         <MudSpacer/>
@@ -22,7 +22,7 @@
 
 @code {
     [Parameter]
-    public ProductType CategoryType { get; set; }
+    public string CategoryType { get; set; }
 
     [Parameter]
     public IEnumerable<Product> Products { get; set; }

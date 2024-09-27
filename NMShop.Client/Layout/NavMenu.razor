@@ -50,7 +50,7 @@
                         {
                             foreach ((string Name, string Path) in _currentCategory.SubCategories.Skip(LocalCopy * _menuSubCategoriesBatchCount).Take(_menuSubCategoriesBatchCount))
                             {
-                                <MudButton Href="@Path" Style="display: block; margin: 5px 0;">@Name</MudButton>
+                                <MudButton Href="@(_currentCategory.Path + Path)" Style="display: block; margin: 5px 0;">@Name</MudButton>
                             }
                         }
                     </div>
@@ -81,15 +81,6 @@
         _menuHidden = true;
     }
 
-    public enum MenuCategory
-    {
-        Clothing,
-        Shoes,
-        Accessories,
-        Brands,
-        Info,
-    }
-
     public class Category
     {
         public string Name = "Unitialized";
@@ -99,17 +90,18 @@
 
     // Обувь
     Category ShoesCategory = new()
-        {
-            Name = "Обувь",
-            SubCategories = new()
     {
-        ("Смотреть всё", "shoes-all"),
-        ("Кеды и кроссовки", "shoes-sneakers"),
-        ("Ботинки и угги", "shoes-boots"),
-        ("Слайды", "shoes-slides"),
-        ("Детское", "shoes-kids")
-    }
-        };
+        Name = "Обувь",
+        SubCategories = new()
+        {
+            ("Смотреть всё", "shoes-all"),
+            ("Кеды и кроссовки", "shoes-sneakers"),
+            ("Ботинки и угги", "shoes-boots"),
+            ("Слайды", "shoes-slides"),
+            ("Детское", "shoes-kids")
+        },
+        Path = "Shoes"
+    };
 
     // Одежда
     Category ClothingCategory = new()

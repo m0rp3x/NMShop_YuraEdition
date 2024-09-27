@@ -4,13 +4,13 @@ namespace NMShop.Client.Data
 {
     public static class Extensions
     {
-        public static string ToRuString(this ProductType type)
+        public static string Localize(this string type)
         {
-            return type switch
+            return type.ToLower() switch
             {
-                ProductType.Clothing => "Одежда",
-                ProductType.Shoe => "Обувь",
-                ProductType.Accessory => "Аксессуары",
+                "clothes" => "Одежда",
+                "shoes" => "Обувь",
+                "accessories" => "Аксессуары",
                 _ => "error invalid ProductType"
             };
         }
@@ -34,20 +34,6 @@ namespace NMShop.Client.Data
         }
     }
 
-    public enum ProductType
-    {
-        Shoe,
-        Clothing,
-        Accessory
-    }
-
-    public enum Gender
-    {
-        Male, // Мужское
-        Female, // Женское
-        Unisex, // Унисекс
-        Kids // Детское
-    }
     public enum ClothingSize
     {
         XS = 1,
@@ -66,9 +52,9 @@ namespace NMShop.Client.Data
         public string Article { get; set; } // Артикул
         public string Description { get; set; } // Описание товара
         public string ImageUrl { get; set; } = "/bebra.jpg"; // Изображение товара
-        public Gender Gender { get; set; } // Пол: мужское, женское, унисекс, детское
+        public string Gender { get; set; } // Пол: мужское, женское, унисекс, детское
         public string SubCategory { get; set; } // Подкатегория товара (например, спортивная обувь, верхняя одежда)
-        public ProductType ProductType { get; set; } // Тип товара: обувь, одежда, аксессуары
+        public string ProductType { get; set; } // Тип товара: обувь, одежда, аксессуары
         public Dictionary<string, string> Color { get; set; } // Цвет: название-значение (например, "Красный" => "#FF0000")
         public List<PriceInfo> PriceInfos { get; set; } // Список информации о цене и размере
 

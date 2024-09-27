@@ -13,10 +13,16 @@
                 <div class="relative">
                     <MudImage Class="hovering mb-7" Src=@p.ImageUrl ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center" Style="aspect-ratio: 1 / 0.8; width: 100%; height: auto;" />
 
-                    @if (minDiscountPrice is not null)
-                    {
-                        <MudText Typo="Typo.body1" Style="border-radius: 8px; bottom: 0px; left: 0px; background-color: #ff6b3150;" Class="absolute px-2 py-1">Sale</MudText>
-                    }
+                    <div class="absolute d-flex" style="bottom: 0px; left: 0px; gap: 10px;">
+                        @if (minDiscountPrice is not null)
+                        {
+                            <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
+                        }
+                        @if (p.Gender == "female")
+                        {
+                            <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff60b850;" Class="px-2 py-1">Женский</MudText>
+                        }
+                    </div>
                 </div>
 
                 <MudText Style="font-weight: 700; text-transform: uppercase;" Typo="Typo.h5">@p.Name</MudText>

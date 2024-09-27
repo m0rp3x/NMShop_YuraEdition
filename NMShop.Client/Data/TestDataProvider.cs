@@ -15,9 +15,9 @@
             Article = "NKAM001",
             Description = "Легкие кроссовки для бега.",
             ImageUrl = "/biba.jpg",
-            Gender = Gender.Male,
+            Gender = "male",
             SubCategory = "Спортивная обувь",
-            ProductType = ProductType.Shoe,
+            ProductType = "shoes",
             Color = new Dictionary<string, string>
             {
                 { "Черный", "#000000" },
@@ -37,9 +37,9 @@
             Article = "PUMRS001",
             Description = "Стильные и удобные кроссовки для повседневной носки.",
             ImageUrl = "/biba.jpg",
-            Gender = Gender.Male,
+            Gender = "male",
             SubCategory = "Спортивная обувь",
-            ProductType = ProductType.Shoe,
+            ProductType = "shoes",
             Color = new Dictionary<string, string>
             {
                 { "Серый", "#808080" },
@@ -58,9 +58,9 @@
             Article = "ADUB001",
             Description = "Беговые кроссовки с амортизацией Boost.",
             ImageUrl = "/bebra.jpg",
-            Gender = Gender.Female,
+            Gender = "female",
             SubCategory = "Спортивная обувь",
-            ProductType = ProductType.Shoe,
+            ProductType = "shoes",
             Color = new Dictionary<string, string>
             {
                 { "Синий", "#0000FF" }
@@ -78,9 +78,9 @@
             Article = "RBKCL001",
             Description = "Классические кожаные кроссовки.",
             ImageUrl = "/boba.jpg",
-            Gender = Gender.Unisex,
+            Gender = "unisex",
             SubCategory = "Спортивная обувь",
-            ProductType = ProductType.Shoe,
+            ProductType = "shoes",
             Color = new Dictionary<string, string>
             {
                 { "Белый", "#FFFFFF" }
@@ -100,9 +100,9 @@
             Article = "ADTS001",
             Description = "Классическая футболка из хлопка.",
             ImageUrl = "/bebra.jpg",
-            Gender = Gender.Unisex,
+            Gender = "unisex",
             SubCategory = "Футболки",
-            ProductType = ProductType.Clothing,
+            ProductType = "clothes",
             Color = new Dictionary<string, string>
             {
                 { "Синий", "#0000FF" },
@@ -122,9 +122,9 @@
             Article = "NKTS002",
             Description = "Спортивная футболка для тренировок с технологией Dri-FIT.",
             ImageUrl = "/biba.jpg",
-            Gender = Gender.Male,
+            Gender = "male",
             SubCategory = "Футболки",
-            ProductType = ProductType.Clothing,
+            ProductType = "clothes",
             Color = new Dictionary<string, string>
             {
                 { "Черный", "#000000" }
@@ -142,9 +142,9 @@
             Article = "UATS001",
             Description = "Комфортная футболка для тренировок.",
             ImageUrl = "/bebra.jpg",
-            Gender = Gender.Male,
+            Gender = "male",
             SubCategory = "Футболки",
-            ProductType = ProductType.Clothing,
+            ProductType = "clothes",
             Color = new Dictionary<string, string>
             {
                 { "Зеленый", "#00FF00" }
@@ -162,9 +162,9 @@
             Article = "PUMTS001",
             Description = "Базовая футболка с логотипом Puma.",
             ImageUrl = "/boba.jpg",
-            Gender = Gender.Unisex,
+            Gender = "unisex",
             SubCategory = "Футболки",
-            ProductType = ProductType.Clothing,
+            ProductType = "clothes",
             Color = new Dictionary<string, string>
             {
                 { "Белый", "#FFFFFF" }
@@ -184,9 +184,9 @@
             Article = "NKCP001",
             Description = "Спортивная кепка с логотипом Nike.",
             ImageUrl = "/boba.jpg",
-            Gender = Gender.Unisex,
+            Gender = "unisex",
             SubCategory = "Головные уборы",
-            ProductType = ProductType.Accessory,
+            ProductType = "accessories",
             Color = new Dictionary<string, string>
             {
                 { "Черный", "#000000" }
@@ -204,9 +204,9 @@
             Article = "ADCP002",
             Description = "Зимняя шапка с логотипом Adidas.",
             ImageUrl = "/biba.jpg",
-            Gender = Gender.Unisex,
+            Gender = "unisex",
             SubCategory = "Головные уборы",
-            ProductType = ProductType.Accessory,
+            ProductType = "accessories",
             Color = new Dictionary<string, string>
             {
                 { "Серый", "#808080" }
@@ -224,9 +224,9 @@
             Article = "PUMCP001",
             Description = "Классическая кепка Puma с логотипом.",
             ImageUrl = "/boba.jpg",
-            Gender = Gender.Unisex,
+            Gender = "unisex",
             SubCategory = "Головные уборы",
-            ProductType = ProductType.Accessory,
+            ProductType = "accessories",
             Color = new Dictionary<string, string>
             {
                 { "Синий", "#0000FF" }
@@ -244,9 +244,9 @@
             Article = "UACP001",
             Description = "Легкая бейсболка с логотипом UA.",
             ImageUrl = "/bebra.jpg",
-            Gender = Gender.Unisex,
+            Gender = "unisex",
             SubCategory = "Головные уборы",
-            ProductType = ProductType.Accessory,
+            ProductType = "accessories",
             Color = new Dictionary<string, string>
             {
                 { "Красный", "#FF0000" }
