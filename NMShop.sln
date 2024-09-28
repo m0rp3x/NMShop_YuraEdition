@@ -6,6 +6,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NMShop", "NMShop\NMShop.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NMShop.Client", "NMShop.Client\NMShop.Client.csproj", "{FE6EA0F4-15E9-4203-BAB0-932646F7929E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMShop.Shared", "NMShop.Shared\NMShop.Shared.csproj", "{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,18 @@ Global
 		{FE6EA0F4-15E9-4203-BAB0-932646F7929E}.Release|x64.Build.0 = Release|Any CPU
 		{FE6EA0F4-15E9-4203-BAB0-932646F7929E}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE6EA0F4-15E9-4203-BAB0-932646F7929E}.Release|x86.Build.0 = Release|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Debug|x64.Build.0 = Debug|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Debug|x86.Build.0 = Debug|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Release|x64.ActiveCfg = Release|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Release|x64.Build.0 = Release|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Release|x86.ActiveCfg = Release|Any CPU
+		{7CC6407D-D300-4DD9-8C5F-4B863B1D9749}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

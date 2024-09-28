@@ -22,7 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\" />
     <Folder Include="wwwroot\BrandGalleryImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NMShop.Shared\NMShop.Shared.csproj" />
   </ItemGroup>
 
 </Project>
