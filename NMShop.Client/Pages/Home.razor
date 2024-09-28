@@ -1,5 +1,6 @@
 ﻿@using NMShop.Client.Components
-@using NMShop.Client.Data
+@using NMShop.Shared.Models
+@inject HttpClient Http
 
 @page "/"
 
@@ -43,9 +44,16 @@
 
 </MudPaper>
 
-@code{
-    public IEnumerable<Product> ShoesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "shoes").Take(4);
-    public IEnumerable<Product> ClothesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "clothes").Take(4);
-    public IEnumerable<Product> AccessoriesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "accessories").Take(4);
+@code {
+    private IEnumerable<Product> ShoesPreview = new List<Product>();
+    private IEnumerable<Product> ClothesPreview = new List<Product>();
+    private IEnumerable<Product> AccessoriesPreview = new List<Product>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        // Запрос данных с сервера
+        ShoesPreview = await Http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/shoes");
+        ClothesPreview = await Http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/clothes");
+        AccessoriesPreview = await Http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/accessories");
+    }
 }

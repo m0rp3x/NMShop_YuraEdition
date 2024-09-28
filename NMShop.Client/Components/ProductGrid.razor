@@ -1,5 +1,5 @@
-﻿@using NMShop.Client.Data
-
+﻿@using NMShop.Shared.Models
+@inject HttpClient Http
 <MudGrid Spacing="20">
 
     @foreach (Product p in _productsSlice)
@@ -43,21 +43,14 @@
 
 @code {
     [Parameter]
-    public IEnumerable<Product> Products { get; set; } = new List<Product>();
+    public IEnumerable<Product> Products { get; set; }
     [Parameter]
-    public int Skip { get; set; } = 0;
-    [Parameter]
-    public int Take { get; set; } = 0;
+    public int Take { get; set; }
 
-    private IEnumerable<Product> _productsSlice { 
-        get
-        {
-            if( Skip > 0 )
-            {
-                if (Take > 0) return Products.Skip(Skip).Take(Take);
-                return Products.Skip(Skip);
-            }
-            return Products;
-        } 
+    private IEnumerable<Product> _productsSlice = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _productsSlice = await Http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products");
     }
 }

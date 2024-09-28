@@ -4,16 +4,29 @@ using NMShop.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add MudBlazor services
+// Регистрация сервисов
+builder.Services.AddHttpClient();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
+builder.Services.AddControllers();
 builder.Services.AddMudServices();
 
-// Add services to the container.
+// Добавление компонентов Razor
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Настройка CORS
+app.UseCors("CorsPolicy");
+
+// Настройка среды разработки
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
@@ -21,14 +34,25 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    // другие endpoints
+});
+
+
+
+app.MapControllers();
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
