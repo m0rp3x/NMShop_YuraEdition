@@ -1,5 +1,215 @@
-﻿<h3>Catalog</h3>
+﻿@using NMShop.Client.Components;
+@using NMShop.Client.Data
+
+@page "/catalog/{productType}"
+
+<div style="width: 100%">
+    <MudDrawerContainer Style="width: 100%; position:relative;">
+
+        <MudDrawer Width="23vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
+
+            <MudButton Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
+
+            <input placeholder="Найти"
+                   style="font-size: 16px; width: 100%; height: 50px; color: #000000; font-weight: 400; padding: 0 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; margin: 0; resize: none; border-radius: 25px;"
+                   class="mt-3"
+                   type="text"
+                   @bind="SearchInput"
+                   size="50" />
+
+            <MudCheckBox Class="mt-3" @bind-Value="OnlyInStock" Label="Только в наличии"/>
+
+            <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
+
+                <MudExpansionPanel Text="Цена, ₽">
+
+                    <div class="d-flex" style="gap: 15px;">
+
+                        <MudTextField @bind-Value="MinPriceInput" Label="От" Variant="Variant.Outlined" />
+                        <MudTextField @bind-Value="MaxPriceInput" Label="До" Variant="Variant.Outlined" />
+
+                    </div>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Text="Бренды">
+                    
+                    @foreach (var brand in Brands)
+                    {
+                        <div>
+                            <input type="checkbox"
+                                   @bind="brand.IsSelected"
+                                   id="@brand.Name" />
+                            <label for="@brand.Name">@brand.Name</label>
+                        </div>
+                    }
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Text="Бренды">
+
+                    @foreach (var gender in Genders)
+                    {
+                        <div>
+                            <input type="checkbox"
+                                   @bind="gender.IsSelected"
+                                   id="@gender.Name" />
+                            <label for="@gender.Name">@gender.Name</label>
+                        </div>
+                    }
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Text="Рейтинг продаж">
+
+                    @foreach (var selCat in SellingCategories)
+                    {
+                        <div>
+                            <input type="checkbox"
+                                   @bind="selCat.IsSelected"
+                                   id="@selCat.Name" />
+                            <label for="@selCat.Name">@selCat.Name</label>
+                        </div>
+                    }
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Text="Товарная категория">
+
+                    @foreach (var category in SubCategories)
+                    {
+                        <div class="category-checkbox">
+                            <input type="checkbox"
+                                   @bind="category.IsSelected"
+                                   id="@category.Name" />
+                            <label for="@category.Name">@category.Name</label>
+                        </div>
+                    }
+
+                </MudExpansionPanel>
+
+            </MudExpansionPanels>
+        </MudDrawer>
+
+        <div class="d-flex justify-center align-center mud-height-full flex-column pa-10">
+
+            <div class="d-flex mb-20" style="width: 100%;">   
+                <div @onmouseover="() => {_isFilterButtonHovered = true;}"
+                     @onmouseout="() => {_isFilterButtonHovered = false;}"
+                     @onclick="ToggleDrawer"
+                     style=@FilterButtonStyle
+                     class="px-4 py-2 mb-30">
+                    @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
+                </div>
+            </div>
+
+            <ProductGrid Products="TestDataProvider.ShoesPreview" Take="20" />
+        </div>
+
+    </MudDrawerContainer>
+</div>
 
 @code {
+    [Parameter]
+    public string productType { get; set; }
+
+    private bool _isDrawerOpened = true;
+
+    private bool _isFilterButtonHovered = true;
+
+    private string FilterButtonStyle => 
+    "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
+    + (_isFilterButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+
+    private string MinPriceInput = string.Empty;
+
+    private string MaxPriceInput = string.Empty;
+
+    private bool OnlyInStock = false;
+
+    private string SearchInput { get; set; } = String.Empty;
+
+    private List<BrandModel> Brands;
+
+    private List<GenderOption> Genders = new List<GenderOption>
+        {
+            new GenderOption { Name = "Унисекс", IsSelected = false },
+            new GenderOption { Name = "Женский", IsSelected = false },
+            new GenderOption { Name = "Мужской", IsSelected = false }
+        };
+
+    // Список категорий с их состоянием выбора
+    private List<CategoryOption> SellingCategories;
+
+    private List<ProductCategory> SubCategories;
+
+
+    protected override void OnInitialized()
+    {
+        // Инициализируем список брендов
+        Brands = TestDataProvider.GetTestBrands()
+            .Select(name => new BrandModel { Name = name})
+            .ToList();
+
+        // Инициализируем список категорий
+        SellingCategories = new List<CategoryOption>
+        {
+            new CategoryOption { Name = "Новые релизы", IsSelected = false },
+            new CategoryOption { Name = "Хиты продаж", IsSelected = false },
+            new CategoryOption { Name = "Коллаборации", IsSelected = false },
+            new CategoryOption { Name = "Эксклюзивы", IsSelected = false },
+            new CategoryOption { Name = "Маст-хэв", IsSelected = false }
+        };
+
+        SubCategories = new List<ProductCategory>
+        {
+            new ProductCategory { Name = "Кеды и Кроссовки", IsSelected = false },
+            new ProductCategory { Name = "Ботинки и Угги", IsSelected = false },
+            new ProductCategory { Name = "Слайды", IsSelected = false },
+            new ProductCategory { Name = "Детское", IsSelected = false }
+        };
+    }
+
+
+    // Метод для получения выбранных брендов
+    private IEnumerable<string> GetSelectedBrands()
+    {
+        return Brands.Where(b => b.IsSelected).Select(b => b.Name);
+    }
+
+    // Метод для получения выбранных вариантов пола
+    private IEnumerable<string> GetSelectedGenders()
+    {
+        return Genders.Where(g => g.IsSelected).Select(g => g.Name);
+    }
+
+    private void ToggleDrawer()
+    {
+        _isDrawerOpened = !_isDrawerOpened;
+    }
+
+    private class BrandModel
+    {
+        public string Name = "Unitialized";
+        public bool IsSelected = false;
+    }
+
+    public class GenderOption
+    {
+        public string Name { get; set; }
+        public bool IsSelected { get; set; }
+    }
+
+    public class CategoryOption
+    {
+        public string Name { get; set; }
+        public bool IsSelected { get; set; }
+    }
+
+    public class ProductCategory
+    {
+        public string Name { get; set; }
+        public bool IsSelected { get; set; }
+    }
 
 }

@@ -16,11 +16,11 @@
 
 <BrandGallery />
 
-<CategoryPreview CategoryType="ProductType.Shoe" Products="ShoesPreview" />
+<CategoryPreview CategoryType="shoes" Products="TestDataProvider.ShoesPreview" />
 
-<CategoryPreview CategoryType="ProductType.Clothing" Products="ClothesPreview" />
+<CategoryPreview CategoryType="clothes" Products="TestDataProvider.ClothesPreview" />
 
-<CategoryPreview CategoryType="ProductType.Accessory" Products="AccessoriesPreview" />
+<CategoryPreview CategoryType="accessories" Products="TestDataProvider.AccessoriesPreview" />
 
 <MudPaper Width="100%" Class="d-flex flex-column align-center py-20 mt-10" Style="border-radius: 20px; background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), linear-gradient(82.03deg, #DCE7D7 17.85%, #C5C390 33.14%, #C4944D 41.79%, #D9558E 49.88%, #36376F 57.42%, #008B87 66.4%, #4D295A 81.36%);">
     <MudImage Src="/icons/logo.svg" Width="120" Height="120" />
@@ -44,8 +44,5 @@
 </MudPaper>
 
 @code{
-    public IEnumerable<Product> ShoesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "shoes").Take(4);
-    public IEnumerable<Product> ClothesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "clothes").Take(4);
-    public IEnumerable<Product> AccessoriesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "accessories").Take(4);
 
 }

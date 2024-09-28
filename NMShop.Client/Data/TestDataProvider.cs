@@ -2,6 +2,38 @@
 {
     public static class TestDataProvider
     {
+
+        public static string[] GetTestBrands()
+        {
+            string[] brands = new string[]
+            {
+        "Nike",
+        "Adidas",
+        "Puma",
+        "Reebok",
+        "Under Armour",
+        "New Balance",
+        "Converse",
+        "Vans",
+        "Gucci",
+        "Louis Vuitton",
+        "Prada",
+        "Versace",
+        "Balenciaga",
+        "H&M",
+        "Zara",
+        "Uniqlo",
+        "Levi's",
+        "Calvin Klein",
+        "Tommy Hilfiger",
+        "Ralph Lauren"
+            };
+            return brands;
+        }
+
+        public static IEnumerable<Product> ShoesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "shoes").Take(4);
+        public static IEnumerable<Product> ClothesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "clothes").Take(4);
+        public static IEnumerable<Product> AccessoriesPreview = TestDataProvider.GetTestProducts().Where(p => p.ProductType == "accessories").Take(4);
         public static List<Product> GetTestProducts()
         {
             return new List<Product>
@@ -258,6 +290,7 @@
         }
     };
         }
+        
 
     }
 }

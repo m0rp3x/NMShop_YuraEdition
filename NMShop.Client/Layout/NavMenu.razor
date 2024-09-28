@@ -1,10 +1,10 @@
-﻿
+﻿@inject NavigationManager Navigation
 <MudAppBar Elevation="0" >
 
     <div class="px-3 py-5"  style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
         <!-- Логотип слева -->
         <div class="d-flex" style="justify-self: start;">
-            <MudImage Src="/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="45" Height="45" />
+            <MudImage @onclick="NavigateTest" Src="/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="45" Height="45" />
         </div>
 
         <!-- Навигационные кнопки по центру -->
@@ -66,6 +66,11 @@
     private bool _menuHidden = true;
     private static int _menuSubCategoriesBatchCount = 4;
     private static int _menuSubCategoriesBatchAmount = 5;
+
+    private void NavigateTest()
+    {
+        Navigation.NavigateTo("/catalog/bebra");
+    }
 
     private void ShowMenu(Category cat)
     {
