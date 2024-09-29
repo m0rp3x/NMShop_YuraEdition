@@ -1,4 +1,5 @@
-﻿namespace NMShop.Client.Data
+﻿using NMShop.Shared.Models;
+namespace NMShop.Client.Data
 {
     public static class TestDataProvider
     {
