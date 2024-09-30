@@ -18,7 +18,7 @@ namespace NMShop.Data
                     Article = "NKAM001",
                     Description = "Легкие кроссовки для бега.",
                     ImageUrl = "/biba.jpg",
-                    Gender = "male",
+                    Gender = "Мужской",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -40,7 +40,7 @@ namespace NMShop.Data
                     Article = "PUMRS001",
                     Description = "Стильные и удобные кроссовки для повседневной носки.",
                     ImageUrl = "/biba.jpg",
-                    Gender = "male",
+                    Gender = "Мужской",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -61,7 +61,7 @@ namespace NMShop.Data
                     Article = "ADUB001",
                     Description = "Беговые кроссовки с амортизацией Boost.",
                     ImageUrl = "/bebra.jpg",
-                    Gender = "female",
+                    Gender = "Женский",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -81,7 +81,7 @@ namespace NMShop.Data
                     Article = "RBKCL001",
                     Description = "Классические кожаные кроссовки.",
                     ImageUrl = "/boba.jpg",
-                    Gender = "unisex",
+                    Gender = "Унисекс",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -103,7 +103,7 @@ namespace NMShop.Data
                     Article = "ADTS001",
                     Description = "Классическая футболка из хлопка.",
                     ImageUrl = "/bebra.jpg",
-                    Gender = "unisex",
+                    Gender = "Унисекс",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -125,7 +125,7 @@ namespace NMShop.Data
                     Article = "NKTS002",
                     Description = "Спортивная футболка для тренировок с технологией Dri-FIT.",
                     ImageUrl = "/biba.jpg",
-                    Gender = "male",
+                    Gender = "Женский",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -145,7 +145,7 @@ namespace NMShop.Data
                     Article = "UATS001",
                     Description = "Комфортная футболка для тренировок.",
                     ImageUrl = "/bebra.jpg",
-                    Gender = "male",
+                    Gender = "Мужской",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -165,7 +165,7 @@ namespace NMShop.Data
                     Article = "PUMTS001",
                     Description = "Базовая футболка с логотипом Puma.",
                     ImageUrl = "/boba.jpg",
-                    Gender = "unisex",
+                    Gender = "Унисекс",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -187,7 +187,7 @@ namespace NMShop.Data
                     Article = "NKCP001",
                     Description = "Спортивная кепка с логотипом Nike.",
                     ImageUrl = "/boba.jpg",
-                    Gender = "unisex",
+                    Gender = "Унисекс",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
@@ -207,7 +207,7 @@ namespace NMShop.Data
                     Article = "ADCP002",
                     Description = "Зимняя шапка с логотипом Adidas.",
                     ImageUrl = "/biba.jpg",
-                    Gender = "unisex",
+                    Gender = "Унисекс",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
@@ -227,7 +227,7 @@ namespace NMShop.Data
                     Article = "PUMCP001",
                     Description = "Классическая кепка Puma с логотипом.",
                     ImageUrl = "/boba.jpg",
-                    Gender = "unisex",
+                    Gender = "Унисекс",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
@@ -247,7 +247,7 @@ namespace NMShop.Data
                     Article = "UACP001",
                     Description = "Легкая бейсболка с логотипом UA.",
                     ImageUrl = "/bebra.jpg",
-                    Gender = "unisex",
+                    Gender = "Унисекс",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
