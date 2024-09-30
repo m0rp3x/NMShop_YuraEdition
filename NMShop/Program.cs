@@ -1,11 +1,14 @@
 using MudBlazor.Services;
-using NMShop.Client.Pages;
+using NMShop.Client.Data;
 using NMShop.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Регистрация сервисов
 builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<TestDataProvider>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder => builder

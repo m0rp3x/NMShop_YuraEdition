@@ -46,11 +46,21 @@
     public IEnumerable<Product> Products { get; set; }
     [Parameter]
     public int Take { get; set; }
+    [Parameter]
+    public int Skip { get; set; }
 
-    private IEnumerable<Product> _productsSlice = new List<Product>();
-
-    protected override async Task OnInitializedAsync()
+    private IEnumerable<Product> _productsSlice
     {
-        _productsSlice = await Http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products");
+        get
+        {
+            if (Skip > 0)
+            {
+                if (Take > 0) return Products.Skip(Skip).Take(Take);
+                return Products.Skip(Skip);
+            }
+            if (Take > 0) return Products.Take(Take);
+
+            return Products;
+        }
     }
 }

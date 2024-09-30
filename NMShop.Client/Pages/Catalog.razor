@@ -1,5 +1,8 @@
 ﻿@using NMShop.Client.Components;
-@using NMShop.Client.Data
+@using NMShop.Client.Data;
+@using NMShop.Shared.Models;
+
+@inject TestDataProvider DataProvider
 
 @page "/catalog/{productType}"
 
@@ -103,7 +106,7 @@
                 </div>
             </div>
 
-            <ProductGrid Products="TestDataProvider.ShoesPreview" Take="20" />
+            <ProductGrid Products="Products" Take="20" />
         </div>
 
     </MudDrawerContainer>
@@ -112,6 +115,13 @@
 @code {
     [Parameter]
     public string productType { get; set; }
+
+    private IEnumerable<Product> Products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await DataProvider.GetShoes();
+    }
 
     private bool _isDrawerOpened = true;
 

@@ -1,5 +1,9 @@
 ﻿@using NMShop.Shared.Models
 
+@using NMShop.Client.Data
+
+@inject TestDataProvider DataProvider
+
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-10">
 
     <MudStack Row="true">
@@ -24,6 +28,22 @@
     [Parameter]
     public string CategoryType { get; set; }
 
-    [Parameter]
-    public IEnumerable<Product> Products { get; set; }
+    private IEnumerable<Product> Products = new List<Product>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        switch (CategoryType)
+        {
+            case "shoes":
+                Products = await DataProvider.GetShoes();
+                break;
+            case "clothes":
+                Products = await DataProvider.GetClothes();
+                break;
+            case "accessories":
+                Products = await DataProvider.GetAccessories();
+                break;
+        }
+    }
+
 }
