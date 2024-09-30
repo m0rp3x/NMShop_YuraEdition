@@ -4,7 +4,7 @@ using NMShop.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Регистрация сервисов
+
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<TestDataProvider>();
@@ -50,7 +50,6 @@ app.UseAntiforgery();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    // другие endpoints
 });
 
 
