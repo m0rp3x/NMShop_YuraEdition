@@ -1,5 +1,6 @@
 ﻿@using NMShop.Client.Components;
 @using NMShop.Client.Data;
+@using NMShop.Client.Layout
 @using NMShop.Shared.Models;
 
 @inject TestDataProvider DataProvider
@@ -9,9 +10,9 @@
 <div style="width: 100%">
     <MudDrawerContainer Style="width: 100%; position:relative;">
 
-        <MudDrawer Width="23vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
+        <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
 
-            <MudButton Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
+            <MudButton Style="flex-shrink: 0;" Class="py-1 px-3" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
 
             <input placeholder="Найти"
                    style="font-size: 16px; width: 100%; height: 50px; color: #000000; font-weight: 400; padding: 0 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; margin: 0; resize: none; border-radius: 25px;"
@@ -96,13 +97,51 @@
 
         <div class="d-flex justify-center align-center mud-height-full flex-column pa-10">
 
-            <div class="d-flex mb-20" style="width: 100%;">   
-                <div @onmouseover="() => {_isFilterButtonHovered = true;}"
+            <div class="d-flex mb-20" style="width: 100%; gap: 30px;">
+
+                <MudText Style="color: #BDBDBD;" Typo="Typo.h4">Найдено: @(Products.Count())</MudText>
+                
+                <MudSpacer/>
+
+                <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.h5"
+                    @onmouseover="() => {_isFilterButtonHovered = true;}"
                      @onmouseout="() => {_isFilterButtonHovered = false;}"
-                     @onclick="ToggleDrawer"
-                     style=@FilterButtonStyle
-                     class="px-4 py-2 mb-30">
+                         @onclick="() => {_isDrawerOpened = !_isDrawerOpened;}"
+                     style=@FilterButtonStyle>
                     @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
+                </MudText>
+
+                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer" style="transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px;  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); background-color: #FFFFFF; align-items: center; justify-content: center;">
+
+                    <MudText Class="mr-2" Typo="Typo.h6" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
+                    <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.h6" Inline="true">@CurrentSortOption.Name</MudText>
+                    <MudIcon Style=@("transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+
+                    <div class="absolute" style=@("transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; overflow: hidden; border-radius: 20px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); left: 0; right: 0; z-index: " + (int)ZEnum.SortOptionsDropDown + "; " + (_isSortOptionOpened ? "top: 120%; height: fit-content;" : "height: 0px;"))>
+                        @foreach (SortOption so in SortOptions)
+                        {
+                            <MudText @onclick="() => {CurrentSortOption = so;}"
+                                     @onmouseover="() => {so.IsHovered = true;}"
+                                     @onmouseout="() => {so.IsHovered = false;}"
+                                     Style=@("transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
+                                     Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex align-center" style="cursor: pointer;" @onclick="() => {isSortDescending = !isSortDescending;}">
+                    @if (isSortDescending)
+                    {
+                        <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down">
+                            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down-alt">
+                            <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293V3.5zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"></path>
+                        </svg>
+                    }
                 </div>
             </div>
 
@@ -112,7 +151,7 @@
     </MudDrawerContainer>
 </div>
 
-@code {
+    @code {
     [Parameter]
     public string productType { get; set; }
 
@@ -123,9 +162,15 @@
         Products = await DataProvider.GetShoes();
     }
 
-    private bool _isDrawerOpened = true;
+    private bool _isDrawerOpened = false;
 
-    private bool _isFilterButtonHovered = true;
+    private bool _isFilterButtonHovered = false;
+
+    private bool _isSortOptionOpened = false;
+
+    private SortOption CurrentSortOption = SortOptions[0];
+
+    private bool isSortDescending = true;
 
     private string FilterButtonStyle => 
     "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
@@ -141,19 +186,6 @@
 
     private List<BrandModel> Brands;
 
-    private List<GenderOption> Genders = new List<GenderOption>
-        {
-            new GenderOption { Name = "Унисекс", IsSelected = false },
-            new GenderOption { Name = "Женский", IsSelected = false },
-            new GenderOption { Name = "Мужской", IsSelected = false }
-        };
-
-    // Список категорий с их состоянием выбора
-    private List<CategoryOption> SellingCategories;
-
-    private List<ProductCategory> SubCategories;
-
-
     protected override void OnInitialized()
     {
         // Инициализируем список брендов
@@ -161,23 +193,6 @@
             .Select(name => new BrandModel { Name = name})
             .ToList();
 
-        // Инициализируем список категорий
-        SellingCategories = new List<CategoryOption>
-        {
-            new CategoryOption { Name = "Новые релизы", IsSelected = false },
-            new CategoryOption { Name = "Хиты продаж", IsSelected = false },
-            new CategoryOption { Name = "Коллаборации", IsSelected = false },
-            new CategoryOption { Name = "Эксклюзивы", IsSelected = false },
-            new CategoryOption { Name = "Маст-хэв", IsSelected = false }
-        };
-
-        SubCategories = new List<ProductCategory>
-        {
-            new ProductCategory { Name = "Кеды и Кроссовки", IsSelected = false },
-            new ProductCategory { Name = "Ботинки и Угги", IsSelected = false },
-            new ProductCategory { Name = "Слайды", IsSelected = false },
-            new ProductCategory { Name = "Детское", IsSelected = false }
-        };
     }
 
 
@@ -191,11 +206,6 @@
     private IEnumerable<string> GetSelectedGenders()
     {
         return Genders.Where(g => g.IsSelected).Select(g => g.Name);
-    }
-
-    private void ToggleDrawer()
-    {
-        _isDrawerOpened = !_isDrawerOpened;
     }
 
     private class BrandModel
@@ -222,4 +232,43 @@
         public bool IsSelected { get; set; }
     }
 
+    public class SortOption
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public bool IsHovered { get; set; } = false;
+    }
+
+
+    // Список категорий с их состоянием выбора
+    private static List<CategoryOption> SellingCategories = new List<CategoryOption>
+        {
+            new CategoryOption { Name = "Новые релизы", IsSelected = false },
+            new CategoryOption { Name = "Хиты продаж", IsSelected = false },
+            new CategoryOption { Name = "Коллаборации", IsSelected = false },
+            new CategoryOption { Name = "Эксклюзивы", IsSelected = false },
+            new CategoryOption { Name = "Маст-хэв", IsSelected = false }
+        };
+
+    private static List<ProductCategory> SubCategories = new List<ProductCategory>
+        {
+            new ProductCategory { Name = "Кеды и Кроссовки", IsSelected = false },
+            new ProductCategory { Name = "Ботинки и Угги", IsSelected = false },
+            new ProductCategory { Name = "Слайды", IsSelected = false },
+            new ProductCategory { Name = "Детское", IsSelected = false }
+        };
+
+    private static List<GenderOption> Genders = new List<GenderOption>
+        {
+            new GenderOption { Name = "Унисекс", IsSelected = false },
+            new GenderOption { Name = "Женский", IsSelected = false },
+            new GenderOption { Name = "Мужской", IsSelected = false }
+        };
+
+    private static List<SortOption> SortOptions = new List<SortOption>
+    {
+        new SortOption { Name = "ПОПУЛЯРНОСТИ", Type = "popularity" },
+        new SortOption { Name = "НОВИЗНЕ", Type = "newest" },
+        new SortOption { Name = "ЦЕНЕ", Type = "price" }
+    };
 }
