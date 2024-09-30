@@ -50,7 +50,19 @@
 
                 </MudExpansionPanel>
 
-                <MudExpansionPanel Text="Бренды">
+                @if(productType != "accessories")
+                {
+                    <MudExpansionPanel Text="Размер">
+
+                        @foreach (var size in Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>())
+                        {
+                            
+                        }
+
+                    </MudExpansionPanel>
+                }
+
+                <MudExpansionPanel Text="Пол">
 
                     @foreach (var gender in Genders)
                     {
@@ -151,7 +163,7 @@
     </MudDrawerContainer>
 </div>
 
-    @code {
+@code {
     [Parameter]
     public string productType { get; set; }
 
@@ -159,7 +171,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Products = await DataProvider.GetShoes();
+        switch (productType)
+        {
+            case "shoes":
+                await DataProvider.GetShoes();
+                break;
+            case "clothes":
+                await DataProvider.GetClothes();
+                break;
+            case "accessories":
+                await DataProvider.GetAccessories();
+                break;
+        }
     }
 
     private bool _isDrawerOpened = false;
@@ -240,7 +263,8 @@
     }
 
 
-    // Список категорий с их состоянием выбора
+    private static List<ClothingSize> ClothesSizeOptions = Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().ToList();
+
     private static List<CategoryOption> SellingCategories = new List<CategoryOption>
         {
             new CategoryOption { Name = "Новые релизы", IsSelected = false },
