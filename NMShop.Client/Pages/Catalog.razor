@@ -2,6 +2,7 @@
 @using NMShop.Client.Data;
 @using NMShop.Client.Layout
 @using NMShop.Shared.Models;
+@inject HttpClient Http
 
 @inject TestDataProvider DataProvider
 
@@ -21,7 +22,7 @@
                    @bind="SearchInput"
                    size="50" />
 
-            <MudCheckBox Class="mt-3" @bind-Value="OnlyInStock" Label="Только в наличии"/>
+            <MudCheckBox Class="mt-3" @bind-Value="OnlyInStock"  Label="Только в наличии"/>
 
             <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
 
@@ -42,7 +43,8 @@
                     {
                         <div>
                             <input type="checkbox"
-                                   @bind="brand.IsSelected"
+                                   checked="@brand.IsSelected"
+                                   @onchange="async () => await OnBrandSelectionChanged(brand)"
                                    id="@brand.Name" />
                             <label for="@brand.Name">@brand.Name</label>
                         </div>
@@ -50,13 +52,14 @@
 
                 </MudExpansionPanel>
 
-                <MudExpansionPanel Text="Бренды">
+                <MudExpansionPanel Text="Пол">
 
                     @foreach (var gender in Genders)
                     {
                         <div>
                             <input type="checkbox"
-                                   @bind="gender.IsSelected"
+                                   checked="@gender.IsSelected"
+                                   @onchange="async () => await OnGenderSelectionChanged(gender)"
                                    id="@gender.Name" />
                             <label for="@gender.Name">@gender.Name</label>
                         </div>
@@ -185,6 +188,7 @@
     private string SearchInput { get; set; } = String.Empty;
 
     private List<BrandModel> Brands;
+    private List<GenderModel> Genders;
 
     protected override void OnInitialized()
     {
@@ -192,8 +196,63 @@
         Brands = TestDataProvider.GetTestBrands()
             .Select(name => new BrandModel { Name = name})
             .ToList();
+        
+        Genders = TestDataProvider.GetTestGenders()
+            .Select(name => new GenderModel { Name = name})
+            .ToList();
+
+        
+
 
     }
+    
+    
+    
+    
+    private async Task LoadProducts()
+    {
+        var queryParams = new Dictionary<string, string>();
+
+        // Gather selected filter inputs
+        var selectedBrands = GetSelectedBrands();
+        if (selectedBrands.Any())
+        {
+            queryParams["Brand"] = string.Join(",", selectedBrands);
+        }
+
+        var selectedGenders = GetSelectedGenders();
+        if (selectedGenders.Any())
+        {
+            queryParams["Gender"] = string.Join(",", selectedGenders);
+        }
+
+        if (!string.IsNullOrEmpty(MinPriceInput)) queryParams["MinPrice"] = MinPriceInput;
+        if (!string.IsNullOrEmpty(MaxPriceInput)) queryParams["MaxPrice"] = MaxPriceInput;
+        if (OnlyInStock) queryParams["InStock"] = "true";
+
+        // Construct query string and call API
+        var queryString = string.Join("&", queryParams.Select(kv => $"{kv.Key}={kv.Value}"));
+        var url = $"https://localhost:7279/api/products/filter?{queryString}";
+
+        Products = await Http.GetFromJsonAsync<IEnumerable<Product>>(url);
+    }
+    
+    private async Task OnBrandSelectionChanged(BrandModel brand)
+    {
+        brand.IsSelected = !brand.IsSelected; // Toggle the selection
+        await LoadProducts(); // Load products immediately
+        StateHasChanged(); // Ensure the UI reflects changes instantly
+    }
+    
+    private async Task OnGenderSelectionChanged(GenderModel gender)
+    {
+        gender.IsSelected = !gender.IsSelected; // Toggle the selection
+        await LoadProducts(); // Load products immediately
+        StateHasChanged(); // Ensure the UI reflects changes instantly
+    }
+    
+    
+
 
 
     // Метод для получения выбранных брендов
@@ -213,11 +272,12 @@
         public string Name = "Unitialized";
         public bool IsSelected = false;
     }
-
-    public class GenderOption
+    
+    
+    public class GenderModel
     {
-        public string Name { get; set; }
-        public bool IsSelected { get; set; }
+        public string Name = "Unitialized";
+        public bool IsSelected = false;
     }
 
     public class CategoryOption
@@ -258,12 +318,7 @@
             new ProductCategory { Name = "Детское", IsSelected = false }
         };
 
-    private static List<GenderOption> Genders = new List<GenderOption>
-        {
-            new GenderOption { Name = "Унисекс", IsSelected = false },
-            new GenderOption { Name = "Женский", IsSelected = false },
-            new GenderOption { Name = "Мужской", IsSelected = false }
-        };
+   
 
     private static List<SortOption> SortOptions = new List<SortOption>
     {
