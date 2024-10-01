@@ -6,7 +6,7 @@
 
 @inject TestDataProvider DataProvider
 
-@page "/catalog/{productType}"
+@page "/catalog/{productType?}"
 
 <div style="width: 100%">
     <MudDrawerContainer Style="width: 100%; position:relative;">
@@ -192,16 +192,20 @@
         switch (productType)
         {
             case "shoes":
-                await DataProvider.GetShoes();
+                Products = await DataProvider.GetShoes();
                 break;
             case "clothes":
-                await DataProvider.GetClothes();
+                Products = await DataProvider.GetClothes();
                 break;
             case "accessories":
-                await DataProvider.GetAccessories();
+                Products = await DataProvider.GetAccessories();
+                break;
+            default:
+                Products = await DataProvider.GetAll();
                 break;
         }
     }
+
 
     private bool _isDrawerOpened = false;
 
