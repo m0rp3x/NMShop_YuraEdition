@@ -22,7 +22,15 @@
                    @bind="SearchInput"
                    size="50" />
 
-            <MudCheckBox Class="mt-3" @bind-Value="OnlyInStock"  Label="Только в наличии"/>
+            <!---ебал
+            <MudCheckBox T="bool" Checked="OnlyInStock" @onchange="HandleStockChange" Label="Только в наличии" />
+            ебал
+              ебал!-->
+
+
+
+
+
 
             <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
 
@@ -206,6 +214,7 @@
         }
     }
 
+    private bool OnlyInStockSelected = false;
 
     private bool _isDrawerOpened = false;
 
@@ -230,6 +239,7 @@
     private int MaxSizeInput;
 
     private bool OnlyInStock = false;
+    
 
     private string SearchInput { get; set; } = String.Empty;
 
@@ -272,6 +282,9 @@
         Genders = TestDataProvider.GetTestGenders()
             .Select(name => new GenderModel { Name = name})
             .ToList();
+        
+
+        
     }
 
     private async Task LoadProducts()
@@ -293,14 +306,21 @@
 
         if (MinPriceInput > 0) queryParams["MinPrice"] = MinPriceInput.ToString();
         if (MaxPriceInput > 0) queryParams["MaxPrice"] = MaxPriceInput.ToString();
-        if (OnlyInStock) queryParams["InStock"] = "true";
+        
+        if (OnlyInStock)
+        {
+            queryParams["InStock"] = "true";
+        }
 
         // Construct query string and call API
         var queryString = string.Join("&", queryParams.Select(kv => $"{kv.Key}={kv.Value}"));
         var url = $"https://localhost:7279/api/products/filter?{queryString}";
 
         Products = await Http.GetFromJsonAsync<IEnumerable<Product>>(url);
+        Console.WriteLine($"Запрос на сервер: {url}");
+        
     }
+
 
     private async Task OnBrandSelectionChanged(BrandModel brand)
     {
@@ -308,6 +328,21 @@
         await LoadProducts(); // Load products immediately
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
+    
+    
+    private async Task HandleStockChange(ChangeEventArgs e)
+    {
+        OnlyInStock = (bool)e.Value;  // Получаем значение из чекбокса
+        await LoadProducts();  // Обновляем список продуктов
+    }
+
+
+
+
+
+
+
+ 
 
     private async Task OnGenderSelectionChanged(GenderModel gender)
     {
@@ -328,15 +363,20 @@
         return Genders.Where(g => g.IsSelected).Select(g => g.Name);
     }
 
+
     
-    
-    // Модели
+    // 
     
     private class BrandModel
     {
         public string Name = "Unitialized";
         public bool IsSelected = false;
     }
+    
+
+
+
+
 
     public class GenderModel
     {
