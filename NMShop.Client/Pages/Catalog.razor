@@ -8,7 +8,7 @@
 
 @page "/catalog/{productType?}"
 
-<div style="width: 100%">
+<div class="d-flex flex-grow-1" style="width: 100%">
     <MudDrawerContainer Style="width: 100%; position:relative;">
 
         <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
@@ -125,7 +125,7 @@
             </MudExpansionPanels>
         </MudDrawer>
 
-        <div class="d-flex justify-center align-center mud-height-full flex-column pa-10">
+        <div class="d-flex justify-start align-center mud-height-full flex-column pa-10">
 
             <div class="d-flex mb-20" style="width: 100%; gap: 30px;">
 

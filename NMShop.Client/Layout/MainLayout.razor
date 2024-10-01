@@ -4,11 +4,11 @@
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
-<MudLayout>
+<MudLayout Class="d-flex flex-column" Style="min-height: 100vh;">
     
     <NavMenu/>
 
-    <MudMainContent Class="mt-16 pa-4">
+    <MudMainContent Class="d-flex flex-column mt-16 pa-4">
         @Body
     </MudMainContent>
 
