@@ -34,7 +34,7 @@ public static class ProductExtensions
             products = products.Where(p => p.ProductType.Equals(filter.Category, StringComparison.OrdinalIgnoreCase));
         }
 
-        if (filter.InStock)
+        if (filter.InStock != null)
         {
             products = products.Where(p => p.PriceInfos.Any(pi => pi.Stock > 0));
         }

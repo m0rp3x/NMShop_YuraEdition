@@ -70,7 +70,7 @@ namespace NMShop.Data
                     },
                     PriceInfos = new List<PriceInfo>
                     {
-                        new PriceInfo { Size = 38, Price = 140m, DiscountPrice = 120m, Stock = 5 }
+                        new PriceInfo { Size = 38, Price = 140m, DiscountPrice = 120m, Stock = 0 }
                     }
                 },
                 new Product

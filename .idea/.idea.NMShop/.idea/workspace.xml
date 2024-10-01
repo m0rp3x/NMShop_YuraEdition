@@ -10,11 +10,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="Починка каталога">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/NavMenu.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/ProductExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/ProductExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +157,7 @@
       <workItem from="1727475065171" duration="2774000" />
       <workItem from="1727477931940" duration="6232000" />
       <workItem from="1727608019670" duration="2209000" />
-      <workItem from="1727799324477" duration="1920000" />
+      <workItem from="1727799324477" duration="12430000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -206,7 +207,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727723128098</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Починка каталога">
+      <option name="closed" value="true" />
+      <created>1727801268530</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1727801268530</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,7 +232,8 @@
     <MESSAGE value="ИКОНКИ" />
     <MESSAGE value="клиент-сервер" />
     <MESSAGE value="Фильтры в каталоге" />
-    <option name="LAST_COMMIT_MESSAGE" value="Фильтры в каталоге" />
+    <MESSAGE value="Починка каталога" />
+    <option name="LAST_COMMIT_MESSAGE" value="Починка каталога" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -238,11 +248,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NMShop.Client/Layout/Footer.razor</url>
-          <line>18</line>
+          <line>19</line>
           <properties isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor</url>
+          <line>29</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

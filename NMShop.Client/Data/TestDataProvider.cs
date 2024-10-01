@@ -50,6 +50,14 @@ namespace NMShop.Client.Data
                 "Женский",
             };
         }
+        public static bool[] GetStockFilterOptions()
+        {
+            return new bool[]
+            {
+                true, // В наличии
+                false // Нет в наличии
+            };
+        }
 
 
 
