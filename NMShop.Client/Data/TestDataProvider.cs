@@ -55,6 +55,7 @@ namespace NMShop.Client.Data
 
 
         public async Task<IEnumerable<Product>> GetAll() => await _http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products");
+        public async Task<Product> GetById(int id) => await _http.GetFromJsonAsync<Product>($"https://localhost:7279/api/products/id/{id}");
         // Дополнительные методы для доступа к данным
         public async Task<IEnumerable<Product>> GetShoes() => await _http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/shoes");
         public async Task<IEnumerable<Product>> GetClothes() => await _http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/clothes");

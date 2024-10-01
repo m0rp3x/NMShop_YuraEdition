@@ -24,7 +24,20 @@ namespace NMShop.Controller
             var products = TestDataProvider.GetTestProducts();
             return Ok(products);
         }
-        
+
+        [HttpGet("id/{id}")]
+        public ActionResult<IEnumerable<Product>> GetProductsById(string id)
+        {
+            var parsedSuccesfully = int.TryParse(id, out var parsedId);
+            if (parsedSuccesfully)
+            {
+                var products = TestDataProvider.GetTestProducts()
+                .Where(p => p.Id == parsedId).Single();
+                return Ok(products);
+            }
+            return NotFound();
+        }
+
         [HttpGet("filter")]
         public ActionResult<IEnumerable<Product>> GetFilteredProducts([FromQuery] ProductFilter filter)
         {

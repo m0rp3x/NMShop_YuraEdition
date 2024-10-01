@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="wwwroot\BrandGalleryImages\" />
+    <Folder Include="wwwroot\assets\brandGalleryImages\" />
   </ItemGroup>
 
   <ItemGroup>

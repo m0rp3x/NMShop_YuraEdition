@@ -7,7 +7,7 @@ public class Product
     public string Brand { get; set; } // Бренд товара
     public string Article { get; set; } // Артикул
     public string Description { get; set; } // Описание товара
-    public string ImageUrl { get; set; } = "/bebra.jpg"; // Изображение товара
+    public List<ProductImage> Images { get; set; } // Изображения товара
     public string Gender { get; set; } // Пол: мужское, женское, унисекс, детское
     public string SubCategory { get; set; } // Подкатегория товара (например, спортивная обувь, верхняя одежда)
     public string ProductType { get; set; } // Тип товара: обувь, одежда, аксессуары
@@ -27,6 +27,12 @@ public class PriceInfo
     public decimal Price { get; set; } // Цена за данный размер
     public decimal? DiscountPrice { get; set; } // Акционная цена (если есть)
     public int Stock { get; set; } // Количество товара на складе
+}
+
+public class ProductImage
+{
+    public byte[] Bytes { get; set; }
+    public bool IsMain { get; set; }
 }
 
 public enum ClothingSize
