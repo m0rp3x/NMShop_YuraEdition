@@ -30,8 +30,8 @@
 
                     <div class="d-flex" style="gap: 15px;">
 
-                        <MudTextField @bind-Value="MinPriceInput" Label="От" Variant="Variant.Outlined" />
-                        <MudTextField @bind-Value="MaxPriceInput" Label="До" Variant="Variant.Outlined" />
+                        <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
+                        <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
 
                     </div>
 
@@ -52,13 +52,28 @@
 
                 </MudExpansionPanel>
 
-                @if(productType != "accessories")
+                @if (productType == "shoes" || productType == "clothes")
                 {
                     <MudExpansionPanel Text="Размер">
 
-                        @foreach (var size in Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>())
+                        @if (productType == "clothes")
                         {
-                            
+
+                            @foreach (var cso in ClothesSizeOptions)
+                            {
+                                <MudCheckBox @bind-Value="cso.IsSelected" Label="@cso.Size.ToString()" />
+                            }
+
+                        } else
+                        {
+
+                            <div class="d-flex" style="gap: 15px;">
+
+                                <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
+                                <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
+
+                            </div>
+
                         }
 
                     </MudExpansionPanel>
@@ -202,9 +217,13 @@
     "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
     + (_isFilterButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
-    private string MinPriceInput = string.Empty;
+    private int MinPriceInput;
 
-    private string MaxPriceInput = string.Empty;
+    private int MaxPriceInput;
+
+    private int MinSizeInput;
+
+    private int MaxSizeInput;
 
     private bool OnlyInStock = false;
 
@@ -213,25 +232,44 @@
     private List<BrandModel> Brands;
     private List<GenderModel> Genders;
 
+    private static List<ClothesSizeOption> ClothesSizeOptions = Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(cs => new ClothesSizeOption() { Size = cs }).ToList();
+
+    private static List<CategoryOption> SellingCategories = new List<CategoryOption>
+    {
+        new CategoryOption { Name = "Новые релизы", IsSelected = false },
+        new CategoryOption { Name = "Хиты продаж", IsSelected = false },
+        new CategoryOption { Name = "Коллаборации", IsSelected = false },
+        new CategoryOption { Name = "Эксклюзивы", IsSelected = false },
+        new CategoryOption { Name = "Маст-хэв", IsSelected = false }
+    };
+
+    private static List<ProductCategory> SubCategories = new List<ProductCategory>
+    {
+        new ProductCategory { Name = "Кеды и Кроссовки", IsSelected = false },
+        new ProductCategory { Name = "Ботинки и Угги", IsSelected = false },
+        new ProductCategory { Name = "Слайды", IsSelected = false },
+        new ProductCategory { Name = "Детское", IsSelected = false }
+    };
+
+    private static List<SortOption> SortOptions = new List<SortOption>
+    {
+        new SortOption { Name = "ПОПУЛЯРНОСТИ", Type = "popularity" },
+        new SortOption { Name = "НОВИЗНЕ", Type = "newest" },
+        new SortOption { Name = "ЦЕНЕ", Type = "price" }
+    };
+
     protected override void OnInitialized()
     {
         // Инициализируем список брендов
         Brands = TestDataProvider.GetTestBrands()
             .Select(name => new BrandModel { Name = name})
             .ToList();
-        
+
         Genders = TestDataProvider.GetTestGenders()
             .Select(name => new GenderModel { Name = name})
             .ToList();
-
-        
-
-
     }
-    
-    
-    
-    
+
     private async Task LoadProducts()
     {
         var queryParams = new Dictionary<string, string>();
@@ -249,8 +287,8 @@
             queryParams["Gender"] = string.Join(",", selectedGenders);
         }
 
-        if (!string.IsNullOrEmpty(MinPriceInput)) queryParams["MinPrice"] = MinPriceInput;
-        if (!string.IsNullOrEmpty(MaxPriceInput)) queryParams["MaxPrice"] = MaxPriceInput;
+        if (MinPriceInput > 0) queryParams["MinPrice"] = MinPriceInput.ToString();
+        if (MaxPriceInput > 0) queryParams["MaxPrice"] = MaxPriceInput.ToString();
         if (OnlyInStock) queryParams["InStock"] = "true";
 
         // Construct query string and call API
@@ -259,24 +297,20 @@
 
         Products = await Http.GetFromJsonAsync<IEnumerable<Product>>(url);
     }
-    
+
     private async Task OnBrandSelectionChanged(BrandModel brand)
     {
         brand.IsSelected = !brand.IsSelected; // Toggle the selection
         await LoadProducts(); // Load products immediately
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
-    
+
     private async Task OnGenderSelectionChanged(GenderModel gender)
     {
         gender.IsSelected = !gender.IsSelected; // Toggle the selection
         await LoadProducts(); // Load products immediately
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
-    
-    
-
-
 
     // Метод для получения выбранных брендов
     private IEnumerable<string> GetSelectedBrands()
@@ -290,13 +324,16 @@
         return Genders.Where(g => g.IsSelected).Select(g => g.Name);
     }
 
+    
+    
+    // Модели
+    
     private class BrandModel
     {
         public string Name = "Unitialized";
         public bool IsSelected = false;
     }
-    
-    
+
     public class GenderModel
     {
         public string Name = "Unitialized";
@@ -315,6 +352,12 @@
         public bool IsSelected { get; set; }
     }
 
+    public class ClothesSizeOption
+    {
+        public ClothingSize Size { get; set; }
+        public bool IsSelected { get; set; }
+    }
+
     public class SortOption
     {
         public string Name { get; set; }
@@ -322,32 +365,4 @@
         public bool IsHovered { get; set; } = false;
     }
 
-
-    private static List<ClothingSize> ClothesSizeOptions = Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().ToList();
-
-    private static List<CategoryOption> SellingCategories = new List<CategoryOption>
-        {
-            new CategoryOption { Name = "Новые релизы", IsSelected = false },
-            new CategoryOption { Name = "Хиты продаж", IsSelected = false },
-            new CategoryOption { Name = "Коллаборации", IsSelected = false },
-            new CategoryOption { Name = "Эксклюзивы", IsSelected = false },
-            new CategoryOption { Name = "Маст-хэв", IsSelected = false }
-        };
-
-    private static List<ProductCategory> SubCategories = new List<ProductCategory>
-        {
-            new ProductCategory { Name = "Кеды и Кроссовки", IsSelected = false },
-            new ProductCategory { Name = "Ботинки и Угги", IsSelected = false },
-            new ProductCategory { Name = "Слайды", IsSelected = false },
-            new ProductCategory { Name = "Детское", IsSelected = false }
-        };
-
-   
-
-    private static List<SortOption> SortOptions = new List<SortOption>
-    {
-        new SortOption { Name = "ПОПУЛЯРНОСТИ", Type = "popularity" },
-        new SortOption { Name = "НОВИЗНЕ", Type = "newest" },
-        new SortOption { Name = "ЦЕНЕ", Type = "price" }
-    };
 }

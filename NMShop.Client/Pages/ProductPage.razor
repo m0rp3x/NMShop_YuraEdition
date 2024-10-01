@@ -1,0 +1,16 @@
+﻿@page "/catalog/{productType}/{productCode}"
+
+<MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
+    <div class="d-flex">
+        <MudLink Href="">Каталог</MudLink>
+        <MudSpacer/>
+    </div>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public string productType { get; set; }
+    [Parameter]
+    public string productCode { get; set; }
+
+}
