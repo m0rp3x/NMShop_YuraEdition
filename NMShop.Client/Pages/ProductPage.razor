@@ -15,58 +15,62 @@
         <MudText Typo="Typo.h5">@productCode</MudText>
         <MudSpacer/>
     </div>
-    <div class="d-flex">
-        <MudCarousel Class="" Style="width: 65%; aspect-ratio: 1/0.75;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object">
-            @foreach(ProductImage pi in product.Images)
-            {
-                <MudCarouselItem Transition="Transition.Fade">
-                    <img src="@pi.Bytes.ToSrcString()" style="width: 100%; height: auto; object-position: center; object-fit: cover;"/>
-                </MudCarouselItem>
-            }
-        </MudCarousel>
-        <div style="width: 35%;">
+    <MudGrid>
+        <MudItem xs="8">
+            <MudCarousel Class="" Style="aspect-ratio: 1/0.75;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object">
+                @foreach (ProductImage pi in product.Images)
+                {
+                    <MudCarouselItem Transition="Transition.Fade" Class="d-flex">
+                        <img class="d-flex flex-grow-1" src="@pi.Bytes.ToSrcString()" style="margin: 80px; max-width: calc(100% - 160px); height: auto; object-position: center; object-fit: cover;" />
+                    </MudCarouselItem>
+                }
+            </MudCarousel>
+        </MudItem>
+        <MudItem xs="4">
 
-            <div>
+            <div class="mb-2">
                 @if (minDiscountPrice is not null)
                 {
-                    <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
+                    <MudText Typo="Typo.body1" Style="width: fit-content; border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
                 }
                 @if (product.Gender == "female")
                 {
-                    <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff60b850;" Class="px-2 py-1">Женский</MudText>
+                    <MudText Typo="Typo.body1" Style="width: fit-content; border-radius: 8px; background-color: #ff60b850;" Class="px-2 py-1">Женский</MudText>
                 }
             </div>
 
             @if (willShowDiscountPrice)
             {
-                        <MudText Typo="Typo.h6" Style="line-height: 100%;" Color="Color.Error">
-                            от <MudText Inline="true" Typo="Typo.h6" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@minDiscountPrice.ToPreFormatedString()</MudText> ₽
-                        </MudText>
+                <MudText Typo="Typo.h3" Style="line-height: 100%;" Color="Color.Error">
+                    <MudText Inline="true" Typo="Typo.h3" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@minDiscountPrice.ToPreFormatedString()</MudText> ₽
+                </MudText>
             }
-            
-            <MudText Typo="Typo.body1" Color="Color.Dark" Style=@( "line-height: 100%; font-weight: 700;" + (willShowDiscountPrice ? "text-decoration: line-through; text-decoration-color: red;" : null))>от @minPrice.ToPreFormatedString() ₽</MudText>
 
-            <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.h5"
+            <MudText Class="mb-2" Typo="Typo.h4" Color="Color.Dark" Style=@("line-height: 100%; font-weight: 700;" + (willShowDiscountPrice ? "text-decoration: line-through; text-decoration-color: red;" : null))>@minPrice.ToPreFormatedString() ₽</MudText>
+
+            <MudText Class="d-flex align-center justify-center px-4 py-4" Typo="Typo.h5"
                      @onmouseover="() => {_isAddToCartButtonHovered = true;}"
                      @onmouseout="() => {_isAddToCartButtonHovered = false;}"
-                         @onclick="() => {Console.WriteLine('A');}"
+                     @onclick="() => {Console.WriteLine('A');}"
                      style=@FilterButtonStyle>
-                     Добавить в корзину
+                Добавить в корзину
             </MudText>
 
             @if (product.ProductType == "shoes" || product.ProductType == "clothes")
             {
                 <MudText Typo="Typo.h5">Размеры в наличии:</MudText>
 
-                <MudGrid>
+                <MudGrid Class="mb-7">
 
-                    @foreach(PriceInfo pi in product.PriceInfos)
+                    @foreach (PriceInfo pi in product.PriceInfos)
                     {
                         bool isDiscounted = pi.DiscountPrice is not null && pi.DiscountPrice > 0;
 
-                        <MudItem @onclick="() => {pi.IsSelected = !pi.IsSelected;}" xs="3" Style=@($"border-radius: 4px; background-color: " + (pi.IsSelected ? "rgba(26, 26, 26, 1)" : "#E6E6E6") + ';')>
-                            <MudText Typo="Typo.h5">@(product.ProductType == "clothes" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
-                            <MudText Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price)</MudText>
+                        <MudItem xs="3" >
+                            <div @onclick="() => {seletedOption = pi;}" class="px-2 py-1 d-flex flex-column align-center cursor-pointer" style=@($"border-radius: 4px; background-color: " + (seletedOption == pi ? "rgba(26, 26, 26, 1)" : "#E6E6E6") + ';')>
+                                <MudText Style=@("color: " + (seletedOption == pi ? "white" : "black") + ';') Typo="Typo.h5">@(product.ProductType == "clothes" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
+                                <MudText Style=@("color: " + (isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
+                            </div>
                         </MudItem>
                     }
 
@@ -75,8 +79,8 @@
                 <MudText Style="background-color: #baff2450;" Class="px-2 py-1" Typo="Typo.h6">Товар прошел проверку на качество и оригинальность</MudText>
             }
 
-        </div>
-    </div>
+        </MudItem>
+    </MudGrid>
 </MudContainer>
 
 @code {
@@ -88,6 +92,8 @@
     private Product product = new();
 
     private bool _isAddToCartButtonHovered = false;
+
+    private PriceInfo seletedOption = new();
 
     decimal minPrice;
     decimal? minDiscountPrice;
