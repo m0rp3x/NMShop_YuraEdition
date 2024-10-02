@@ -23,7 +23,7 @@
                        @bind="SearchInput"
                        size="50" />
 
-                <MudCheckBox T="bool" Checked="OnlyInStock" @onchange="HandleStockChange" Label="Только в наличии" />
+                <MudCheckBox T="bool" @bind-Value="OnlyInStock" @onchange="HandleStockChange" Label="Только в наличии" />
 
                 <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
 

@@ -17,7 +17,7 @@ namespace NMShop.Data
                     Brand = "Nike",
                     Article = "NKAM001",
                     Description = "Легкие кроссовки для бега.",
-                    Gender = "Мужской",
+                    Gender = "male",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -33,12 +33,12 @@ namespace NMShop.Data
                 },
                 new Product
                 {
-                    Id = 4,
+                    Id = 2,
                     Name = "Кроссовки Puma RS-X",
                     Brand = "Puma",
                     Article = "PUMRS001",
                     Description = "Стильные и удобные кроссовки для повседневной носки.",
-                    Gender = "Мужской",
+                    Gender = "male",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -53,12 +53,12 @@ namespace NMShop.Data
                 },
                 new Product
                 {
-                    Id = 5,
+                    Id = 3,
                     Name = "Кроссовки Adidas Ultraboost",
                     Brand = "Adidas",
                     Article = "ADUB001",
                     Description = "Беговые кроссовки с амортизацией Boost.",
-                    Gender = "Женский",
+                    Gender = "female",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -72,12 +72,12 @@ namespace NMShop.Data
                 },
                 new Product
                 {
-                    Id = 6,
+                    Id = 4,
                     Name = "Кроссовки Reebok Classic",
                     Brand = "Reebok",
                     Article = "RBKCL001",
                     Description = "Классические кожаные кроссовки.",
-                    Gender = "Унисекс",
+                    Gender = "unisex",
                     SubCategory = "Спортивная обувь",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
@@ -93,12 +93,12 @@ namespace NMShop.Data
                 // Футболки
                 new Product
                 {
-                    Id = 2,
+                    Id = 5,
                     Name = "Футболка Adidas",
                     Brand = "Adidas",
                     Article = "ADTS001",
                     Description = "Классическая футболка из хлопка.",
-                    Gender = "Унисекс",
+                    Gender = "unisex",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -114,12 +114,12 @@ namespace NMShop.Data
                 },
                 new Product
                 {
-                    Id = 7,
+                    Id = 6,
                     Name = "Футболка Nike Dri-FIT",
                     Brand = "Nike",
                     Article = "NKTS002",
                     Description = "Спортивная футболка для тренировок с технологией Dri-FIT.",
-                    Gender = "Женский",
+                    Gender = "female",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -133,12 +133,12 @@ namespace NMShop.Data
                 },
                 new Product
                 {
-                    Id = 8,
+                    Id = 7,
                     Name = "Футболка Under Armour",
                     Brand = "Under Armour",
                     Article = "UATS001",
                     Description = "Комфортная футболка для тренировок.",
-                    Gender = "Мужской",
+                    Gender = "male",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -152,12 +152,12 @@ namespace NMShop.Data
                 },
                 new Product
                 {
-                    Id = 9,
+                    Id = 8,
                     Name = "Футболка Puma Essentials",
                     Brand = "Puma",
                     Article = "PUMTS001",
                     Description = "Базовая футболка с логотипом Puma.",
-                    Gender = "Унисекс",
+                    Gender = "unisex",
                     SubCategory = "Футболки",
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
@@ -173,12 +173,12 @@ namespace NMShop.Data
                 // Головные уборы
                 new Product
                 {
-                    Id = 3,
+                    Id = 9,
                     Name = "Кепка Nike",
                     Brand = "Nike",
                     Article = "NKCP001",
                     Description = "Спортивная кепка с логотипом Nike.",
-                    Gender = "Унисекс",
+                    Gender = "unisex",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
@@ -197,7 +197,7 @@ namespace NMShop.Data
                     Brand = "Adidas",
                     Article = "ADCP002",
                     Description = "Зимняя шапка с логотипом Adidas.",
-                    Gender = "Унисекс",
+                    Gender = "unisex",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
@@ -216,7 +216,7 @@ namespace NMShop.Data
                     Brand = "Puma",
                     Article = "PUMCP001",
                     Description = "Классическая кепка Puma с логотипом.",
-                    Gender = "Унисекс",
+                    Gender = "unisex",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
@@ -235,7 +235,7 @@ namespace NMShop.Data
                     Brand = "Under Armour",
                     Article = "UACP001",
                     Description = "Легкая бейсболка с логотипом UA.",
-                    Gender = "Унисекс",
+                    Gender = "unisex",
                     SubCategory = "Головные уборы",
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
