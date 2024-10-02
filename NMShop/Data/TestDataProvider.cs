@@ -18,7 +18,7 @@ namespace NMShop.Data
                     Article = "NKAM001",
                     Description = "Легкие кроссовки для бега.",
                     Gender = "male",
-                    SubCategory = "Спортивная обувь",
+                    SubCategory = "Кеды и Кроссовки",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -39,7 +39,7 @@ namespace NMShop.Data
                     Article = "PUMRS001",
                     Description = "Стильные и удобные кроссовки для повседневной носки.",
                     Gender = "male",
-                    SubCategory = "Спортивная обувь",
+                    SubCategory = "Кеды и Кроссовки",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -59,7 +59,7 @@ namespace NMShop.Data
                     Article = "ADUB001",
                     Description = "Беговые кроссовки с амортизацией Boost.",
                     Gender = "female",
-                    SubCategory = "Спортивная обувь",
+                    SubCategory = "Кеды и Кроссовки",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -78,7 +78,7 @@ namespace NMShop.Data
                     Article = "RBKCL001",
                     Description = "Классические кожаные кроссовки.",
                     Gender = "unisex",
-                    SubCategory = "Спортивная обувь",
+                    SubCategory = "Кеды и Кроссовки",
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -245,6 +245,86 @@ namespace NMShop.Data
                     PriceInfos = new List<PriceInfo>
                     {
                         new PriceInfo { Size = 1, Price = 27m, DiscountPrice = 22m, Stock = 35 }
+                    }
+                },
+                new Product
+                {
+                    Id = 13,
+                    Name = "Ботинки Timberland",
+                    Brand = "Timberland",
+                    Article = "TMBL001",
+                    Description = "Водонепроницаемые ботинки для холодной погоды.",
+                    Gender = "male",
+                    SubCategory = "Ботинки и Угги",
+                    ProductType = "shoes",
+                    Color = new Dictionary<string, string>
+                    {
+                        { "Коричневый", "#A52A2A" },
+                        { "Черный", "#000000" }
+                    },
+                    PriceInfos = new List<PriceInfo>
+                    {
+                        new PriceInfo { Size = 43, Price = 150m, DiscountPrice = 130m, Stock = 12 }
+                    }
+                },
+                new Product
+                {
+                    Id = 14,
+                    Name = "Угги UGG Classic",
+                    Brand = "UGG",
+                    Article = "UGG001",
+                    Description = "Угги с мягким внутренним мехом.",
+                    Gender = "female",
+                    SubCategory = "Ботинки и Угги",
+                    ProductType = "shoes",
+                    Color = new Dictionary<string, string>
+                    {
+                        { "Бежевый", "#F5F5DC" },
+                        { "Серый", "#808080" }
+                    },
+                    PriceInfos = new List<PriceInfo>
+                    {
+                        new PriceInfo { Size = 38, Price = 180m, DiscountPrice = 160m, Stock = 5 }
+                    }
+                },
+                new Product
+                {
+                    Id = 15,
+                    Name = "Слайды Adidas Adilette",
+                    Brand = "Adidas",
+                    Article = "ADSL001",
+                    Description = "Комфортные слайды для пляжа и бассейна.",
+                    Gender = "unisex",
+                    SubCategory = "Слайды",
+                    ProductType = "shoes",
+                    Color = new Dictionary<string, string>
+                    {
+                        { "Синий", "#0000FF" },
+                        { "Белый", "#FFFFFF" }
+                    },
+                    PriceInfos = new List<PriceInfo>
+                    {
+                        new PriceInfo { Size = 42, Price = 40m, DiscountPrice = null, Stock = 20 }
+                    }
+                },
+                new Product
+                {
+                    Id = 16,
+                    Name = "Детские кеды Converse",
+                    Brand = "Converse",
+                    Article = "CNVKD001",
+                    Description = "Легкие детские кеды для активного отдыха.",
+                    Gender = "unisex",
+                    SubCategory = "Детское",
+                    ProductType = "shoes",
+                    Color = new Dictionary<string, string>
+                    {
+                        { "Красный", "#FF0000" },
+                        { "Белый", "#FFFFFF" }
+                    },
+                    PriceInfos = new List<PriceInfo>
+                    {
+                        new PriceInfo { Size = 30, Price = 50m, DiscountPrice = 45m, Stock = 15 }
                     }
                 }
             };
