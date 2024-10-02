@@ -23,7 +23,7 @@
                        @bind="SearchInput"
                        size="50" />
 
-                <MudCheckBox T="bool" @bind-Value="OnlyInStock" @onchange="HandleStockChange" Label="Только в наличии" />
+                <MudCheckBox T="bool" @bind-Value="OnlyInStock" @oninput="HandleStockChange" Label="Только в наличии" />
 
                 <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
 
@@ -42,7 +42,7 @@
 
                         @foreach (var brand in Brands)
                         {
-                            <MudCheckBox @onchange="async () => await OnBrandSelectionChanged(brand)" @bind-Value="brand.IsSelected" Label="@brand.Name" />
+                            <MudCheckBox T="bool" @bind-Value="brand.IsSelected" @oninput="() => OnBrandSelectioninputd(brand)" Label="@brand.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -78,7 +78,7 @@
 
                             @foreach (var gender in Genders)
                             {
-                                <MudCheckBox @onchange="async () => await OnGenderSelectionChanged(gender)" @bind-Value="gender.IsSelected" Label="@gender.Name" />
+                                <MudCheckBox @oninput="async () => await OnGenderSelectioninputd(gender)" @bind-Value="gender.IsSelected" Label="@gender.Name" />
                             }
 
                         </MudExpansionPanel>
@@ -88,7 +88,7 @@
 
                         @foreach (var selCat in SellingCategories)
                         {
-                            <MudCheckBox @onchange="async () => await OnSellingCategoriesChanged(selCat)" @bind-Value="selCat.IsSelected" Label="@selCat.Name" />
+                            <MudCheckBox @oninput="async () => await OnSellingCategoriesChanged(selCat)" @bind-Value="selCat.IsSelected" Label="@selCat.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -97,7 +97,7 @@
 
                         @foreach (var category in SubCategories)
                         {
-                            <MudCheckBox @onchange="async () => await OnSubCategoriesChanged(category)" @bind-Value="category.IsSelected" Label="@category.Name" />
+                            <MudCheckBox @oninput="async () => await OnSubCategoriesChanged(category)" @bind-Value="category.IsSelected" Label="@category.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -213,7 +213,7 @@
     private int MaxSizeInput;
 
     private bool OnlyInStock = false;
-    
+
 
     private string SearchInput { get; set; } = String.Empty;
 
@@ -256,9 +256,9 @@
         Genders = TestDataProvider.GetTestGenders()
             .Select(name => new GenderModel { Name = name})
             .ToList();
-        
 
-        
+
+
     }
 
     private async Task LoadProducts()
@@ -280,7 +280,7 @@
 
         if (MinPriceInput > 0) queryParams["MinPrice"] = MinPriceInput.ToString();
         if (MaxPriceInput > 0) queryParams["MaxPrice"] = MaxPriceInput.ToString();
-        
+
         if (OnlyInStock)
         {
             queryParams["InStock"] = "true";
@@ -292,14 +292,14 @@
 
         Products = await Http.GetFromJsonAsync<IEnumerable<Product>>(url);
         Console.WriteLine($"Запрос на сервер: {url}");
-        
+
     }
 
 
-    private async Task OnBrandSelectionChanged(BrandModel brand)
+    private void OnBrandSelectioninputd(BrandModel brand)
     {
         brand.IsSelected = !brand.IsSelected; // Toggle the selection
-        await LoadProducts(); // Load products immediately
+        LoadProducts(); // Load products immediately
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
     
@@ -311,7 +311,7 @@
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
 
-    private async Task OnGenderSelectionChanged(GenderModel gender)
+    private async Task OnGenderSelectioninputd(GenderModel gender)
     {
         gender.IsSelected = !gender.IsSelected; // Toggle the selection
         await LoadProducts(); // Load products immediately
