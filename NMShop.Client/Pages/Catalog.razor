@@ -1,4 +1,4 @@
-﻿@using NMShop.Client.Components;
+﻿﻿@using NMShop.Client.Components;
 @using NMShop.Client.Data;
 @using NMShop.Client.Layout
 @using NMShop.Shared.Models;
@@ -42,7 +42,7 @@
 
                         @foreach (var brand in Brands)
                         {
-                            <MudCheckBox T="bool" @bind-Value="brand.IsSelected" @oninput="() => OnBrandSelectioninputd(brand)" Label="@brand.Name" />
+                            <MudCheckBox T="bool" @bind-Value="brand.IsSelected" @oninput="async () => await OnBrandSelectioninputd(brand)" Label="@brand.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -95,9 +95,9 @@
 
                     <MudExpansionPanel Text="Товарная категория">
 
-                        @foreach (var category in SubCategories)
+                        @foreach (var subCategories in SubCategory)
                         {
-                            <MudCheckBox @oninput="async () => await OnSubCategoriesChanged(category)" @bind-Value="category.IsSelected" Label="@category.Name" />
+                            <MudCheckBox T="bool" @bind-Value="subCategories.IsSelected" @oninput=" async () => await OnSubCategorySelectionInput(subCategories)" Label="@subCategories.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -219,6 +219,7 @@
 
     private List<BrandModel> Brands;
     private List<GenderModel> Genders;
+    private List<SubCategoryModel> SubCategory;
 
     private static List<ClothesSizeOption> ClothesSizeOptions = Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(cs => new ClothesSizeOption() { Size = cs }).ToList();
 
@@ -231,13 +232,7 @@
         new CategoryOption { Name = "Маст-хэв", IsSelected = false }
     };
 
-    private static List<ProductCategory> SubCategories = new List<ProductCategory>
-    {
-        new ProductCategory { Name = "Кеды и Кроссовки", IsSelected = false },
-        new ProductCategory { Name = "Ботинки и Угги", IsSelected = false },
-        new ProductCategory { Name = "Слайды", IsSelected = false },
-        new ProductCategory { Name = "Детское", IsSelected = false }
-    };
+   
 
     private static List<SortOption> SortOptions = new List<SortOption>
     {
@@ -255,6 +250,10 @@
 
         Genders = TestDataProvider.GetTestGenders()
             .Select(name => new GenderModel { Name = name})
+            .ToList();
+        
+        SubCategory = TestDataProvider.GetTestSubCategory()
+            .Select(name => new SubCategoryModel { Name = name })
             .ToList();
 
 
@@ -278,6 +277,13 @@
             queryParams["Gender"] = string.Join(",", selectedGenders);
         }
 
+        var selectedSubCategory = GetSelectedSubCategory();
+        if (selectedSubCategory.Any())
+        {
+            queryParams["SubCategory"] = string.Join(",", selectedSubCategory);
+        }
+        
+
         if (MinPriceInput > 0) queryParams["MinPrice"] = MinPriceInput.ToString();
         if (MaxPriceInput > 0) queryParams["MaxPrice"] = MaxPriceInput.ToString();
 
@@ -296,11 +302,16 @@
     }
 
 
-    private void OnBrandSelectioninputd(BrandModel brand)
+    private async Task OnBrandSelectioninputd(BrandModel brand)
     {
         brand.IsSelected = !brand.IsSelected; // Toggle the selection
-        LoadProducts(); // Load products immediately
-        StateHasChanged(); // Ensure the UI reflects changes instantly
+        await LoadProducts(); // Load products immediately
+    }
+
+    private async Task OnSubCategorySelectionInput(SubCategoryModel subCategory)
+    {
+        subCategory.IsSelected = !subCategory.IsSelected;
+        await LoadProducts();
     }
     
     
@@ -325,12 +336,7 @@
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
 
-    private async Task OnSubCategoriesChanged(ProductCategory pc)
-    {
-        pc.IsSelected = !pc.IsSelected; // Toggle the selection
-        await LoadProducts(); // Load products immediately
-        StateHasChanged(); // Ensure the UI reflects changes instantly
-    }
+  
 
     // Метод для получения выбранных брендов
     private IEnumerable<string> GetSelectedBrands()
@@ -344,11 +350,22 @@
         return Genders.Where(g => g.IsSelected).Select(g => g.Name);
     }
 
+    private IEnumerable<string> GetSelectedSubCategory()
+    {
+        return SubCategory.Where(s => s.IsSelected).Select(s => s.Name);
+    }
+
 
     
     // Модели
     
     private class BrandModel
+    {
+        public string Name = "Unitialized";
+        public bool IsSelected = false;
+    }
+    
+    private class SubCategoryModel
     {
         public string Name = "Unitialized";
         public bool IsSelected = false;

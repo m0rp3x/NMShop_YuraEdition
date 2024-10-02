@@ -10,12 +10,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="Починка каталога">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" afterDir="false" />
-    </list>
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="Фильтры для товарных категорий" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,9 +36,10 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Pages/Catalog.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Pages/Catalog.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/Product.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Shared/Class1.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -157,7 +153,7 @@
       <workItem from="1727477931940" duration="6232000" />
       <workItem from="1727608019670" duration="2209000" />
       <workItem from="1727799324477" duration="12430000" />
-      <workItem from="1727877959423" duration="4496000" />
+      <workItem from="1727877959423" duration="4824000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -215,7 +211,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727801268530</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Фильтры для товарных категорий">
+      <option name="closed" value="true" />
+      <created>1727882713852</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1727882713852</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -233,7 +237,8 @@
     <MESSAGE value="клиент-сервер" />
     <MESSAGE value="Фильтры в каталоге" />
     <MESSAGE value="Починка каталога" />
-    <option name="LAST_COMMIT_MESSAGE" value="Починка каталога" />
+    <MESSAGE value="Фильтры для товарных категорий" />
+    <option name="LAST_COMMIT_MESSAGE" value="Фильтры для товарных категорий" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
