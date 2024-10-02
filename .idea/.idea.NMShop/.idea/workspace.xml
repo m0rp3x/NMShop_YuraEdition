@@ -14,7 +14,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/ProductExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/ProductExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -158,6 +157,7 @@
       <workItem from="1727477931940" duration="6232000" />
       <workItem from="1727608019670" duration="2209000" />
       <workItem from="1727799324477" duration="12430000" />
+      <workItem from="1727877959423" duration="4496000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -257,6 +257,9 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor</url>
           <line>29</line>
+          <properties isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
+          </properties>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
