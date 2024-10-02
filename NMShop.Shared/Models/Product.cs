@@ -8,7 +8,7 @@ public class Product
     public string Article { get; set; } // Артикул
     public string Description { get; set; } // Описание товара
     public List<ProductImage> Images { get; set; } // Изображения товара
-    public string Gender { get; set; } = "unisex";  // Пол: мужское, женское, унисекс, детское
+    public string Gender { get; set; }  // Пол: мужское, женское, унисекс, детское
     public string SubCategory { get; set; } // Подкатегория товара (например, спортивная обувь, верхняя одежда)
     public string ProductType { get; set; } // Тип товара: обувь, одежда, аксессуары
     public Dictionary<string, string> Color { get; set; } // Цвет: название-значение (например, "Красный" => "#FF0000")
@@ -19,6 +19,7 @@ public class Product
         Color = new Dictionary<string, string>();
         PriceInfos = new List<PriceInfo>();
         Images = new List<ProductImage>() { new() { IsMain = true}, new() {}, new() { } };
+        Gender = "unisex";
     }
 }
     
