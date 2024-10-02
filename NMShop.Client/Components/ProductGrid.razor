@@ -1,5 +1,7 @@
 ﻿@using NMShop.Shared.Models
 
+@inject NavigationManager Navigation
+
 <MudGrid Spacing="20">
 
     @foreach (Product p in _productsSlice)
@@ -7,7 +9,7 @@
         var (minPrice, minDiscountPrice) = p.GetMinPriceAndDiscount();
         bool willShowDiscountPrice = minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
 
-        <MudItem xs="6" md="4" lg="3">
+        <MudItem xs="6" md="4" lg="3" @onclick="() => GoToProduct(p)">
             <div class="cursor-pointer">
                 
                 <div class="relative">
@@ -62,5 +64,10 @@
 
             return Products;
         }
+    }
+
+    private void GoToProduct(Product product)
+    {
+        Navigation.NavigateTo($"/catalog/{product.ProductType}/{product.Id}");
     }
 }

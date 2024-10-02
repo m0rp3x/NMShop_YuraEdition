@@ -13,124 +13,98 @@
 
         <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
 
-            <MudButton Style="flex-shrink: 0;" Class="py-1 px-3" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
+            <div class="pt-3 pr-3 d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
+                <MudButton Style="flex-shrink: 0;" Class="py-1 px-3" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
 
-            <input placeholder="Найти"
-                   style="font-size: 16px; width: 100%; height: 50px; color: #000000; font-weight: 400; padding: 0 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; margin: 0; resize: none; border-radius: 25px;"
-                   class="mt-3"
-                   type="text"
-                   @bind="SearchInput"
-                   size="50" />
+                <input placeholder="Найти"
+                       style="font-size: 17px; width: 100%; height: 50px; color: #000000; font-weight: 400; padding: 10px 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; margin: 0; resize: none; border-radius: 25px;"
+                       class="mt-3"
+                       type="text"
+                       @bind="SearchInput"
+                       size="50" />
 
-            <!---ебал
-            <MudCheckBox T="bool" Checked="OnlyInStock" @onchange="HandleStockChange" Label="Только в наличии" />
-            ебал
-              ебал!-->
+                <MudCheckBox T="bool" Checked="OnlyInStock" @onchange="HandleStockChange" Label="Только в наличии" />
 
+                <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
 
+                    <MudExpansionPanel Text="Цена, ₽">
 
+                        <div class="d-flex" style="gap: 15px;">
 
+                            <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
+                            <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
 
-
-            <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
-
-                <MudExpansionPanel Text="Цена, ₽">
-
-                    <div class="d-flex" style="gap: 15px;">
-
-                        <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
-                        <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
-
-                    </div>
-
-                </MudExpansionPanel>
-
-                <MudExpansionPanel Text="Бренды">
-                    
-                    @foreach (var brand in Brands)
-                    {
-                        <div>
-                            <input type="checkbox"
-                                   checked="@brand.IsSelected"
-                                   @onchange="async () => await OnBrandSelectionChanged(brand)"
-                                   id="@brand.Name" />
-                            <label for="@brand.Name">@brand.Name</label>
                         </div>
-                    }
 
-                </MudExpansionPanel>
+                    </MudExpansionPanel>
 
-                @if (productType == "shoes" || productType == "clothes")
-                {
-                    <MudExpansionPanel Text="Размер">
+                    <MudExpansionPanel Text="Бренды">
 
-                        @if (productType == "clothes")
+                        @foreach (var brand in Brands)
                         {
-
-                            @foreach (var cso in ClothesSizeOptions)
-                            {
-                                <MudCheckBox @bind-Value="cso.IsSelected" Label="@cso.Size.ToString()" />
-                            }
-
-                        } else
-                        {
-
-                            <div class="d-flex" style="gap: 15px;">
-
-                                <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
-                                <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
-
-                            </div>
-
+                            <MudCheckBox @onchange="async () => await OnBrandSelectionChanged(brand)" @bind-Value="brand.IsSelected" Label="@brand.Name" />
                         }
 
                     </MudExpansionPanel>
-                }
 
-                <MudExpansionPanel Text="Пол">
-
-                    @foreach (var gender in Genders)
+                    @if (productType == "shoes" || productType == "clothes")
                     {
-                        <div>
-                            <input type="checkbox"
-                                   checked="@gender.IsSelected"
-                                   @onchange="async () => await OnGenderSelectionChanged(gender)"
-                                   id="@gender.Name" />
-                            <label for="@gender.Name">@gender.Name</label>
-                        </div>
+                        <MudExpansionPanel Text="Размер">
+
+                            @if (productType == "clothes")
+                            {
+
+                                @foreach (var cso in ClothesSizeOptions)
+                                {
+                                    <MudCheckBox @bind-Value="cso.IsSelected" Label="@cso.Size.ToString()" />
+                                }
+
+                            }
+                            else
+                            {
+
+                                <div class="d-flex" style="gap: 15px;">
+
+                                    <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
+                                    <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
+
+                                </div>
+
+                            }
+
+                        </MudExpansionPanel>
+
+                        <MudExpansionPanel Text="Пол">
+
+                            @foreach (var gender in Genders)
+                            {
+                                <MudCheckBox @onchange="async () => await OnGenderSelectionChanged(gender)" @bind-Value="gender.IsSelected" Label="@gender.Name" />
+                            }
+
+                        </MudExpansionPanel>
                     }
 
-                </MudExpansionPanel>
+                    <MudExpansionPanel Text="Рейтинг продаж">
 
-                <MudExpansionPanel Text="Рейтинг продаж">
+                        @foreach (var selCat in SellingCategories)
+                        {
+                            <MudCheckBox @onchange="async () => await OnSellingCategoriesChanged(selCat)" @bind-Value="selCat.IsSelected" Label="@selCat.Name" />
+                        }
 
-                    @foreach (var selCat in SellingCategories)
-                    {
-                        <div>
-                            <input type="checkbox"
-                                   @bind="selCat.IsSelected"
-                                   id="@selCat.Name" />
-                            <label for="@selCat.Name">@selCat.Name</label>
-                        </div>
-                    }
+                    </MudExpansionPanel>
 
-                </MudExpansionPanel>
+                    <MudExpansionPanel Text="Товарная категория">
 
-                <MudExpansionPanel Text="Товарная категория">
+                        @foreach (var category in SubCategories)
+                        {
+                            <MudCheckBox @onchange="async () => await OnSubCategoriesChanged(category)" @bind-Value="category.IsSelected" Label="@category.Name" />
+                        }
 
-                    @foreach (var category in SubCategories)
-                    {
-                        <div class="category-checkbox">
-                            <input type="checkbox"
-                                   @bind="category.IsSelected"
-                                   id="@category.Name" />
-                            <label for="@category.Name">@category.Name</label>
-                        </div>
-                    }
+                    </MudExpansionPanel>
 
-                </MudExpansionPanel>
+                </MudExpansionPanels>
+            </div>
 
-            </MudExpansionPanels>
         </MudDrawer>
 
         <div class="d-flex justify-start align-center mud-height-full flex-column pa-10">
@@ -334,19 +308,26 @@
     {
         OnlyInStock = (bool)e.Value;  // Получаем значение из чекбокса
         await LoadProducts();  // Обновляем список продуктов
+        StateHasChanged(); // Ensure the UI reflects changes instantly
     }
-
-
-
-
-
-
-
- 
 
     private async Task OnGenderSelectionChanged(GenderModel gender)
     {
         gender.IsSelected = !gender.IsSelected; // Toggle the selection
+        await LoadProducts(); // Load products immediately
+        StateHasChanged(); // Ensure the UI reflects changes instantly
+    }
+
+    private async Task OnSellingCategoriesChanged(CategoryOption co)
+    {
+        co.IsSelected = !co.IsSelected; // Toggle the selection
+        await LoadProducts(); // Load products immediately
+        StateHasChanged(); // Ensure the UI reflects changes instantly
+    }
+
+    private async Task OnSubCategoriesChanged(ProductCategory pc)
+    {
+        pc.IsSelected = !pc.IsSelected; // Toggle the selection
         await LoadProducts(); // Load products immediately
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
@@ -365,18 +346,13 @@
 
 
     
-    // 
+    // Модели
     
     private class BrandModel
     {
         public string Name = "Unitialized";
         public bool IsSelected = false;
     }
-    
-
-
-
-
 
     public class GenderModel
     {

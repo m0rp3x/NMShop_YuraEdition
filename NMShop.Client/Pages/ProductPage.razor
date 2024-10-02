@@ -24,6 +24,58 @@
                 </MudCarouselItem>
             }
         </MudCarousel>
+        <div>
+
+            <div>
+                @if (minDiscountPrice is not null)
+                {
+                    <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
+                }
+                @if (product.Gender == "female")
+                {
+                    <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff60b850;" Class="px-2 py-1">Женский</MudText>
+                }
+            </div>
+
+            @if (willShowDiscountPrice)
+            {
+                        <MudText Typo="Typo.h6" Style="line-height: 100%;" Color="Color.Error">
+                            от <MudText Inline="true" Typo="Typo.h6" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@minDiscountPrice.ToPreFormatedString()</MudText> ₽
+                        </MudText>
+            }
+            
+            <MudText Typo="Typo.body1" Color="Color.Dark" Style=@( "line-height: 100%; font-weight: 700;" + (willShowDiscountPrice ? "text-decoration: line-through; text-decoration-color: red;" : null))>от @minPrice.ToPreFormatedString() ₽</MudText>
+
+            <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.h5"
+                     @onmouseover="() => {_isAddToCartButtonHovered = true;}"
+                     @onmouseout="() => {_isAddToCartButtonHovered = false;}"
+                         @onclick="() => {Console.WriteLine('A');}"
+                     style=@FilterButtonStyle>
+                     Добавить в корзину
+            </MudText>
+
+            @if (product.ProductType == "shoes" || product.ProductType == "clothes")
+            {
+                <MudText Typo="Typo.h5">Размеры в наличии:</MudText>
+
+                <MudGrid>
+
+                    @foreach(PriceInfo pi in product.PriceInfos)
+                    {
+                        bool isDiscounted = pi.DiscountPrice is not null && pi.DiscountPrice > 0;
+
+                        <MudItem @onclick="() => {pi.IsSelected = !pi.IsSelected;}" xs="3" Style=@($"border-radius: 4px; background-color: " + (pi.IsSelected ? "rgba(26, 26, 26, 1)" : "#E6E6E6") + ';')>
+                            <MudText Typo="Typo.h5">@(product.ProductType == "clothes" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
+                            <MudText Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price)</MudText>
+                        </MudItem>
+                    }
+
+                </MudGrid>
+
+                <MudText Style="background-color: #baff2450;" Class="px-2 py-1" Typo="Typo.h6">Товар прошел проверку на качество и оригинальность</MudText>
+            }
+
+        </div>
     </div>
 </MudContainer>
 
@@ -35,6 +87,16 @@
 
     private Product product;
 
+    private bool _isAddToCartButtonHovered = false;
+
+    decimal minPrice;
+    decimal? minDiscountPrice;
+    bool willShowDiscountPrice => minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
+
+
+    private string FilterButtonStyle =>
+    "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
+    + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,6 +104,8 @@
         if (parsedSuccesfully)
         {
             product = await DataProvider.GetById(parsedId);
+
+            (minPrice, minDiscountPrice) = product.GetMinPriceAndDiscount();
         }
         else Navigation.NavigateTo("/notFound");
     }

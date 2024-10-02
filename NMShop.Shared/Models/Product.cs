@@ -18,6 +18,7 @@ public class Product
     {
         Color = new Dictionary<string, string>();
         PriceInfos = new List<PriceInfo>();
+        Images = new List<ProductImage>() { new() { IsMain = true}, new() {}, new() { } };
     }
 }
     
@@ -27,6 +28,8 @@ public class PriceInfo
     public decimal Price { get; set; } // Цена за данный размер
     public decimal? DiscountPrice { get; set; } // Акционная цена (если есть)
     public int Stock { get; set; } // Количество товара на складе
+
+    public bool IsSelected;
 }
 
 public class ProductImage

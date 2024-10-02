@@ -50,17 +50,6 @@ namespace NMShop.Client.Data
                 "Женский",
             };
         }
-        public static bool[] GetStockFilterOptions()
-        {
-            return new bool[]
-            {
-                true, // В наличии
-                false // Нет в наличии
-            };
-        }
-
-
-
 
         public async Task<IEnumerable<Product>> GetAll() => await _http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products");
         public async Task<Product> GetById(int id) => await _http.GetFromJsonAsync<Product>($"https://localhost:7279/api/products/id/{id}");
