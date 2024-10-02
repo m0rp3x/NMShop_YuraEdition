@@ -16,15 +16,15 @@
         <MudSpacer/>
     </div>
     <div class="d-flex">
-        <MudCarousel Class="" Style="" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+        <MudCarousel Class="" Style="width: 65%; aspect-ratio: 1/0.75;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object">
             @foreach(ProductImage pi in product.Images)
             {
                 <MudCarouselItem Transition="Transition.Fade">
-                    <img src="@pi.Bytes.ToSrcString()" style="width: 100%; height: auto; object-position: center; "/>
+                    <img src="@pi.Bytes.ToSrcString()" style="width: 100%; height: auto; object-position: center; object-fit: cover;"/>
                 </MudCarouselItem>
             }
         </MudCarousel>
-        <div>
+        <div style="width: 35%;">
 
             <div>
                 @if (minDiscountPrice is not null)
@@ -85,7 +85,7 @@
     [Parameter]
     public string productCode { get; set; }
 
-    private Product product;
+    private Product product = new();
 
     private bool _isAddToCartButtonHovered = false;
 

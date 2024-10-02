@@ -31,8 +31,8 @@
 
                         <div class="d-flex" style="gap: 15px;">
 
-                            <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
-                            <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
+                            <MudNumericField @bind-Value:after="OnIntInputsValueChange" @bind-Value="MinPriceInput" Min="0" Max="1000000" Label="От" Step="1000" Variant="Variant.Outlined" />
+                            <MudNumericField @bind-Value:after="OnIntInputsValueChange" @bind-Value="MaxPriceInput" Min="0" Max="1000000" Label="До" Step="1000" Variant="Variant.Outlined" />
 
                         </div>
 
@@ -65,8 +65,8 @@
 
                                 <div class="d-flex" style="gap: 15px;">
 
-                                    <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
-                                    <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
+                                    <MudNumericField @bind-Value:after="OnIntInputsValueChange" @bind-Value="MinSizeInput" Min="0" Max="100" Label="От" Step="1" Variant="Variant.Outlined" />
+                                    <MudNumericField @bind-Value:after="OnIntInputsValueChange" @bind-Value="MaxSizeInput" Min="0" Max="100" Label="До" Step="1" Variant="Variant.Outlined" />
 
                                 </div>
 
@@ -294,12 +294,22 @@
         Console.WriteLine($"Запрос на сервер: {url}");
 
     }
+    private void CheckboxChanged()
+    {
+        Console.WriteLine($"Checkbox changed ");
+    }
 
 
-    private void OnBrandSelectioninputd(BrandModel brand)
+    private async Task OnIntInputsValueChange()
+    {
+        await LoadProducts(); // Load products immediately
+        StateHasChanged(); // Ensure the UI reflects changes instantly
+    }
+
+    private async Task OnBrandSelectioninputd(BrandModel brand)
     {
         brand.IsSelected = !brand.IsSelected; // Toggle the selection
-        LoadProducts(); // Load products immediately
+        await LoadProducts(); // Load products immediately
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
     
@@ -343,6 +353,40 @@
     {
         return Genders.Where(g => g.IsSelected).Select(g => g.Name);
     }
+
+    public List<int> GetSelectedSizes()
+    {
+        if (productType == "clothes")
+        {
+            // Для одежды: возвращаем выбранные размеры из перечисления как целые числа
+            return ClothesSizeOptions
+                .Where(option => option.IsSelected)
+                .Select(option => (int)option.Size)
+                .ToList();
+        }
+        else if (productType == "shoes")
+        {
+            // Для обуви: создаем диапазон размеров между MinSizeInput и MaxSizeInput
+            int minSize = MinSizeInput;
+            int maxSize = MaxSizeInput;
+
+            if (minSize > maxSize)
+            {
+                // Если минимальный размер больше максимального, меняем их местами
+                int temp = minSize;
+                minSize = maxSize;
+                maxSize = temp;
+            }
+
+            return Enumerable.Range(minSize, maxSize - minSize + 1).ToList();
+        }
+        else // accessories
+        {
+            // Для аксессуаров: выбор размера не предлагается
+            return new List<int>();
+        }
+    }
+
 
 
     
