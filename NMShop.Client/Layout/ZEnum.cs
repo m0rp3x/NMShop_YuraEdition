@@ -3,6 +3,7 @@
     public enum ZEnum
     {
         AppBar = 10,
-        SortOptionsDropDown = 5
+        SortOptionsDropDown = 5,
+        ProductPath = 2,
     }
 }

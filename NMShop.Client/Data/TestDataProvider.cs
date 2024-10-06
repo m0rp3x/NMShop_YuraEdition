@@ -1,6 +1,5 @@
 ﻿using NMShop.Shared.Models;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
 
 namespace NMShop.Client.Data
 {
@@ -70,5 +69,9 @@ namespace NMShop.Client.Data
         public async Task<IEnumerable<Product>> GetShoes() => await _http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/shoes");
         public async Task<IEnumerable<Product>> GetClothes() => await _http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/clothes");
         public async Task<IEnumerable<Product>> GetAccessories() => await _http.GetFromJsonAsync<IEnumerable<Product>>("https://localhost:7279/api/products/accessories");
+
+
+        public async Task<IEnumerable<ReferenceInfo>> GetAllReferenceInfo() => await _http.GetFromJsonAsync<IEnumerable<ReferenceInfo>>("https://localhost:7279/api/referenceinfo");
+        public async Task<ReferenceInfo> GetReferenceInfoByTopic(string topic) => await _http.GetFromJsonAsync<ReferenceInfo>($"https://localhost:7279/api/referenceinfo/{topic}");
     }
 }
