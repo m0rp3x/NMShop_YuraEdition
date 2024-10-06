@@ -14,7 +14,7 @@
         <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
 
             <div class="pt-3 pr-3 d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
-                <MudButton Style="flex-shrink: 0;" Class="py-1 px-3" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
+                <MudButton Style="flex-shrink: 0;" Class="py-1 px-3"  @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
 
                 <input placeholder="Найти"
                        style="font-size: 17px; width: 100%; height: 50px; color: #000000; font-weight: 400; padding: 10px 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; margin: 0; resize: none; border-radius: 25px;"
@@ -31,8 +31,14 @@
 
                         <div class="d-flex" style="gap: 15px;">
 
-                            <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
-                            <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
+                            <div class="d-flex" style="gap: 15px;">
+                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
+                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
+                            </div>
+
+
+
+
 
                         </div>
 
@@ -63,12 +69,15 @@
                             else
                             {
 
-                                <div class="d-flex" style="gap: 15px;">
+                           
 
-                                    <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
-                                    <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
 
-                                </div>
+
+
+
+
+
+
 
                             }
 
@@ -86,9 +95,9 @@
 
                     <MudExpansionPanel Text="Рейтинг продаж">
 
-                        @foreach (var selCat in SellingCategories)
+                        @foreach (var selCategory in SelCategory)
                         {
-                            <MudCheckBox @oninput="async () => await OnSellingCategoriesChanged(selCat)" @bind-Value="selCat.IsSelected" Label="@selCat.Name" />
+                            <MudCheckBox T="bool" @bind-Value="selCategory.IsSelected" @oninput=" async () => await OnSelCategorySelectionInput(selCategory)" Label="@selCategory.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -123,25 +132,24 @@
                     @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
                 </MudText>
 
-                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer" style="transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px;  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); background-color: #FFFFFF; align-items: center; justify-content: center;">
-
+                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer">
                     <MudText Class="mr-2" Typo="Typo.h6" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
                     <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.h6" Inline="true">@CurrentSortOption.Name</MudText>
-                    <MudIcon Style=@("transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
-
-                    <div class="absolute" style=@("transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; overflow: hidden; border-radius: 20px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); left: 0; right: 0; z-index: " + (int)ZEnum.SortOptionsDropDown + "; " + (_isSortOptionOpened ? "top: 120%; height: fit-content;" : "height: 0px;"))>
+                    <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+                    <div class="absolute" style=@("transition: all 0.6s ease 0s; overflow: hidden; " + (_isSortOptionOpened ? "top: 120%; height: fit-content;" : "height: 0px;"))>
                         @foreach (SortOption so in SortOptions)
                         {
-                            <MudText @onclick="() => {CurrentSortOption = so;}"
-                                     @onmouseover="() => {so.IsHovered = true;}"
-                                     @onmouseout="() => {so.IsHovered = false;}"
-                                     Style=@("transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
-                                     Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
+                        <MudText @onclick="async () => await OnSortOptionChanged(so)"
+                                 @onmouseover="() => {so.IsHovered = true;}"
+                                 @onmouseout="() => {so.IsHovered = false;}"
+                                 Style=@("transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
+                                 Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
                         }
                     </div>
                 </div>
 
-                <div class="d-flex align-center" style="cursor: pointer;" @onclick="() => {isSortDescending = !isSortDescending;}">
+
+                <div class="d-flex align-center" style="cursor: pointer;" @onclick="async () => await ToggleSortDirection()">
                     @if (isSortDescending)
                     {
                         <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down">
@@ -187,7 +195,9 @@
                 break;
         }
     }
-
+    
+    
+    
     private bool OnlyInStockSelected = false;
 
     private bool _isDrawerOpened = false;
@@ -204,9 +214,9 @@
     "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
     + (_isFilterButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
-    private int MinPriceInput;
+    private int? MinPriceInput { get; set; }
+    private int? MaxPriceInput { get; set; }
 
-    private int MaxPriceInput;
 
     private int MinSizeInput;
 
@@ -220,23 +230,16 @@
     private List<BrandModel> Brands;
     private List<GenderModel> Genders;
     private List<SubCategoryModel> SubCategory;
+    private List<SelCategoryModel> SelCategory;
+    
 
     private static List<ClothesSizeOption> ClothesSizeOptions = Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(cs => new ClothesSizeOption() { Size = cs }).ToList();
 
-    private static List<CategoryOption> SellingCategories = new List<CategoryOption>
-    {
-        new CategoryOption { Name = "Новые релизы", IsSelected = false },
-        new CategoryOption { Name = "Хиты продаж", IsSelected = false },
-        new CategoryOption { Name = "Коллаборации", IsSelected = false },
-        new CategoryOption { Name = "Эксклюзивы", IsSelected = false },
-        new CategoryOption { Name = "Маст-хэв", IsSelected = false }
-    };
-
+    
    
 
     private static List<SortOption> SortOptions = new List<SortOption>
     {
-        new SortOption { Name = "ПОПУЛЯРНОСТИ", Type = "popularity" },
         new SortOption { Name = "НОВИЗНЕ", Type = "newest" },
         new SortOption { Name = "ЦЕНЕ", Type = "price" }
     };
@@ -254,6 +257,10 @@
         
         SubCategory = TestDataProvider.GetTestSubCategory()
             .Select(name => new SubCategoryModel { Name = name })
+            .ToList();
+
+        SelCategory = TestDataProvider.GetTestSelCategory()
+            .Select(name => new SelCategoryModel { Name = name })
             .ToList();
 
 
@@ -281,11 +288,21 @@
         if (selectedSubCategory.Any())
         {
             queryParams["SubCategory"] = string.Join(",", selectedSubCategory);
+        } 
+        var selectedSelCategory = GetSelectedSelCategory();
+
+        if (selectedSelCategory.Any())
+        {
+            queryParams["SelCategory"] = string.Join(",", selectedSelCategory);
         }
         
+        queryParams["SortBy"] = CurrentSortOption.Type;
+        queryParams["SortDirection"] = isSortDescending ? "desc" : "asc";
+        
 
-        if (MinPriceInput > 0) queryParams["MinPrice"] = MinPriceInput.ToString();
-        if (MaxPriceInput > 0) queryParams["MaxPrice"] = MaxPriceInput.ToString();
+        if (MinPriceInput.HasValue) queryParams["MinPrice"] = MinPriceInput.Value.ToString();
+        if (MaxPriceInput.HasValue) queryParams["MaxPrice"] = MaxPriceInput.Value.ToString();
+
 
         if (OnlyInStock)
         {
@@ -307,12 +324,36 @@
         brand.IsSelected = !brand.IsSelected; // Toggle the selection
         await LoadProducts(); // Load products immediately
     }
+    
+    private async Task OnSortOptionChanged(SortOption selectedSortOption)
+    {
+        CurrentSortOption = selectedSortOption;
+        await LoadProducts(); // Перезагрузить список продуктов с новой сортировкой
+    }
 
     private async Task OnSubCategorySelectionInput(SubCategoryModel subCategory)
     {
         subCategory.IsSelected = !subCategory.IsSelected;
         await LoadProducts();
     }
+    private async Task OnSelCategorySelectionInput(SelCategoryModel selCategory)
+    {
+        selCategory.IsSelected = !selCategory.IsSelected;
+        await LoadProducts();
+    }
+    
+    private async Task ToggleSortDirection()
+    {
+        isSortDescending = !isSortDescending;
+        await LoadProducts();
+    }
+    
+    private async Task OnPriceChanged()
+    {
+        await LoadProducts(); // Применение фильтрации после завершения ввода
+        StateHasChanged();
+    }
+
     
     
     private async Task HandleStockChange(ChangeEventArgs e)
@@ -335,6 +376,34 @@
         await LoadProducts(); // Load products immediately
         StateHasChanged(); // Ensure the UI reflects changes instantly
     }
+    
+    private async Task ResetFilters()
+    {
+        // Сброс фильтров
+        foreach (var brand in Brands)
+        {
+            brand.IsSelected = false;
+        }
+
+        foreach (var gender in Genders)
+        {
+            gender.IsSelected = false;
+        }
+
+        foreach (var subCategory in SubCategory)
+        {
+            subCategory.IsSelected = false;
+        }
+
+        // Сброс значений полей
+        MinPriceInput = null;
+        MaxPriceInput = null;
+        OnlyInStock = false;
+
+        // Обновляем продукты после сброса
+        await LoadProducts();
+    }
+
 
   
 
@@ -354,6 +423,10 @@
     {
         return SubCategory.Where(s => s.IsSelected).Select(s => s.Name);
     }
+    private IEnumerable<string> GetSelectedSelCategory()
+    {
+        return SelCategory.Where(s => s.IsSelected).Select(s => s.Name);
+    }
 
 
     
@@ -366,6 +439,11 @@
     }
     
     private class SubCategoryModel
+    {
+        public string Name = "Unitialized";
+        public bool IsSelected = false;
+    }
+    private class SelCategoryModel
     {
         public string Name = "Unitialized";
         public bool IsSelected = false;

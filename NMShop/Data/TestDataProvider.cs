@@ -19,6 +19,8 @@ namespace NMShop.Data
                     Description = "Легкие кроссовки для бега.",
                     Gender = "male",
                     SubCategory = "Кеды и Кроссовки",
+                    SelCategory = "Новые Релизы",
+                    ReleaseDate = new DateOnly(2024, 10, 3),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -40,6 +42,8 @@ namespace NMShop.Data
                     Description = "Стильные и удобные кроссовки для повседневной носки.",
                     Gender = "male",
                     SubCategory = "Кеды и Кроссовки",
+                    SelCategory = "Новые Релизы",
+                    ReleaseDate = new DateOnly(2024, 10, 1),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -60,6 +64,8 @@ namespace NMShop.Data
                     Description = "Беговые кроссовки с амортизацией Boost.",
                     Gender = "female",
                     SubCategory = "Кеды и Кроссовки",
+                    SelCategory = "Хиты продаж",
+                    ReleaseDate = new DateOnly(2021, 5, 6),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -79,6 +85,8 @@ namespace NMShop.Data
                     Description = "Классические кожаные кроссовки.",
                     Gender = "unisex",
                     SubCategory = "Кеды и Кроссовки",
+                    SelCategory = "Коллаборации",
+                    ReleaseDate = new DateOnly(2020, 10, 3),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -100,6 +108,8 @@ namespace NMShop.Data
                     Description = "Классическая футболка из хлопка.",
                     Gender = "unisex",
                     SubCategory = "Футболки",
+                    SelCategory = "Эксклюзивы",
+                    ReleaseDate = new DateOnly(2020, 9, 3),
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
                     {
@@ -121,6 +131,8 @@ namespace NMShop.Data
                     Description = "Спортивная футболка для тренировок с технологией Dri-FIT.",
                     Gender = "female",
                     SubCategory = "Футболки",
+                    SelCategory = "Маст-хэв",
+                    ReleaseDate = new DateOnly(2021, 7, 10),
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
                     {
@@ -140,6 +152,8 @@ namespace NMShop.Data
                     Description = "Комфортная футболка для тренировок.",
                     Gender = "male",
                     SubCategory = "Футболки",
+                    SelCategory = "Новые Релизы",
+                    ReleaseDate = new DateOnly(2024, 5, 3),
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
                     {
@@ -159,6 +173,8 @@ namespace NMShop.Data
                     Description = "Базовая футболка с логотипом Puma.",
                     Gender = "unisex",
                     SubCategory = "Футболки",
+                    SelCategory = "Маст-хэв",
+                    ReleaseDate = new DateOnly(2019, 3, 3),
                     ProductType = "clothes",
                     Color = new Dictionary<string, string>
                     {
@@ -180,6 +196,8 @@ namespace NMShop.Data
                     Description = "Спортивная кепка с логотипом Nike.",
                     Gender = "unisex",
                     SubCategory = "Головные уборы",
+                    SelCategory = "Маст-хэв",
+                    ReleaseDate = new DateOnly(2018, 2, 7),
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
                     {
@@ -199,6 +217,8 @@ namespace NMShop.Data
                     Description = "Зимняя шапка с логотипом Adidas.",
                     Gender = "unisex",
                     SubCategory = "Головные уборы",
+                    SelCategory = "Эксклюзивы",
+                    ReleaseDate = new DateOnly(2024, 1, 4),
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
                     {
@@ -218,6 +238,8 @@ namespace NMShop.Data
                     Description = "Классическая кепка Puma с логотипом.",
                     Gender = "unisex",
                     SubCategory = "Головные уборы",
+                    SelCategory = "Коллаборации",
+                    ReleaseDate = new DateOnly(2017, 3, 13),
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
                     {
@@ -237,6 +259,8 @@ namespace NMShop.Data
                     Description = "Легкая бейсболка с логотипом UA.",
                     Gender = "unisex",
                     SubCategory = "Головные уборы",
+                    SelCategory = "Новые релизы",
+                    ReleaseDate = new DateOnly(2024, 10, 23),
                     ProductType = "accessories",
                     Color = new Dictionary<string, string>
                     {
@@ -256,6 +280,8 @@ namespace NMShop.Data
                     Description = "Водонепроницаемые ботинки для холодной погоды.",
                     Gender = "male",
                     SubCategory = "Ботинки и Угги",
+                    SelCategory = "Хиты Продаж",
+                    ReleaseDate = new DateOnly(2024, 8, 23),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -276,6 +302,8 @@ namespace NMShop.Data
                     Description = "Угги с мягким внутренним мехом.",
                     Gender = "female",
                     SubCategory = "Ботинки и Угги",
+                    SelCategory = "Коллаборации",
+                    ReleaseDate = new DateOnly(2021, 3, 14),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -296,6 +324,8 @@ namespace NMShop.Data
                     Description = "Комфортные слайды для пляжа и бассейна.",
                     Gender = "unisex",
                     SubCategory = "Слайды",
+                    SelCategory = "Маст-хэв",
+                    ReleaseDate = new DateOnly(2018, 5, 27),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {
@@ -316,6 +346,8 @@ namespace NMShop.Data
                     Description = "Легкие детские кеды для активного отдыха.",
                     Gender = "unisex",
                     SubCategory = "Детское",
+                    SelCategory = "Маст-хэв",
+                    ReleaseDate = new DateOnly(2016, 10, 3),
                     ProductType = "shoes",
                     Color = new Dictionary<string, string>
                     {

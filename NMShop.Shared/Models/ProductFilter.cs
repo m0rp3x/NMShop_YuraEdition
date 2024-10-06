@@ -11,6 +11,9 @@
         public bool InStock { get; set; } // Товар в наличии или нет
         public string? Color { get; set; } // цвет говна
         public string? SubCategory { get; set; }
+        public string? SelCategory { get; set; }
+        public string? SortBy { get; set; } // Поле для сортировки
+        public string? SortDirection { get; set; }  // Направление сортировки (asc/desc)
         
     }
 
