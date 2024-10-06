@@ -8,12 +8,12 @@
 @page "/catalog/{productType}/{productCode}"
 
 <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
-    <div class="d-flex relative" style=@($"gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
-        <MudLink Typo="Typo.h5" Href="/catalog">Каталог</MudLink>
+    <div class="d-flex relative" style=@($"color: #666666; gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
+        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href="/catalog">Каталог</MudLink>
         /
-        <MudLink Typo="Typo.h5" Href=@($"/catalog/{productType}")>@productType.Localize()</MudLink>
+        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@($"/catalog/{productType}")>@productType.Localize()</MudLink>
         /
-        <MudText Typo="Typo.h5">@productCode</MudText>
+        <MudText Typo="Typo.h5" Color="Color.Inherit" >@product.Article</MudText>
         <MudSpacer/>
     </div>
     <MudGrid>
@@ -104,50 +104,53 @@
 
         </div>
 
-        @if (selectedInfo.Code == "details")
-        {
+        <div class="mb-7">
+            @if (selectedInfo.Code == "details")
+            {
 
-            <MudGrid Spacing="10" Justify="Justify.SpaceBetween">
-                
-                <MudItem xs="8">
-                    <MudText Typo="Typo.h6">
-                        @product.Description
-                    </MudText>
-                </MudItem>
+                <MudGrid Spacing="10" Justify="Justify.SpaceBetween">
 
-                <MudItem xs="4">
+                    <MudItem xs="8">
+                        <MudText Typo="Typo.h6">
+                            @product.Description
+                        </MudText>
+                    </MudItem>
 
-                    <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
-                        <MudText Typo="Typo.h6" Style="color: #666666;">Артикул</MudText>
+                    <MudItem xs="4">
 
-                        <MudSpacer/>
+                        <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
+                            <MudText Typo="Typo.h6" Style="color: #666666;">Артикул</MudText>
 
-                        <MudText Typo="Typo.h5">@product.Article</MudText>
-                        <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
-                    </div>
+                            <MudSpacer />
 
-                    <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
-                        <MudText Typo="Typo.h6" Style="color: #666666;">Бренд</MudText>
+                            <MudText Typo="Typo.h5">@product.Article</MudText>
+                            <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
+                        </div>
 
-                        <MudSpacer />
+                        <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
+                            <MudText Typo="Typo.h6" Style="color: #666666;">Бренд</MudText>
 
-                        <MudText Typo="Typo.h5">@product.Brand</MudText>
-                        <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ArrowForwardIos" />
-                    </div>
+                            <MudSpacer />
 
-                </MudItem>
+                            <MudText Typo="Typo.h5">@product.Brand</MudText>
+                            <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ArrowForwardIos" />
+                        </div>
 
-            </MudGrid>
+                    </MudItem>
 
-        } else
-        {
-            <div>
-                @foreach (var content in refInfoList.Where( u => u.Topic == selectedInfo.Code).SingleOrDefault().Contents)
-                {
-                    <MudText Style=@(content.IsBold ? "font-weight: bold;" : null) Typo=@(content.Size.ToEnum<Typo>()) >@content.Text</MudText>
-                }
-            </div>
-        }
+                </MudGrid>
+
+            }
+            else
+            {
+                <div class="d-flex flex-column" style="gap: 10px;">
+                    @foreach (var content in refInfoList.Where(u => u.Topic == selectedInfo.Code).SingleOrDefault().Contents)
+                    {
+                        <MudText Style=@(content.IsBold ? "font-weight: bold;" : null) Typo=@(content.Size.ToEnum<Typo>())>@content.Text</MudText>
+                    }
+                </div>
+            }
+        </div>
 
     </div>
 </MudContainer>

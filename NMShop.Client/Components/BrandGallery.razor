@@ -1,4 +1,4 @@
-﻿<MudGrid Class="image-grid mx-n4 mt-10" Spacing="0">
+﻿<MudGrid Class=" mt-10" Spacing="0">
     <MudItem xs="4">
         <div class="image-container">
             <img src="/assets/brandGalleryImages/zachary-keimig-wT_vI.jpg" alt="Zalupa1" />
@@ -39,8 +39,9 @@
 
 <style>
     .image-grid {
-        gap: -1px; /* Убирает пробелы между элементами сетки */
-        width: 100vw;
+        width: 100%;
+        max-width: 100vw;
+        overflow: hidden;
     }
 
     .image-container {
