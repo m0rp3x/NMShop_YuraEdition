@@ -66,4 +66,13 @@ public static class Extensions
 
         return (minPrice, minDiscountPrice);
     }
+
+    public static TEnum ToEnum<TEnum>(this string value) where TEnum : struct
+    {
+        if (Enum.TryParse(value, true, out TEnum result))
+        {
+            return result;
+        }
+        throw new ArgumentException($"Unable to convert '{value}' to {typeof(TEnum).Name}");
+    }
 }

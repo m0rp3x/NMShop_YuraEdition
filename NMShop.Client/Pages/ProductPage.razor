@@ -1,4 +1,5 @@
-﻿@using NMShop.Shared.Models
+﻿@using NMShop.Client.Layout
+@using NMShop.Shared.Models
 @using NMShop.Client.Data
 
 @inject TestDataProvider DataProvider
@@ -7,7 +8,7 @@
 @page "/catalog/{productType}/{productCode}"
 
 <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
-    <div class="d-flex" style="gap: 7px;">
+    <div class="d-flex relative" style=@($"gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
         <MudLink Typo="Typo.h5" Href="/catalog">Каталог</MudLink>
         /
         <MudLink Typo="Typo.h5" Href=@($"/catalog/{productType}")>@productType.Localize()</MudLink>
@@ -26,7 +27,7 @@
                 }
             </MudCarousel>
         </MudItem>
-        <MudItem xs="4">
+        <MudItem xs="4" Class="d-flex flex-column">
 
             <div class="mb-2">
                 @if (minDiscountPrice is not null)
@@ -39,16 +40,20 @@
                 }
             </div>
 
-            @if (willShowDiscountPrice)
-            {
-                <MudText Typo="Typo.h3" Style="line-height: 100%;" Color="Color.Error">
-                    <MudText Inline="true" Typo="Typo.h3" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@minDiscountPrice.ToPreFormatedString()</MudText> ₽
-                </MudText>
-            }
+            <MudText Typo="Typo.h3">@product.Name</MudText>
 
-            <MudText Class="mb-2" Typo="Typo.h4" Color="Color.Dark" Style=@("line-height: 100%; font-weight: 700;" + (willShowDiscountPrice ? "text-decoration: line-through; text-decoration-color: red;" : null))>@minPrice.ToPreFormatedString() ₽</MudText>
+            <div class="my-5" style="gap: 23px;">
+                @if (willShowDiscountPrice)
+                {
+                    <MudText Typo="Typo.h4" Style="line-height: 100%;" Color="Color.Error">
+                        <MudText Inline="true" Typo="Typo.h4" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@minDiscountPrice.ToPreFormatedString()</MudText> ₽
+                    </MudText>
+                }
 
-            <MudText Class="d-flex align-center justify-center px-4 py-4" Typo="Typo.h5"
+                <MudText Typo="Typo.h4" Color="Color.Dark" Style=@("line-height: 100%; font-weight: 700;" + (willShowDiscountPrice ? "text-decoration: line-through; text-decoration-color: red;" : null))>@minPrice.ToPreFormatedString() ₽</MudText>
+            </div>
+
+            <MudText Class="d-flex align-center justify-center px-4 py-4 mb-4" Typo="Typo.h5"
                      @onmouseover="() => {_isAddToCartButtonHovered = true;}"
                      @onmouseout="() => {_isAddToCartButtonHovered = false;}"
                      @onclick="() => {Console.WriteLine('A');}"
@@ -58,7 +63,10 @@
 
             @if (product.ProductType == "shoes" || product.ProductType == "clothes")
             {
-                <MudText Typo="Typo.h5">Размеры в наличии:</MudText>
+
+                <MudText Typo="Typo.h5" Class="mx-auto" Style="font-weight: 700; width: fit-content;">Размеры:</MudText>
+
+                <div class="mud-divider-fullwidth mt-3 mb-7" style="min-height: 2px; max-height: 2px; background-color: rgba(26, 26, 26, 1);" />
 
                 <MudGrid Class="mb-7">
 
@@ -67,20 +75,81 @@
                         bool isDiscounted = pi.DiscountPrice is not null && pi.DiscountPrice > 0;
 
                         <MudItem xs="3" >
-                            <div @onclick="() => {seletedOption = pi;}" class="px-2 py-1 d-flex flex-column align-center cursor-pointer" style=@($"border-radius: 4px; background-color: " + (seletedOption == pi ? "rgba(26, 26, 26, 1)" : "#E6E6E6") + ';')>
-                                <MudText Style=@("color: " + (seletedOption == pi ? "white" : "black") + ';') Typo="Typo.h5">@(product.ProductType == "clothes" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
-                                <MudText Style=@("color: " + (isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
+                            <div @onmouseout="() => {pi.isHovered = false;}" @onmouseover="() => {pi.isHovered = true;}" @onclick="() => {seletedSize = pi;}" class="pa-1 d-flex flex-column align-center cursor-pointer" style=@($"transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 4px; background-color: " + (seletedSize == pi ? "rgba(26, 26, 26, 1)" : (pi.isHovered ? "#E6E6E6" : "#f2f2f2")) + ';')>
+                                <MudText Style=@("line-height: 1.2; color: " + (seletedSize == pi ? "white" : "black") + ';') Typo="Typo.h5">@(product.ProductType == "clothes" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
+                                <MudText Style=@("line-height: 1.2; color: " + (isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
                             </div>
                         </MudItem>
                     }
 
                 </MudGrid>
-
-                <MudText Style="background-color: #baff2450;" Class="px-2 py-1" Typo="Typo.h6">Товар прошел проверку на качество и оригинальность</MudText>
             }
+
+
+            <MudText Style="background-color: #baff2450; border-radius: 8px;" Class="px-2 py-1 mt-auto mb-10" Typo="Typo.h6">Товар прошел проверку на качество и оригинальность</MudText>
 
         </MudItem>
     </MudGrid>
+
+    <div >
+
+        <div class="d-flex mb-7">
+
+            @foreach(var infoButton in InfoButtons)
+            {
+                <MudButton OnClick="() => {selectedInfo = infoButton;}" Style=@("border-radius: 0; border-bottom: 1px solid " + (selectedInfo == infoButton ? "black;" : "#E6E6E6;"))>
+                    <MudText Typo="Typo.h5" Style="font-weight: 500;">@infoButton.Label</MudText>
+                </MudButton>
+            }
+
+        </div>
+
+        @if (selectedInfo.Code == "details")
+        {
+
+            <MudGrid Spacing="10" Justify="Justify.SpaceBetween">
+                
+                <MudItem xs="8">
+                    <MudText Typo="Typo.h6">
+                        @product.Description
+                    </MudText>
+                </MudItem>
+
+                <MudItem xs="4">
+
+                    <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
+                        <MudText Typo="Typo.h6" Style="color: #666666;">Артикул</MudText>
+
+                        <MudSpacer/>
+
+                        <MudText Typo="Typo.h5">@product.Article</MudText>
+                        <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
+                    </div>
+
+                    <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
+                        <MudText Typo="Typo.h6" Style="color: #666666;">Бренд</MudText>
+
+                        <MudSpacer />
+
+                        <MudText Typo="Typo.h5">@product.Brand</MudText>
+                        <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ArrowForwardIos" />
+                    </div>
+
+                </MudItem>
+
+            </MudGrid>
+
+        } else
+        {
+            <div>
+                @foreach (var content in refInfoList.Where( u => u.Topic == selectedInfo.Code).SingleOrDefault().Contents)
+                {
+                    <MudText Style=@(content.IsBold ? "font-weight: bold;" : null) Typo=@(content.Size.ToEnum<Typo>()) >@content.Text</MudText>
+                }
+            </div>
+        }
+
+    </div>
 </MudContainer>
 
 @code {
@@ -93,7 +162,11 @@
 
     private bool _isAddToCartButtonHovered = false;
 
-    private PriceInfo seletedOption = new();
+    private PriceInfo seletedSize = new();
+
+    private InfoButton selectedInfo = InfoButtons[0];
+
+    private IEnumerable<ReferenceInfo> refInfoList = new ReferenceInfo[0];
 
     decimal minPrice;
     decimal? minDiscountPrice;
@@ -114,6 +187,24 @@
             (minPrice, minDiscountPrice) = product.GetMinPriceAndDiscount();
         }
         else Navigation.NavigateTo("/notFound");
+
+        refInfoList = await DataProvider.GetAllReferenceInfo();
     }
+
+    class InfoButton
+    {
+        public string Label;
+        public string Code;
+    }
+
+    static List<InfoButton> InfoButtons = new()
+    {
+        new(){ Label = "Детали", Code = "details" },
+        new(){ Label = "Способы доставки", Code = "delivery_methods" },
+        new(){ Label = "Правила возврата", Code = "return_policy" },
+        new(){ Label = "Способы оплат", Code = "payment_methods" },
+        new(){ Label = "FAQ", Code = "faq" },
+
+    };
 
 }

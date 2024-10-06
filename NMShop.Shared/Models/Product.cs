@@ -31,6 +31,8 @@ public class PriceInfo
     public decimal Price { get; set; } // Цена за данный размер
     public decimal? DiscountPrice { get; set; } // Акционная цена (если есть)
     public int Stock { get; set; } // Количество товара на складе
+
+    public bool isHovered = false;
 }
 
 public class ProductImage

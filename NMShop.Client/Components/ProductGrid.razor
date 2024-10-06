@@ -9,8 +9,8 @@
         var (minPrice, minDiscountPrice) = p.GetMinPriceAndDiscount();
         bool willShowDiscountPrice = minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
 
-        <MudItem xs="6" md="4" lg="3" @onclick="() => GoToProduct(p)">
-            <div class="cursor-pointer">
+        <MudItem xs="6" md="4" lg="3" Class="" @onclick="() => GoToProduct(p)">
+            <div class="cursor-pointer pa-6">
                 
                 <div class="relative">
                     <MudImage Class="hovering mb-7" Src=@(p.Images.GetMainImageSrc()) ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center" Style="aspect-ratio: 1 / 0.8; width: 100%; height: auto;" />
