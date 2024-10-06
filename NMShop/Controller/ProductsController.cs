@@ -53,6 +53,10 @@ namespace NMShop.Controller
             {
                 products = products.Where(p => p.SubCategory.Equals(filter.SubCategory, StringComparison.OrdinalIgnoreCase)).ToList();
             }
+            if (!string.IsNullOrEmpty(filter.SelCategory))
+            {
+                products = products.Where(p => p.SelCategory.Equals(filter.SelCategory, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
 
             // Фильтр по категории (ProductType)
             if (!string.IsNullOrEmpty(filter.Category))
@@ -84,10 +88,25 @@ namespace NMShop.Controller
                 products = products.Where(p => p.Color.Keys.Any(c => c.Equals(filter.Color, StringComparison.OrdinalIgnoreCase))).ToList();
             }
 
-            // Фильтр по наличию на складе (InStock)
             if (filter.InStock)
             {
                 products = products.Where(p => p.PriceInfos.Any(pi => pi.Stock > 0)).ToList();
+            }
+            if (!string.IsNullOrEmpty(filter.SortBy))
+            {
+                switch (filter.SortBy.ToLower())
+                {
+                    case "price":
+                        products = filter.SortDirection == "asc"
+                            ? products.OrderBy(p => p.PriceInfos.FirstOrDefault()?.Price).ToList()
+                            : products.OrderByDescending(p => p.PriceInfos.FirstOrDefault()?.Price).ToList();
+                        break;
+                    case "newest":
+                        products = filter.SortDirection == "asc"
+                            ? products.OrderBy(p => p.ReleaseDate).ToList()
+                            : products.OrderByDescending(p => p.ReleaseDate).ToList();
+                        break;
+                }
             }
 
             return Ok(products);

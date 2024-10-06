@@ -60,6 +60,18 @@ namespace NMShop.Client.Data
               "Детское"
             };
         }
+        public static string[] GetTestSelCategory()
+        {
+            return new string[]
+            {
+                "Новые релизы",
+                "Хиты продаж",
+                "Коллаборации",
+                "Эксклюзивы",
+                "Маст-хэв"
+            };
+        }
+        
 
        
 

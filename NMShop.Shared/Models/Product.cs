@@ -10,7 +10,9 @@ public class Product
     public List<ProductImage> Images { get; set; } // Изображения товара
     public string Gender { get; set; }  // Пол: мужское, женское, унисекс, детское
     public string SubCategory { get; set; } // Подкатегория товара (например, спортивная обувь, верхняя одежда)
+    public string SelCategory { get; set; } //Категория продаж (например, новые релизы,хиты продаж)
     public string ProductType { get; set; } // Тип товара: обувь, одежда, аксессуары
+    public DateOnly ReleaseDate { get; set; }
     public Dictionary<string, string> Color { get; set; } // Цвет: название-значение (например, "Красный" => "#FF0000")
     public List<PriceInfo> PriceInfos { get; set; } // Список информации о цене и размере
 

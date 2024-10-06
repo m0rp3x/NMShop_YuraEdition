@@ -10,7 +10,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="Фильтры для товарных категорий" />
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Data/TestDataProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Controller/ProductsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/ProductsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Data/TestDataProvider.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,9 +43,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Bring zen to your code" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Pages/Catalog.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Pages/Catalog.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/Product.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -51,26 +58,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.NMShop: IIS Express.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.NMShop: http.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.NMShop: https.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Project.NMShop.Client.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.NMShop: IIS Express.executor": "Run",
+    ".NET Launch Settings Profile.NMShop: http.executor": "Run",
+    ".NET Launch Settings Profile.NMShop: https.executor": "Run",
+    ".NET Project.NMShop.Client.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: []
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": []
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: https">
     <configuration name="NMShop.Client" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -153,7 +160,10 @@
       <workItem from="1727477931940" duration="6232000" />
       <workItem from="1727608019670" duration="2209000" />
       <workItem from="1727799324477" duration="12430000" />
-      <workItem from="1727877959423" duration="4824000" />
+      <workItem from="1727877959423" duration="6843000" />
+      <workItem from="1728225392204" duration="120000" />
+      <workItem from="1728225541119" duration="1006000" />
+      <workItem from="1728226595450" duration="7397000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -219,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727882713852</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="жопа">
+      <option name="closed" value="true" />
+      <created>1727882988757</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1727882988757</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,7 +256,8 @@
     <MESSAGE value="Фильтры в каталоге" />
     <MESSAGE value="Починка каталога" />
     <MESSAGE value="Фильтры для товарных категорий" />
-    <option name="LAST_COMMIT_MESSAGE" value="Фильтры для товарных категорий" />
+    <MESSAGE value="жопа" />
+    <option name="LAST_COMMIT_MESSAGE" value="жопа" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -258,14 +277,6 @@
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor</url>
-          <line>29</line>
-          <properties isMultiMethodBreakpoint="true">
-            <option name="multiMethodBreakpoint" value="true" />
-          </properties>
-          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
