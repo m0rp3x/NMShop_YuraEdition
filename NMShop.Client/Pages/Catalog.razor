@@ -11,7 +11,7 @@
 <div class="d-flex flex-grow-1" style="width: 100%">
     <MudDrawerContainer Style="width: 100%; position:relative;">
 
-        <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-6" Style="background-color: white;">
+        <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
 
             <div class="pt-3 pr-3 d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
                 <MudButton Style="flex-shrink: 0;" Class="py-1 px-3"  @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
@@ -30,8 +30,16 @@
                     <MudExpansionPanel Text="Цена, ₽">
 
                         <div class="d-flex" style="gap: 15px;">
-                            <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
-                            <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
+
+                            <div class="d-flex" style="gap: 15px;">
+                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
+                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
+                            </div>
+
+
+
+
+
                         </div>
 
                     </MudExpansionPanel>
@@ -60,12 +68,20 @@
                             }
                             else
                             {
-                                <div class="d-flex" style="gap: 15px;">
 
-                                    <MudNumericField @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
-                                    <MudNumericField @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
 
-                                </div>
+
+
+                            <div class="d-flex" style="gap: 15px;">
+                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
+                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
+                            </div>
+
+
+
+
+
+
                             }
 
                         </MudExpansionPanel>
@@ -119,12 +135,11 @@
                     @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
                 </MudText>
 
-                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" style="transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;" class="px-3 py-1 d-flex relative cursor-pointer align-center">
+                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer">
                     <MudText Class="mr-2" Typo="Typo.h6" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
                     <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.h6" Inline="true">@CurrentSortOption.Name</MudText>
-                    <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Large" />
-                    
-                    <div class="absolute d-flex flex-column" style=@("transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; overflow: hidden; border-radius: 20px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); left: 0; right: 0; z-index: " + (int)ZEnum.SortOptionsDropDown + "; " + (_isSortOptionOpened ? "top: 120%; height: fit-content;" : "height: 0px;"))>
+                    <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+                    <div class="absolute" style=@("transition: all 0.6s ease 0s; overflow: hidden; " + (_isSortOptionOpened ? "top: 120%; height: fit-content;" : "height: 0px;"))>
                         @foreach (SortOption so in SortOptions)
                         {
                         <MudText @onclick="async () => await OnSortOptionChanged(so)"
@@ -134,9 +149,8 @@
                                  Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
                         }
                     </div>
-
                 </div>
-
+в
 
                 <div class="d-flex align-center" style="cursor: pointer;" @onclick="async () => await ToggleSortDirection()">
                     @if (isSortDescending)
