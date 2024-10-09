@@ -61,5 +61,12 @@
         Shoes = await DataProvider.GetShoes();
     }
 
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<Whythiswork>("Simple Dialog", options);
+    }
+
 }
 
