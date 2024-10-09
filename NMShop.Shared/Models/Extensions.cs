@@ -21,7 +21,7 @@ public static class Extensions
         }
         else
         {
-            return $"assets/{GetRandomString()}.jpg";
+            return $"assets/{GetPlaceHolderName()}.jpg";
         }
     }
 
@@ -29,17 +29,21 @@ public static class Extensions
     {
         if (productImages is not null && productImages.Count() != 0)
         { 
+            if(productImages.Where(i => i.IsMain).Count() != 1)
+            {
+                return productImages.First().Bytes.ToSrcString();
+            }
             return productImages.Single(pi => pi.IsMain).Bytes.ToSrcString();
         }
         else
         {
-            return $"assets/{GetRandomString()}.jpg";
+            return $"assets/{GetPlaceHolderName()}.jpg";
         }
     }
 
     private static readonly Random random = new Random();
 
-    public static string GetRandomString()
+    public static string GetPlaceHolderName()
     {
         string[] strings = { "placeholder", "bebra", "biba", "boba" };
         int index = random.Next(strings.Length);
@@ -49,7 +53,7 @@ public static class Extensions
     public static string ToPreFormatedString(this decimal? me) => Math.Abs(me ?? 0).ToString("# ### ### ### ###");
     public static string ToPreFormatedString(this decimal me) => me.ToString("# ### ### ### ###");
 
-    public static (decimal MinPrice, decimal? MinDiscountPrice) GetMinPriceAndDiscount(this Product product)
+    public static (decimal MinPrice, decimal? MinDiscountPrice) GetMinPriceAndDiscount(this ProductDto product)
     {
         if (product.PriceInfos == null || !product.PriceInfos.Any())
         {

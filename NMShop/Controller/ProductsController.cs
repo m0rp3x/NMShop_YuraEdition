@@ -1,9 +1,11 @@
-﻿// Server/Controllers/ProductsController.cs
-using Microsoft.AspNetCore.Mvc;
-using NMShop.Data;
-using NMShop.Shared.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using NMShop.Scaffold;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using NMShop.Shared.Models;
 
 namespace NMShop.Controller
 {
@@ -11,109 +13,160 @@ namespace NMShop.Controller
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        [HttpGet("{category}")]
-        public ActionResult<IEnumerable<Product>> GetProductsByCategory(string category)
+        private readonly NMShopContext _context;
+        private readonly IMapper _mapper;
+
+        public ProductsController(NMShopContext context, IMapper mapper)
         {
-            var products = TestDataProvider.GetTestProducts()
-                .Where(p => p.ProductType == category.ToLower()).ToList();
-            return Ok(products);
-        }
-        [HttpGet]
-        public ActionResult<IEnumerable<Product>> GetAllProducts()
-        {
-            var products = TestDataProvider.GetTestProducts();
-            return Ok(products);
+            _context = context;
+            _mapper = mapper;
         }
 
-        [HttpGet("id/{id}")]
-        public ActionResult<IEnumerable<Product>> GetProductsById(string id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
         {
-            var parsedSuccesfully = int.TryParse(id, out var parsedId);
-            if (parsedSuccesfully)
+            var products = await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Color)
+                .Include(p => p.Gender)
+                .Include(p => p.ProductType)
+                .Include(p => p.SellingCategory)
+                .Include(p => p.ProductImages)
+                .Include(p => p.StockInfos)
+                .ToListAsync();
+
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDto>> GetProductById(int id)
+        {
+            var product = await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Color)
+                .Include(p => p.Gender)
+                .Include(p => p.ProductType)
+                .Include(p => p.SellingCategory)
+                .Include(p => p.ProductImages)
+                .Include(p => p.StockInfos)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
             {
-                var products = TestDataProvider.GetTestProducts()
-                .Where(p => p.Id == parsedId).Single();
-                return Ok(products);
+                return NotFound();
             }
-            return NotFound();
+
+            return Ok(_mapper.Map<ProductDto>(product));
+        }
+
+        [HttpGet("category/{category}")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory(string category)
+        {
+            var productType = await _context.ProductTypes.FirstOrDefaultAsync(pt => pt.Name.Equals(category));
+
+            if (productType == null)
+            {
+                return NotFound();
+            }
+
+            var products = await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Color)
+                .Include(p => p.Gender)
+                .Include(p => p.ProductType)
+                .Include(p => p.SellingCategory)
+                .Include(p => p.ProductImages)
+                .Include(p => p.StockInfos)
+                .Where(p => p.ProductTypeId == productType.Id)
+                .ToListAsync();
+
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
 
         [HttpGet("filter")]
-        public ActionResult<IEnumerable<Product>> GetFilteredProducts([FromQuery] ProductFilter filter)
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetFilteredProducts([FromQuery] ProductFilter filter)
         {
-            var products = TestDataProvider.GetTestProducts();
+            var productsQuery = _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Color)
+                .Include(p => p.Gender)
+                .Include(p => p.ProductType)
+                .Include(p => p.SellingCategory)
+                .Include(p => p.ProductImages)
+                .Include(p => p.StockInfos)
+                .AsQueryable();
 
-            // Фильтр по бренду
             if (!string.IsNullOrEmpty(filter.Brand))
             {
-                products = products.Where(p => p.Brand.Equals(filter.Brand, StringComparison.OrdinalIgnoreCase)).ToList();
+                productsQuery = productsQuery.Where(p => p.Brand.Name.Equals(filter.Brand, StringComparison.OrdinalIgnoreCase));
             }
 
             if (!string.IsNullOrEmpty(filter.SubCategory))
             {
-                products = products.Where(p => p.SubCategory.Equals(filter.SubCategory, StringComparison.OrdinalIgnoreCase)).ToList();
+                productsQuery = productsQuery.Where(p => p.ProductType.Name.Equals(filter.SubCategory, StringComparison.OrdinalIgnoreCase));
             }
+
             if (!string.IsNullOrEmpty(filter.SelCategory))
             {
-                products = products.Where(p => p.SelCategory.Equals(filter.SelCategory, StringComparison.OrdinalIgnoreCase)).ToList();
+                productsQuery = productsQuery.Where(p => p.SellingCategory.Name.Equals(filter.SelCategory, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Фильтр по категории (ProductType)
             if (!string.IsNullOrEmpty(filter.Category))
             {
-                products = products.Where(p => p.ProductType.Equals(filter.Category, StringComparison.OrdinalIgnoreCase)).ToList();
+                productsQuery = productsQuery.Where(p => p.ProductType.Name.Equals(filter.Category, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Фильтр по полу (Gender)
             if (!string.IsNullOrEmpty(filter.Gender))
             {
-                products = products.Where(p => p.Gender.Equals(filter.Gender, StringComparison.OrdinalIgnoreCase)).ToList();
+                productsQuery = productsQuery.Where(p => p.Gender.Name.Equals(filter.Gender, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Фильтр по минимальной цене
             if (filter.MinPrice.HasValue)
             {
-                products = products.Where(p => p.PriceInfos.Any(pi => pi.Price >= filter.MinPrice.Value)).ToList();
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Price >= filter.MinPrice.Value));
             }
 
-            // Фильтр по максимальной цене
             if (filter.MaxPrice.HasValue)
             {
-                products = products.Where(p => p.PriceInfos.Any(pi => pi.Price <= filter.MaxPrice.Value)).ToList();
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Price <= filter.MaxPrice.Value));
             }
 
-            // Фильтр по цвету
             if (!string.IsNullOrEmpty(filter.Color))
             {
-                products = products.Where(p => p.Color.Keys.Any(c => c.Equals(filter.Color, StringComparison.OrdinalIgnoreCase))).ToList();
+                productsQuery = productsQuery.Where(p => p.Color.Name.Equals(filter.Color, StringComparison.OrdinalIgnoreCase));
             }
 
             if (filter.InStock)
             {
-                products = products.Where(p => p.PriceInfos.Any(pi => pi.Stock > 0)).ToList();
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.AmountInStock > 0));
             }
+
             if (!string.IsNullOrEmpty(filter.SortBy))
             {
                 switch (filter.SortBy.ToLower())
                 {
                     case "price":
-                        products = filter.SortDirection == "asc"
-                            ? products.OrderBy(p => p.PriceInfos.FirstOrDefault()?.Price).ToList()
-                            : products.OrderByDescending(p => p.PriceInfos.FirstOrDefault()?.Price).ToList();
+                        productsQuery = filter.IsAscending
+                            ? productsQuery.OrderBy(p => p.StockInfos.FirstOrDefault().Price)
+                            : productsQuery.OrderByDescending(p => p.StockInfos.FirstOrDefault().Price);
                         break;
                     case "newest":
-                        products = filter.SortDirection == "asc"
-                            ? products.OrderBy(p => p.ReleaseDate).ToList()
-                            : products.OrderByDescending(p => p.ReleaseDate).ToList();
+                        productsQuery = filter.IsAscending
+                            ? productsQuery.OrderBy(p => p.DateAdded)
+                            : productsQuery.OrderByDescending(p => p.DateAdded);
                         break;
+                    case "popularity":
+                    default:
+                        productsQuery = filter.IsAscending
+                            ? productsQuery.OrderBy(p => p.OrderParts.Sum(op => op.Amount))
+                            : productsQuery.OrderByDescending(p => p.OrderParts.Sum(op => op.Amount));
+                        break;
+
                 }
             }
 
-            return Ok(products);
+            var products = await productsQuery.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
-
-
-
-
     }
 }

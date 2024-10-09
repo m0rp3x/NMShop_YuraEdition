@@ -6,11 +6,11 @@ namespace NMShop.Data
 {
     public static class TestDataProvider
     {
-        public static List<Product> GetTestProducts()
+        public static List<ProductDto> GetTestProducts()
         {
-            return new List<Product>
+            return new List<ProductDto>
             {
-                new Product
+                new ProductDto
                 {
                     Id = 1,
                     Name = "Кроссовки Nike Air Max",
@@ -33,7 +33,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 44.5m, Price = 125m, DiscountPrice = null, Stock = 5 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 2,
                     Name = "Кроссовки Puma RS-X",
@@ -55,7 +55,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 42, Price = 110m, DiscountPrice = null, Stock = 8 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 3,
                     Name = "Кроссовки Adidas Ultraboost",
@@ -76,7 +76,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 38, Price = 140m, DiscountPrice = 120m, Stock = 0 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 4,
                     Name = "Кроссовки Reebok Classic",
@@ -99,7 +99,7 @@ namespace NMShop.Data
                 },
 
                 // Футболки
-                new Product
+                new ProductDto
                 {
                     Id = 5,
                     Name = "Футболка Adidas",
@@ -122,7 +122,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = (decimal)ClothingSize.L, Price = 32m, DiscountPrice = 25m, Stock = 15 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 6,
                     Name = "Футболка Nike Dri-FIT",
@@ -143,7 +143,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = (decimal)ClothingSize.L, Price = 35m, DiscountPrice = 30m, Stock = 10 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 7,
                     Name = "Футболка Under Armour",
@@ -164,7 +164,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = (decimal)ClothingSize.M, Price = 28m, DiscountPrice = null, Stock = 12 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 8,
                     Name = "Футболка Puma Essentials",
@@ -187,7 +187,7 @@ namespace NMShop.Data
                 },
 
                 // Головные уборы
-                new Product
+                new ProductDto
                 {
                     Id = 9,
                     Name = "Кепка Nike",
@@ -208,7 +208,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 1, Price = 25m, DiscountPrice = 20m, Stock = 50 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 10,
                     Name = "Шапка Adidas",
@@ -229,7 +229,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 1, Price = 30m, DiscountPrice = 25m, Stock = 30 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 11,
                     Name = "Кепка Puma",
@@ -250,7 +250,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 1, Price = 22m, DiscountPrice = null, Stock = 40 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 12,
                     Name = "Бейсболка Under Armour",
@@ -271,7 +271,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 1, Price = 27m, DiscountPrice = 22m, Stock = 35 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 13,
                     Name = "Ботинки Timberland",
@@ -293,7 +293,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 43, Price = 150m, DiscountPrice = 130m, Stock = 12 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 14,
                     Name = "Угги UGG Classic",
@@ -315,7 +315,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 38, Price = 180m, DiscountPrice = 160m, Stock = 5 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 15,
                     Name = "Слайды Adidas Adilette",
@@ -337,7 +337,7 @@ namespace NMShop.Data
                         new PriceInfo { Size = 42, Price = 40m, DiscountPrice = null, Stock = 20 }
                     }
                 },
-                new Product
+                new ProductDto
                 {
                     Id = 16,
                     Name = "Детские кеды Converse",

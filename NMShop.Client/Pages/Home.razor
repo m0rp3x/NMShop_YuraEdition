@@ -2,26 +2,29 @@
 @using NMShop.Client.Data
 @using NMShop.Shared.Models
 
+@inject ClientTestDataProvider DataProvider
+
 @page "/"
 
 <PageTitle>Home</PageTitle>
 
 <MudCarousel Class="mud-width-full" Style="aspect-ratio: 4375 / 1100;" ShowArrows=true ShowBullets=true EnableSwipeGesture=true AutoCycle=true TData="object">
-    <MudCarouselItem Transition=@Transition.Slide Color="@Color.Primary">
-        <MudImage Src="/assets/banners/favorite_brands.png" Style="width:100%; height:auto; aspect-ratio: 4375 / 1100;" ObjectFit="ObjectFit.Cover" />
-    </MudCarouselItem>
-    <MudCarouselItem Transition=@Transition.Slide Color="@Color.Primary">
-        <MudImage Src="/assets/banners/delivery.png" Style="width:100%; height:auto; aspect-ratio: 4375 / 1100;" ObjectFit="ObjectFit.Cover" />
-    </MudCarouselItem>
+
+    @foreach (string banner in new string[] { "favorite_brands", "delivery", "seasonal1", "seasonal2" })
+    {
+        <MudCarouselItem Transition=@Transition.Slide Color="@Color.Primary">
+            <MudImage Src=@($"/assets/banners/{banner}.png") Style="width:100%; height:auto; aspect-ratio: 4375 / 1100;" ObjectFit="ObjectFit.Cover" />
+        </MudCarouselItem>
+    }
 </MudCarousel>
 
 <BrandGallery />
 
-<CategoryPreview CategoryType="shoes" />
+<CategoryPreview CategoryType="shoes" Products="Shoes" />
 
-<CategoryPreview CategoryType="clothes" />
+<CategoryPreview CategoryType="clothes" Products="Clothes" />
 
-<CategoryPreview CategoryType="accessories" />
+<CategoryPreview CategoryType="accessories" Products="Accessories" />
 
 <MudPaper Class="d-flex flex-column align-center py-20 my-10 mx-20" Style="border-radius: 20px; background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), linear-gradient(82.03deg, #DCE7D7 17.85%, #C5C390 33.14%, #C4944D 41.79%, #D9558E 49.88%, #36376F 57.42%, #008B87 66.4%, #4D295A 81.36%);">
     <MudImage Src="/assets/icons/logo.svg" Width="120" Height="120" />
@@ -43,3 +46,19 @@
 
 
 </MudPaper>
+
+@code {
+
+    private IEnumerable<ProductDto> Shoes = new List<ProductDto>();
+    private IEnumerable<ProductDto> Clothes = new List<ProductDto>();
+    private IEnumerable<ProductDto> Accessories = new List<ProductDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Accessories = await DataProvider.GetAccessories();
+        Clothes = await DataProvider.GetClothes();
+        Shoes = await DataProvider.GetShoes();
+    }
+
+}
+

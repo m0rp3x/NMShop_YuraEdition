@@ -1,13 +1,15 @@
 using MudBlazor.Services;
-using NMShop.Client.Data;
+using NMShop.Data;
 using NMShop.Components;
+using Microsoft.EntityFrameworkCore;
+using NMShop.Scaffold;
+using NMShop.Client.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<ClientTestDataProvider>();
 
 builder.Services.AddHttpClient();
-
-builder.Services.AddScoped<TestDataProvider>();
 
 builder.Services.AddCors(options =>
 {
@@ -23,6 +25,16 @@ builder.Services.AddMudServices();
 // Добавление компонентов Razor
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddDbContext<NMShopContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("TestConnection"));
+
+});
+
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
+
+builder.Services.AddCoreAdmin(); // после DbContext-а
 
 var app = builder.Build();
 
@@ -41,23 +53,18 @@ else
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-
-
-
 app.MapControllers();
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(NMShop.Client._Imports).Assembly);
+
+app.UseStaticFiles();
+app.MapDefaultControllerRoute();
 
 app.Run();

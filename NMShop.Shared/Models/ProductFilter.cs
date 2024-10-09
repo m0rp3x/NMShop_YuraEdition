@@ -13,7 +13,7 @@
         public string? SubCategory { get; set; }
         public string? SelCategory { get; set; }
         public string? SortBy { get; set; } // Поле для сортировки
-        public string? SortDirection { get; set; }  // Направление сортировки (asc/desc)
+        public bool IsAscending { get; set; }  // Направление сортировки (asc/desc)
         
     }
 

@@ -2,7 +2,7 @@
 @using NMShop.Shared.Models
 @using NMShop.Client.Data
 
-@inject TestDataProvider DataProvider
+@inject ClientTestDataProvider DataProvider
 @inject NavigationManager Navigation
 
 @page "/catalog/{productType}/{productCode}"
@@ -143,12 +143,7 @@
             }
             else
             {
-                <div class="d-flex flex-column" style="gap: 10px;">
-                    @foreach (var content in refInfoList.Where(u => u.Topic == selectedInfo.Code).SingleOrDefault().Contents)
-                    {
-                        <MudText Style=@(content.IsBold ? "font-weight: bold;" : null) Typo=@(content.Size.ToEnum<Typo>())>@content.Text</MudText>
-                    }
-                </div>
+                
             }
         </div>
 
@@ -183,7 +178,7 @@
     [Parameter]
     public string productCode { get; set; }
 
-    private Product product = new();
+    private ProductDto product = new();
 
     private bool _isAddToCartButtonHovered = false;
 

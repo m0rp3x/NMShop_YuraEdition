@@ -4,16 +4,16 @@
 @using NMShop.Shared.Models;
 @inject HttpClient Http
 
-@inject TestDataProvider DataProvider
+@inject ClientTestDataProvider DataProvider
 
 @page "/catalog/{productType?}"
 
 <div class="d-flex flex-grow-1" style="width: 100%">
     <MudDrawerContainer Style="width: 100%; position:relative;">
 
-        <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-2 pr-6" Style="background-color: white;">
+        <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-9 pt-4 pb-2" Style="background-color: white;">
 
-            <div class="pt-3 pr-3 d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
+            <div class="d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
                 <MudButton Style="flex-shrink: 0;" Class="py-1 px-3"  @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
 
                 <input placeholder="Найти"
@@ -35,10 +35,6 @@
                                 <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1000" Variant="Variant.Outlined" />
                                 <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1000" Variant="Variant.Outlined" />
                             </div>
-
-
-
-
 
                         </div>
 
@@ -68,20 +64,10 @@
                             }
                             else
                             {
-
-
-
-
-                            <div class="d-flex" style="gap: 15px;">
-                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
-                                <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
-                            </div>
-
-
-
-
-
-
+                                <div class="d-flex" style="gap: 15px;">
+                                    <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
+                                    <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
+                                </div>
                             }
 
                         </MudExpansionPanel>
@@ -135,7 +121,7 @@
                     @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
                 </MudText>
 
-                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer">
+                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);border-radius: 20px;">
                     <MudText Class="mr-2" Typo="Typo.h6" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
                     <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.h6" Inline="true">@CurrentSortOption.Name</MudText>
                     <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
@@ -150,7 +136,6 @@
                         }
                     </div>
                 </div>
-в
 
                 <div class="d-flex align-center" style="cursor: pointer;" @onclick="async () => await ToggleSortDirection()">
                     @if (isSortDescending)
@@ -178,7 +163,7 @@
     [Parameter]
     public string productType { get; set; }
 
-    private IEnumerable<Product> Products = new List<Product>();
+    private IEnumerable<ProductDto> Products = new List<ProductDto>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -243,6 +228,7 @@
 
     private static List<SortOption> SortOptions = new List<SortOption>
     {
+        new SortOption { Name = "Популярности", Type = "popularity" },
         new SortOption { Name = "НОВИЗНЕ", Type = "newest" },
         new SortOption { Name = "ЦЕНЕ", Type = "price" }
     };
@@ -250,19 +236,19 @@
     protected override void OnInitialized()
     {
         // Инициализируем список брендов
-        Brands = TestDataProvider.GetTestBrands()
+        Brands = ClientTestDataProvider.GetTestBrands()
             .Select(name => new BrandModel { Name = name})
             .ToList();
 
-        Genders = TestDataProvider.GetTestGenders()
+        Genders = ClientTestDataProvider.GetTestGenders()
             .Select(name => new GenderModel { Name = name})
             .ToList();
         
-        SubCategory = TestDataProvider.GetTestSubCategory()
+        SubCategory = ClientTestDataProvider.GetTestSubCategory()
             .Select(name => new SubCategoryModel { Name = name })
             .ToList();
 
-        SelCategory = TestDataProvider.GetTestSelCategory()
+        SelCategory = ClientTestDataProvider.GetTestSelCategory()
             .Select(name => new SelCategoryModel { Name = name })
             .ToList();
 
@@ -300,7 +286,7 @@
         }
         
         queryParams["SortBy"] = CurrentSortOption.Type;
-        queryParams["SortDirection"] = isSortDescending ? "desc" : "asc";
+        queryParams["SortDirection"] = isSortDescending.ToString();
         
 
         if (MinPriceInput.HasValue) queryParams["MinPrice"] = MinPriceInput.Value.ToString();
@@ -316,7 +302,7 @@
         var queryString = string.Join("&", queryParams.Select(kv => $"{kv.Key}={kv.Value}"));
         var url = $"https://localhost:7279/api/products/filter?{queryString}";
 
-        Products = await Http.GetFromJsonAsync<IEnumerable<Product>>(url);
+        Products = await Http.GetFromJsonAsync<IEnumerable<ProductDto>>(url);
         Console.WriteLine($"Запрос на сервер: {url}");
 
     }
