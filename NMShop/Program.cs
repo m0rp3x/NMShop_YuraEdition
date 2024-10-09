@@ -1,6 +1,7 @@
 using MudBlazor.Services;
 using NMShop.Client.Data;
 using NMShop.Components;
+using NMShop.Controller;
 
 var builder = WebApplication.CreateBuilder(args);
 

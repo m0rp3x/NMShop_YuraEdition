@@ -1,0 +1,22 @@
+﻿@using NMShop.Shared.Models
+@using NMShop.Client.Data
+@inject TestDataProvider DataProvider
+<div class="d-flex flex-column" style="gap: 10px;">
+    @foreach (var content in refInfo.Contents)
+    {
+        <MudText Style=@(content.IsBold ? "font-weight: bold;" : null) Typo=@(content.Size.ToEnum<Typo>())>@content.Text</MudText>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string code { get; set; }
+    private ReferenceInfo refInfo;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(code);
+        refInfo = await DataProvider.GetReferenceInfoByTopic(code);
+        
+    }
+}

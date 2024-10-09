@@ -1,0 +1,25 @@
+﻿<MudDialog MaxWidth="MaxWidth.Small" Style="padding: 20px; background-color: #F0F4F5; border-radius: 12px;">
+    <TitleContent>
+        <MudText Typo="Typo.h5" Class="mb-4">КАК ЭТО РАБОТАЕТ?</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body1">
+            1. Для размещения заказа зарегистрируйтесь или войдите в аккаунт.<br>
+            2. Менеджер свяжется для уточнения деталей заказа.<br>
+            3. Заказы оформляются по предоплате.<br>
+            4. Товар проходит проверку на оригинальность.<br>
+            5. Упаковка и отправка товара с предоставлением трек-номера.<br><br>
+            По любым вопросам пишите на SUPPORT@NIKITAEFREMOV.COM.
+        </MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Cancel">Закрыть</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+[CascadingParameter]
+MudDialogInstance MudDialog { get; set; }
+
+void Cancel() => MudDialog.Cancel();
+}

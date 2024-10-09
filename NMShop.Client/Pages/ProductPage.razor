@@ -1,6 +1,7 @@
 ﻿@using NMShop.Client.Layout
 @using NMShop.Shared.Models
 @using NMShop.Client.Data
+@using NMShop.Client.Layout
 
 @inject TestDataProvider DataProvider
 @inject NavigationManager Navigation
@@ -144,10 +145,9 @@
             else
             {
                 <div class="d-flex flex-column" style="gap: 10px;">
-                    @foreach (var content in refInfoList.Where(u => u.Topic == selectedInfo.Code).SingleOrDefault().Contents)
-                    {
-                        <MudText Style=@(content.IsBold ? "font-weight: bold;" : null) Typo=@(content.Size.ToEnum<Typo>())>@content.Text</MudText>
-                    }
+
+                    <ReferenceInfoDisplay code="@selectedInfo?.Code" />
+
                 </div>
             }
         </div>
@@ -178,10 +178,8 @@
 </MudContainer>
 
 @code {
-    [Parameter]
-    public string productType { get; set; }
-    [Parameter]
-    public string productCode { get; set; }
+    [Parameter] public string productType { get; set; }
+    [Parameter] public string productCode { get; set; }
 
     private Product product = new();
 
@@ -199,8 +197,8 @@
 
 
     private string FilterButtonStyle =>
-    "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
-    + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+        "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
+        + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
     protected override async Task OnInitializedAsync()
     {
@@ -213,7 +211,6 @@
         }
         else Navigation.NavigateTo("/notFound");
 
-        refInfoList = await DataProvider.GetAllReferenceInfo();
     }
 
     class InfoButton
@@ -224,11 +221,11 @@
 
     static List<InfoButton> InfoButtons = new()
     {
-        new(){ Label = "Детали", Code = "details" },
-        new(){ Label = "Способы доставки", Code = "delivery_methods" },
-        new(){ Label = "Правила возврата", Code = "return_policy" },
-        new(){ Label = "Способы оплат", Code = "payment_methods" },
-        new(){ Label = "FAQ", Code = "faq" },
+        new() { Label = "Детали", Code = "details" },
+        new() { Label = "Способы доставки", Code = "delivery_methods" },
+        new() { Label = "Правила возврата", Code = "return_policy" },
+        new() { Label = "Способы оплат", Code = "payment_methods" },
+        new() { Label = "FAQ", Code = "faq" },
 
     };
 

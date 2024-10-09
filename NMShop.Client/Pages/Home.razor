@@ -1,6 +1,7 @@
 ﻿@using NMShop.Client.Components
 @using NMShop.Client.Data
 @using NMShop.Shared.Models
+@inject IDialogService DialogService
 
 @page "/"
 
@@ -38,8 +39,19 @@
 
     <MudButton Class="mt-5">
         <MudIcon Style="color: white;" Icon="@Icons.Material.Outlined.Info" Size="Size.Large" />
-        <MudText Class="ml-4" Style="color: white; text-transform: uppercase;" Typo="Typo.h5">как это работает?</MudText>
+        <MudText @onclick="OpenDialogAsync" Class="ml-4" Style="color: white; text-transform: uppercase;" Typo="Typo.h5">как это работает?</MudText>
     </MudButton>
 
 
 </MudPaper>
+
+
+@code
+{
+private Task OpenDialogAsync()
+{
+var options = new DialogOptions { CloseOnEscapeKey = true };
+
+return DialogService.ShowAsync<Whythiswork>("Simple Dialog", options);
+}
+}
