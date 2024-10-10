@@ -16,5 +16,12 @@ public partial class Gender
     public string Name { get; set; } = null!;
 
     [InverseProperty("Gender")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

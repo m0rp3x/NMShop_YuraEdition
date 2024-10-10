@@ -19,5 +19,12 @@ public partial class ProductColor
     public string Name { get; set; } = null!;
 
     [InverseProperty("Color")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

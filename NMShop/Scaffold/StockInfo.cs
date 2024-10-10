@@ -28,5 +28,12 @@ public partial class StockInfo
 
     [ForeignKey("ProductId")]
     [InverseProperty("StockInfos")]
+    [Display(AutoGenerateField = false)]
     public virtual Product Product { get; set; } = null!;
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

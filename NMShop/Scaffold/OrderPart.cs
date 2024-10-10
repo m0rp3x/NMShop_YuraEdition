@@ -22,9 +22,17 @@ public partial class OrderPart
 
     [ForeignKey("OrderId")]
     [InverseProperty("OrderParts")]
+    [Display(AutoGenerateField = false)]
     public virtual Order Order { get; set; } = null!;
 
     [ForeignKey("ProductId")]
     [InverseProperty("OrderParts")]
+    [Display(AutoGenerateField = false)]
     public virtual Product Product { get; set; } = null!;
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

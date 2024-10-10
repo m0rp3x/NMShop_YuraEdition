@@ -10,13 +10,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/projectSettingsUpdater.xml" afterDir="false" />
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="оред контроллер">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/Brand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/Brand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/DeliveryType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/DeliveryType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/Gender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/Gender.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/Order.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/Order.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/OrderPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/OrderPart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/OrderStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/PaymentType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/PaymentType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/ProductColor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/ProductColor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/ProductImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/ProductImage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/ProductType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/ProductType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/SellingCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/SellingCategory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/StockInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/StockInfo.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,10 +51,10 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/Product.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://diff.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://diff.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Scaffold/Order.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -172,7 +180,7 @@
       <workItem from="1728483178079" duration="11799000" />
       <workItem from="1728506038958" duration="354000" />
       <workItem from="1728512738764" duration="951000" />
-      <workItem from="1728571880726" duration="6192000" />
+      <workItem from="1728571880726" duration="14086000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -270,7 +278,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728494410314</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="оред контроллер">
+      <option name="closed" value="true" />
+      <created>1728579629932</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1728579629932</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -292,7 +308,8 @@
     <MESSAGE value="фильтры и сортировка" />
     <MESSAGE value="Продолжить покупки" />
     <MESSAGE value="Компонент справочной инфы" />
-    <option name="LAST_COMMIT_MESSAGE" value="Компонент справочной инфы" />
+    <MESSAGE value="оред контроллер" />
+    <option name="LAST_COMMIT_MESSAGE" value="оред контроллер" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

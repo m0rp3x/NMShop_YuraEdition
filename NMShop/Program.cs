@@ -39,7 +39,6 @@ builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 builder.Services.AddCoreAdmin(); // после DbContext-а
 
 var app = builder.Build();
-
 // Настройка CORS
 app.UseCors("CorsPolicy");
 
@@ -61,6 +60,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 app.MapControllers();
+app.UseCoreAdminCustomUrl("adolfhitler");
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
