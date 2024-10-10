@@ -4,33 +4,56 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2992ba10-ac5c-4fd5-ab58-61a4d501a0e4" name="Changes" comment="" />
+    <list default="true" id="2992ba10-ac5c-4fd5-ab58-61a4d501a0e4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b/storage_v2/_src_/database/NMShop_dollsawour.-HqN_g/schema/NMShop.VWF-iQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b/storage_v2/_src_/database/NMShop_dollsawour.-HqN_g/schema/NMShop.VWF-iQ.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.sql" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/CategoryPreview.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/CategoryPreview.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/ReferenseInfoList.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/ReferenseInfoList.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Data/ClientTestDataProvider.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/ProductPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/ProductPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/_Imports.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Models/ProductFilter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Models/ProductFilter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Controller/ProductsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Controller/ProductsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Program.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="2nCpmXpQ34fBPU8rAc6FSpUElSV" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Sharp"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Sharp/source/repos/NMShop/DB&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlserver",
-      "mysql",
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlserver&quot;,
+      &quot;mysql&quot;,
+      &quot;postgresql&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/": [
-      "PostgreSQL"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/&quot;: [
+      &quot;PostgreSQL&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
 </project>

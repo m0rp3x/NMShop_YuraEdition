@@ -19,21 +19,21 @@ namespace NMShop.Controller
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
-        {
-            var products = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Color)
-                .Include(p => p.Gender)
-                .Include(p => p.ProductType)
-                .Include(p => p.SellingCategory)
-                .Include(p => p.ProductImages)
-                .Include(p => p.StockInfos)
-                .ToListAsync();
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+        //{
+        //    var products = await _context.Products
+        //        .Include(p => p.Brand)
+        //        .Include(p => p.Color)
+        //        .Include(p => p.Gender)
+        //        .Include(p => p.ProductType)
+        //        .Include(p => p.SellingCategory)
+        //        .Include(p => p.ProductImages)
+        //        .Include(p => p.StockInfos)
+        //        .ToListAsync();
 
-            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
-        }
+        //    return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+        //}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
@@ -56,33 +56,38 @@ namespace NMShop.Controller
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
-        [HttpGet("category/{category}")]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory(string category)
-        {
-            var productType = await _context.ProductTypes.FirstOrDefaultAsync(pt => pt.Name.Equals(category));
+        //[HttpGet("category/{category}")]
+        //public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory(string category)
+        //{
+        //    var productType = await _context.ProductTypes.FirstOrDefaultAsync(pt => pt.Name.Equals(category));
 
-            if (productType == null)
-            {
-                return NotFound();
-            }
+        //    if (productType == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var products = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Color)
-                .Include(p => p.Gender)
-                .Include(p => p.ProductType)
-                .Include(p => p.SellingCategory)
-                .Include(p => p.ProductImages)
-                .Include(p => p.StockInfos)
-                .Where(p => p.ProductTypeId == productType.Id)
-                .ToListAsync();
+        //    var products = await _context.Products
+        //        .Include(p => p.Brand)
+        //        .Include(p => p.Color)
+        //        .Include(p => p.Gender)
+        //        .Include(p => p.ProductType)
+        //        .Include(p => p.SellingCategory)
+        //        .Include(p => p.ProductImages)
+        //        .Include(p => p.StockInfos)
+        //        .Where(p => p.ProductTypeId == productType.Id)
+        //        .ToListAsync();
 
-            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
-        }
+        //    return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+        //}
 
         [HttpGet("filter")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetFilteredProducts([FromQuery] ProductFilter filter)
         {
+            if (filter.Take > 100)
+            {
+                return BadRequest("Cannot request more than 100 products at a time.");
+            }
+
             var productsQuery = _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.Color)
@@ -93,29 +98,45 @@ namespace NMShop.Controller
                 .Include(p => p.StockInfos)
                 .AsQueryable();
 
-            if (!string.IsNullOrEmpty(filter.Brand))
+            if (!string.IsNullOrEmpty(filter.Category))
             {
-                productsQuery = productsQuery.Where(p => p.Brand.Name.Equals(filter.Brand, StringComparison.OrdinalIgnoreCase));
+                var productType = await _context.ProductTypes.Include(pt => pt.InverseParentType)
+                    .FirstOrDefaultAsync(pt => EF.Functions.ILike(pt.Name, filter.Category));
+
+                if (productType != null)
+                {
+                    if (productType.InverseParentType.Any())
+                    {
+                        // If the specified type is a parent, get products of child types
+                        var childTypeIds = productType.InverseParentType.Select(pt => pt.Id).ToList();
+                        productsQuery = productsQuery.Where(p => childTypeIds.Contains(p.ProductTypeId));
+                    }
+                    else
+                    {
+                        // If the specified type is a child, get products of that type
+                        productsQuery = productsQuery.Where(p => p.ProductTypeId == productType.Id);
+                    }
+                }
             }
 
-            if (!string.IsNullOrEmpty(filter.SubCategory))
+            if (filter.SubCategories != null && filter.SubCategories.Any())
             {
-                productsQuery = productsQuery.Where(p => p.ProductType.Name.Equals(filter.SubCategory, StringComparison.OrdinalIgnoreCase));
+                productsQuery = productsQuery.Where(p => filter.SubCategories.Contains(p.ProductType.Name));
+            }
+
+            if (filter.Brands != null && filter.Brands.Any())
+            {
+                productsQuery = productsQuery.Where(p => filter.Brands.Contains(p.Brand.Name));
             }
 
             if (!string.IsNullOrEmpty(filter.SelCategory))
             {
-                productsQuery = productsQuery.Where(p => p.SellingCategory.Name.Equals(filter.SelCategory, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrEmpty(filter.Category))
-            {
-                productsQuery = productsQuery.Where(p => p.ProductType.Name.Equals(filter.Category, StringComparison.OrdinalIgnoreCase));
+                productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.SellingCategory.Name, filter.SelCategory));
             }
 
             if (!string.IsNullOrEmpty(filter.Gender))
             {
-                productsQuery = productsQuery.Where(p => p.Gender.Name.Equals(filter.Gender, StringComparison.OrdinalIgnoreCase));
+                productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Gender.Name, filter.Gender));
             }
 
             if (filter.MinPrice.HasValue)
@@ -130,7 +151,7 @@ namespace NMShop.Controller
 
             if (!string.IsNullOrEmpty(filter.Color))
             {
-                productsQuery = productsQuery.Where(p => p.Color.Name.Equals(filter.Color, StringComparison.OrdinalIgnoreCase));
+                productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Color.Name, filter.Color));
             }
 
             if (filter.InStock)
@@ -158,12 +179,22 @@ namespace NMShop.Controller
                             ? productsQuery.OrderBy(p => p.OrderParts.Sum(op => op.Amount))
                             : productsQuery.OrderByDescending(p => p.OrderParts.Sum(op => op.Amount));
                         break;
-
                 }
+            }
+
+            if (filter.Skip.HasValue)
+            {
+                productsQuery = productsQuery.Skip(filter.Skip.Value);
+            }
+
+            if (filter.Take.HasValue)
+            {
+                productsQuery = productsQuery.Take(filter.Take.Value);
             }
 
             var products = await productsQuery.ToListAsync();
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
+
     }
 }

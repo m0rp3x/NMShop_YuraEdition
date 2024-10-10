@@ -1,5 +1,4 @@
 using MudBlazor.Services;
-using NMShop.Data;
 using NMShop.Components;
 using Microsoft.EntityFrameworkCore;
 using NMShop.Scaffold;
@@ -7,7 +6,7 @@ using NMShop.Client.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ClientTestDataProvider>();
+builder.Services.AddScoped<ClientDataProvider>();
 
 builder.Services.AddHttpClient();
 

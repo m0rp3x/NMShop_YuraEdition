@@ -190,10 +190,10 @@ INSERT INTO "ProductTypes" ("Name", "ParentType_Id") VALUES
   ('Очки', 8),
   ('Другие аксессуары', 8),
   ('Обувь', NULL),
-  ('Кеды и кроссовки', 13),
-  ('Ботинки и угги', 13),
-  ('Слайды', 13),
-  ('Детское', 13);
+  ('Кеды и кроссовки', 14),
+  ('Ботинки и угги', 14),
+  ('Слайды', 14),
+  ('Детское', 14);
 
 INSERT INTO "ProductColors" ("Value", "Name") VALUES ('FF5733', 'Красный'), ('33FF57', 'Зелёный'), ('3357FF', 'Синий');
 
@@ -352,6 +352,18 @@ BEGIN
     END LOOP;
 END
 $$;
+
+CREATE TABLE tg_admins
+(
+    Id          SERIAL PRIMARY KEY,
+    Username    VARCHAR(255) NOT NULL,
+    TelegramId  VARCHAR(12) NOT NULL,
+    CONSTRAINT tg_admins_username_uindex UNIQUE (Username)
+);
+
+ALTER TABLE tg_admins
+    OWNER TO "NMShop_dollsawour";
+
 
 
 

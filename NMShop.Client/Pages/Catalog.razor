@@ -1,12 +1,12 @@
-﻿﻿@using NMShop.Client.Components;
+﻿@using NMShop.Client.Components;
 @using NMShop.Client.Data;
-@using NMShop.Client.Layout
+@using NMShop.Client.Layout;
 @using NMShop.Shared.Models;
-@inject HttpClient Http
+@inject HttpClient Http;
+@inject NavigationManager Navigation;
+@inject ClientDataProvider DataProvider;
 
-@inject ClientTestDataProvider DataProvider
-
-@page "/catalog/{productType?}"
+@page "/catalog/{filter?}"
 
 <div class="d-flex flex-grow-1" style="width: 100%">
     <MudDrawerContainer Style="width: 100%; position:relative;">
@@ -14,7 +14,7 @@
         <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-9 pt-4 pb-2" Style="background-color: white;">
 
             <div class="d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
-                <MudButton Style="flex-shrink: 0;" Class="py-1 px-3"  @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
+                <MudButton Style="flex-shrink: 0;" Class="py-1 px-3" @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
 
                 <input placeholder="Найти"
                        style="font-size: 17px; width: 100%; height: 50px; color: #000000; font-weight: 400; padding: 10px 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; margin: 0; resize: none; border-radius: 25px;"
@@ -23,7 +23,7 @@
                        @bind="SearchInput"
                        size="50" />
 
-                <MudCheckBox T="bool" @bind-Value="OnlyInStock" @oninput="HandleStockChange" Label="Только в наличии" />
+                <MudCheckBox T="bool" @bind-Value="OnlyInStock" @oninput="async () => await OnFilterChanged(OnlyInStockFilter)" Label="Только в наличии" />
 
                 <MudExpansionPanels Style="text-wrap: nowrap;" Class="mt-3" MultiExpansion="true">
 
@@ -44,29 +44,27 @@
 
                         @foreach (var brand in Brands)
                         {
-                            <MudCheckBox T="bool" @bind-Value="brand.IsSelected" @oninput="async () => await OnBrandSelectioninputd(brand)" Label="@brand.Name" />
+                            <MudCheckBox T="bool" @bind-Value="brand.IsSelected" @oninput="async () => await OnFilterChanged(brand)" Label="@brand.Name" />
                         }
 
                     </MudExpansionPanel>
 
-                    @if (productType == "shoes" || productType == "clothes")
+                    @if (Filter.Category == "Обувь" || Filter.Category == "Одежда")
                     {
                         <MudExpansionPanel Text="Размер">
 
-                            @if (productType == "clothes")
+                            @if (Filter.Category == "Одежда")
                             {
-
                                 @foreach (var cso in ClothesSizeOptions)
                                 {
-                                    <MudCheckBox @bind-Value="cso.IsSelected" Label="@cso.Size.ToString()" />
+                                    <MudCheckBox @bind-Value="cso.IsSelected" @oninput="async () => await OnFilterChanged(cso)" Label="@cso.Size.ToString()" />
                                 }
-
                             }
                             else
                             {
                                 <div class="d-flex" style="gap: 15px;">
-                                    <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MinPriceInput" Label="От" Step="1" Variant="Variant.Outlined" />
-                                    <MudNumericField @onfocusout="OnPriceChanged" @bind-Value="MaxPriceInput" Label="До" Step="1" Variant="Variant.Outlined" />
+                                    <MudNumericField @onfocusout="OnSizeChanged" @bind-Value="MinSizeInput" Label="От" Step="1" Variant="Variant.Outlined" />
+                                    <MudNumericField @onfocusout="OnSizeChanged" @bind-Value="MaxSizeInput" Label="До" Step="1" Variant="Variant.Outlined" />
                                 </div>
                             }
 
@@ -76,7 +74,7 @@
 
                             @foreach (var gender in Genders)
                             {
-                                <MudCheckBox @oninput="async () => await OnGenderSelectioninputd(gender)" @bind-Value="gender.IsSelected" Label="@gender.Name" />
+                                <MudCheckBox @bind-Value="gender.IsSelected" @oninput="async () => await OnFilterChanged(gender)" Label="@gender.Name" />
                             }
 
                         </MudExpansionPanel>
@@ -86,7 +84,7 @@
 
                         @foreach (var selCategory in SelCategory)
                         {
-                            <MudCheckBox T="bool" @bind-Value="selCategory.IsSelected" @oninput=" async () => await OnSelCategorySelectionInput(selCategory)" Label="@selCategory.Name" />
+                            <MudCheckBox T="bool" @bind-Value="selCategory.IsSelected" @oninput="async () => await OnFilterChanged(selCategory)" Label="@selCategory.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -95,7 +93,7 @@
 
                         @foreach (var subCategories in SubCategory)
                         {
-                            <MudCheckBox T="bool" @bind-Value="subCategories.IsSelected" @oninput=" async () => await OnSubCategorySelectionInput(subCategories)" Label="@subCategories.Name" />
+                            <MudCheckBox T="bool" @bind-Value="subCategories.IsSelected" @oninput="async () => await OnFilterChanged(subCategories)" Label="@subCategories.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -110,14 +108,14 @@
             <div class="d-flex mb-20" style="width: 100%; gap: 30px;">
 
                 <MudText Style="color: #BDBDBD;" Typo="Typo.h4">Найдено: @(Products.Count())</MudText>
-                
-                <MudSpacer/>
+
+                <MudSpacer />
 
                 <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.h5"
-                    @onmouseover="() => {_isFilterButtonHovered = true;}"
-                     @onmouseout="() => {_isFilterButtonHovered = false;}"
+                         @onmouseover="() => {_isFilterButtonHovered = true;}"
+                         @onmouseout="() => {_isFilterButtonHovered = false;}"
                          @onclick="() => {_isDrawerOpened = !_isDrawerOpened;}"
-                     style=@FilterButtonStyle>
+                         style=@FilterButtonStyle>
                     @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
                 </MudText>
 
@@ -128,11 +126,11 @@
                     <div class="absolute" style=@("transition: all 0.6s ease 0s; overflow: hidden; " + (_isSortOptionOpened ? "top: 120%; height: fit-content;" : "height: 0px;"))>
                         @foreach (SortOption so in SortOptions)
                         {
-                        <MudText @onclick="async () => await OnSortOptionChanged(so)"
-                                 @onmouseover="() => {so.IsHovered = true;}"
-                                 @onmouseout="() => {so.IsHovered = false;}"
-                                 Style=@("transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
-                                 Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
+                            <MudText @onclick="async () => await OnSortOptionChanged(so)"
+                                     @onmouseover="() => {so.IsHovered = true;}"
+                                     @onmouseout="() => {so.IsHovered = false;}"
+                                     Style=@("transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
+                                     Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
                         }
                     </div>
                 </div>
@@ -153,7 +151,7 @@
                 </div>
             </div>
 
-            <ProductGrid Products="Products" Take="20" />
+            <ProductGrid Filter="Filter" />
         </div>
 
     </MudDrawerContainer>
@@ -161,48 +159,27 @@
 
 @code {
     [Parameter]
-    public string productType { get; set; }
+    public string filter { get; set; }
 
     private IEnumerable<ProductDto> Products = new List<ProductDto>();
 
     protected override async Task OnInitializedAsync()
     {
-        switch (productType)
+        if (!string.IsNullOrEmpty(filter))
         {
-            case "shoes":
-                Products = await DataProvider.GetShoes();
-                break;
-            case "clothes":
-                Products = await DataProvider.GetClothes();
-                break;
-            case "accessories":
-                Products = await DataProvider.GetAccessories();
-                break;
-            default:
-                Products = await DataProvider.GetAll();
-                break;
+            Filter = ParseFilter(filter);
         }
 
-        // Инициализируем список брендов
-        Brands = (await DataProvider.GetBrandsAsync())
-            .Select(name => new BrandModel { Name = name })
-            .ToList();
+        Brands = (await DataProvider.GetBrandsAsync()).Select(b => new BrandModel { Name = b }).ToList();
+        Genders = (await DataProvider.GetGendersAsync()).Select(g => new GenderModel { Name = g }).ToList();
+        SubCategory = (await DataProvider.GetSubCategoriesAsync(string.IsNullOrEmpty(Filter.Category) ? null : Filter.Category)).Select(sc => new SubCategoryModel { Name = sc }).ToList();
+        SelCategory = (await DataProvider.GetSelCategoriesAsync()).Select(sc => new SelCategoryModel { Name = sc }).ToList();
 
-        Genders = (await DataProvider.GetGendersAsync())
-            .Select(name => new GenderModel { Name = name })
-            .ToList();
-
-        SubCategory = (await DataProvider.GetSubCategoriesAsync())
-            .Select(name => new SubCategoryModel { Name = name })
-            .ToList();
-
-        SelCategory = (await DataProvider.GetSelCategoriesAsync())
-            .Select(name => new SelCategoryModel { Name = name })
-            .ToList();
+        await LoadProducts();
     }
-    
-    
-    
+
+    private ProductFilter Filter { get; set; } = new ProductFilter();
+
     private bool OnlyInStockSelected = false;
 
     private bool _isDrawerOpened = false;
@@ -215,13 +192,12 @@
 
     private bool isSortDescending = true;
 
-    private string FilterButtonStyle => 
+    private string FilterButtonStyle =>
     "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
     + (_isFilterButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
     private int? MinPriceInput { get; set; }
     private int? MaxPriceInput { get; set; }
-
 
     private int MinSizeInput;
 
@@ -229,230 +205,227 @@
 
     private bool OnlyInStock = false;
 
-
     private string SearchInput { get; set; } = String.Empty;
 
-    private List<BrandModel> Brands;
-    private List<GenderModel> Genders;
-    private List<SubCategoryModel> SubCategory;
-    private List<SelCategoryModel> SelCategory;
-    
+    private List<BrandModel> Brands = new();
+    private List<GenderModel> Genders = new();
+    private List<SubCategoryModel> SubCategory = new();
+    private List<SelCategoryModel> SelCategory = new();
+
+    private IFilterOption OnlyInStockFilter = new BoolFilter("InStock", false);
 
     private static List<ClothesSizeOption> ClothesSizeOptions = Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(cs => new ClothesSizeOption() { Size = cs }).ToList();
 
-    
-   
-
     private static List<SortOption> SortOptions = new List<SortOption>
     {
-        new SortOption { Name = "Популярности", Type = "popularity" },
+        new SortOption { Name = "ПОПУЛЯРНОСТИ", Type = "popularity" },
         new SortOption { Name = "НОВИЗНЕ", Type = "newest" },
         new SortOption { Name = "ЦЕНЕ", Type = "price" }
     };
 
     private async Task LoadProducts()
     {
-        var queryParams = new Dictionary<string, string>();
-
-        // Gather selected filter inputs
-        var selectedBrands = GetSelectedBrands();
-        if (selectedBrands.Any())
-        {
-            queryParams["Brand"] = string.Join(",", selectedBrands);
-        }
-
-        var selectedGenders = GetSelectedGenders();
-        if (selectedGenders.Any())
-        {
-            queryParams["Gender"] = string.Join(",", selectedGenders);
-        }
-
-        var selectedSubCategory = GetSelectedSubCategory();
-        if (selectedSubCategory.Any())
-        {
-            queryParams["SubCategory"] = string.Join(",", selectedSubCategory);
-        } 
-        var selectedSelCategory = GetSelectedSelCategory();
-
-        if (selectedSelCategory.Any())
-        {
-            queryParams["SelCategory"] = string.Join(",", selectedSelCategory);
-        }
-        
-        queryParams["SortBy"] = CurrentSortOption.Type;
-        queryParams["SortDirection"] = isSortDescending.ToString();
-        
-
-        if (MinPriceInput.HasValue) queryParams["MinPrice"] = MinPriceInput.Value.ToString();
-        if (MaxPriceInput.HasValue) queryParams["MaxPrice"] = MaxPriceInput.Value.ToString();
-
-
-        if (OnlyInStock)
-        {
-            queryParams["InStock"] = "true";
-        }
-
-        // Construct query string and call API
-        var queryString = string.Join("&", queryParams.Select(kv => $"{kv.Key}={kv.Value}"));
-        var url = $"https://localhost:7279/api/products/filter?{queryString}";
-
-        Products = await Http.GetFromJsonAsync<IEnumerable<ProductDto>>(url);
-        Console.WriteLine($"Запрос на сервер: {url}");
-
+        Navigation.NavigateTo($"/catalog/{Filter.ToQueryString()}");
+        Products = await DataProvider.GetFilteredProducts(Filter);
     }
 
-
-    private async Task OnBrandSelectioninputd(BrandModel brand)
+    private async Task OnFilterChanged(IFilterOption filter)
     {
-        brand.IsSelected = !brand.IsSelected; // Toggle the selection
-        await LoadProducts(); // Load products immediately
+        filter.IsSelected = !filter.IsSelected;
+
+        if (filter is BrandModel brand)
+        {
+            if (brand.IsSelected)
+            {
+                Filter.Brands.Add(brand.Name);
+            }
+            else
+            {
+                Filter.Brands.Remove(brand.Name);
+            }
+        }
+        else if (filter is GenderModel gender)
+        {
+            if (gender.IsSelected)
+            {
+                Filter.Gender = gender.Name;
+            }
+            else
+            {
+                Filter.Gender = null;
+            }
+        }
+        else if (filter is SubCategoryModel subCategory)
+        {
+            if (subCategory.IsSelected)
+            {
+                Filter.SubCategories.Add(subCategory.Name);
+            }
+            else
+            {
+                Filter.SubCategories.Remove(subCategory.Name);
+            }
+        }
+        else if (filter is SelCategoryModel selCategory)
+        {
+            if (selCategory.IsSelected)
+            {
+                Filter.SelCategory = selCategory.Name;
+            }
+            else
+            {
+                Filter.SelCategory = null;
+            }
+        }
+
+        await LoadProducts();
     }
-    
+
     private async Task OnSortOptionChanged(SortOption selectedSortOption)
     {
         CurrentSortOption = selectedSortOption;
-        await LoadProducts(); // Перезагрузить список продуктов с новой сортировкой
+        Filter.SortBy = selectedSortOption.Type;
+        await LoadProducts();
     }
 
-    private async Task OnSubCategorySelectionInput(SubCategoryModel subCategory)
-    {
-        subCategory.IsSelected = !subCategory.IsSelected;
-        await LoadProducts();
-    }
-    private async Task OnSelCategorySelectionInput(SelCategoryModel selCategory)
-    {
-        selCategory.IsSelected = !selCategory.IsSelected;
-        await LoadProducts();
-    }
-    
     private async Task ToggleSortDirection()
     {
         isSortDescending = !isSortDescending;
+        Filter.IsAscending = !isSortDescending;
         await LoadProducts();
     }
-    
+
     private async Task OnPriceChanged()
     {
-        await LoadProducts(); // Применение фильтрации после завершения ввода
-        StateHasChanged();
-    }
-
-    
-    
-    private async Task HandleStockChange(ChangeEventArgs e)
-    {
-        OnlyInStock = (bool)e.Value;  // Получаем значение из чекбокса
-        await LoadProducts();  // Обновляем список продуктов
-        StateHasChanged(); // Ensure the UI reflects changes instantly
-    }
-
-    private async Task OnGenderSelectioninputd(GenderModel gender)
-    {
-        gender.IsSelected = !gender.IsSelected; // Toggle the selection
-        await LoadProducts(); // Load products immediately
-        StateHasChanged(); // Ensure the UI reflects changes instantly
-    }
-
-    private async Task OnSellingCategoriesChanged(CategoryOption co)
-    {
-        co.IsSelected = !co.IsSelected; // Toggle the selection
-        await LoadProducts(); // Load products immediately
-        StateHasChanged(); // Ensure the UI reflects changes instantly
-    }
-    
-    private async Task ResetFilters()
-    {
-        // Сброс фильтров
-        foreach (var brand in Brands)
-        {
-            brand.IsSelected = false;
-        }
-
-        foreach (var gender in Genders)
-        {
-            gender.IsSelected = false;
-        }
-
-        foreach (var subCategory in SubCategory)
-        {
-            subCategory.IsSelected = false;
-        }
-
-        // Сброс значений полей
-        MinPriceInput = null;
-        MaxPriceInput = null;
-        OnlyInStock = false;
-
-        // Обновляем продукты после сброса
+        Filter.MinPrice = MinPriceInput;
+        Filter.MaxPrice = MaxPriceInput;
         await LoadProducts();
     }
 
-
-  
-
-    // Метод для получения выбранных брендов
-    private IEnumerable<string> GetSelectedBrands()
+    private async Task OnSizeChanged()
     {
-        return Brands.Where(b => b.IsSelected).Select(b => b.Name);
+        // Implement logic to update Filter with size information
+        await LoadProducts();
     }
 
-    // Метод для получения выбранных вариантов пола
-    private IEnumerable<string> GetSelectedGenders()
+    private async Task ResetFilters()
     {
-        return Genders.Where(g => g.IsSelected).Select(g => g.Name);
+        Filter = new ProductFilter();
+        await LoadProducts();
     }
 
-    private IEnumerable<string> GetSelectedSubCategory()
+    private ProductFilter ParseFilter(string filterString)
     {
-        return SubCategory.Where(s => s.IsSelected).Select(s => s.Name);
-    }
-    private IEnumerable<string> GetSelectedSelCategory()
-    {
-        return SelCategory.Where(s => s.IsSelected).Select(s => s.Name);
+        var filter = new ProductFilter();
+        var parameters = filterString.Split('&');
+        foreach (var parameter in parameters)
+        {
+            var keyValue = parameter.Split('=');
+            if (keyValue.Length == 2)
+            {
+                var key = keyValue[0];
+                var value = keyValue[1];
+
+                switch (key)
+                {
+                    case "Brands":
+                        filter.Brands = value.Split(',').ToList();
+                        break;
+                    case "MinPrice":
+                        filter.MinPrice = decimal.Parse(value);
+                        break;
+                    case "MaxPrice":
+                        filter.MaxPrice = decimal.Parse(value);
+                        break;
+                    case "Gender":
+                        filter.Gender = value;
+                        break;
+                    case "Category":
+                        filter.Category = value;
+                        break;
+                    case "InStock":
+                        filter.InStock = bool.Parse(value);
+                        break;
+                    case "Color":
+                        filter.Color = value;
+                        break;
+                    case "SubCategories":
+                        filter.SubCategories = value.Split(',').ToList();
+                        break;
+                    case "SelCategory":
+                        filter.SelCategory = value;
+                        break;
+                    case "SortBy":
+                        filter.SortBy = value;
+                        break;
+                    case "IsAscending":
+                        filter.IsAscending = bool.Parse(value);
+                        break;
+                    case "Skip":
+                        filter.Skip = int.Parse(value);
+                        break;
+                    case "Take":
+                        filter.Take = int.Parse(value);
+                        break;
+                    case "MinSize":
+                        filter.MinSize = int.Parse(value);
+                        break;
+                    case "MaxSize":
+                        filter.MaxSize = int.Parse(value);
+                        break;
+                }
+            }
+        }
+        return filter;
     }
 
-
-    
     // Модели
-    
-    private class BrandModel
+    public interface IFilterOption
     {
-        public string Name = "Unitialized";
-        public bool IsSelected = false;
-    }
-    
-    private class SubCategoryModel
-    {
-        public string Name = "Unitialized";
-        public bool IsSelected = false;
-    }
-    private class SelCategoryModel
-    {
-        public string Name = "Unitialized";
-        public bool IsSelected = false;
+        string Name { get; }
+        bool IsSelected { get; set; }
     }
 
-    public class GenderModel
-    {
-        public string Name = "Unitialized";
-        public bool IsSelected = false;
-    }
-
-    public class CategoryOption
+    public class BoolFilter : IFilterOption
     {
         public string Name { get; set; }
         public bool IsSelected { get; set; }
+
+        public BoolFilter(string name, bool isSelected)
+        {
+            Name = name;
+            IsSelected = isSelected;
+        }
     }
 
-    public class ProductCategory
+    private class BrandModel : IFilterOption
     {
-        public string Name { get; set; }
-        public bool IsSelected { get; set; }
+        public string Name { get; set; } = "Unitialized";
+        public bool IsSelected { get; set; } = false;
     }
 
-    public class ClothesSizeOption
+    private class SubCategoryModel : IFilterOption
+    {
+        public string Name { get; set; } = "Unitialized";
+        public bool IsSelected { get; set; } = false;
+    }
+
+    private class SelCategoryModel : IFilterOption
+    {
+        public string Name { get; set; } = "Unitialized";
+        public bool IsSelected { get; set; } = false;
+    }
+
+    public class GenderModel : IFilterOption
+    {
+        public string Name { get; set; } = "Unitialized";
+        public bool IsSelected { get; set; } = false;
+    }
+
+    public class ClothesSizeOption : IFilterOption
     {
         public ClothingSize Size { get; set; }
+        public string Name => Size.ToString();
         public bool IsSelected { get; set; }
     }
 
@@ -462,5 +435,4 @@
         public string Type { get; set; }
         public bool IsHovered { get; set; } = false;
     }
-
 }

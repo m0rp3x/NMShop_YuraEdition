@@ -1,13 +1,13 @@
 ﻿@using NMShop.Shared.Models
 @using NMShop.Client.Data
 
-@inject ClientTestDataProvider DataProvider
+@inject ClientDataProvider DataProvider
 
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-10">
 
     <MudStack Row="true">
         <MudText Align="Align.Left" Typo="Typo.h4" Style="font-weight: 800; text-transform: uppercase;">
-            @CategoryType.Localize()
+            @CategoryType
         </MudText>
 
         <MudSpacer/>
@@ -18,7 +18,7 @@
         </MudButton>
     </MudStack>
 
-    <ProductGrid Products="Products" Take="4"/>
+    <ProductGrid Filter="new() { Category = CategoryType, Take=4 }" />
     
 
 </MudContainer>
@@ -26,8 +26,4 @@
 @code {
     [Parameter]
     public string CategoryType { get; set; }
-
-    [Parameter]
-    public IEnumerable<ProductDto> Products { get; set; }
-
 }

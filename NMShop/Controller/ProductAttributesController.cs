@@ -26,13 +26,33 @@ namespace NMShop.Controller
         }
 
         [HttpGet("product-types")]
-        public async Task<ActionResult<IEnumerable<string>>> GetProductTypes()
+        public async Task<ActionResult<IEnumerable<string>>> GetProductTypes([FromQuery] string parentCategory = null)
         {
-            var productTypes = await _context.ProductTypes
-                .Select(pt => pt.Name)
-                .ToListAsync();
+            if (string.IsNullOrEmpty(parentCategory))
+            {
+                var productTypes = await _context.ProductTypes
+                    .Select(pt => pt.Name)
+                    .ToListAsync();
 
-            return Ok(productTypes);
+                return Ok(productTypes);
+            }
+            else
+            {
+                var parentType = await _context.ProductTypes
+                    .Include(pt => pt.InverseParentType)
+                    .FirstOrDefaultAsync(pt => EF.Functions.ILike(pt.Name, parentCategory));
+
+                if (parentType == null || !parentType.InverseParentType.Any())
+                {
+                    return NotFound("Parent category not found or has no subcategories.");
+                }
+
+                var subCategories = parentType.InverseParentType
+                    .Select(pt => pt.Name)
+                    .ToList();
+
+                return Ok(subCategories);
+            }
         }
 
         [HttpGet("selling-categories")]

@@ -1,17 +1,19 @@
-﻿@using NMShop.Shared.Models
+﻿@using NMShop.Shared.Models;
+@using NMShop.Client.Data
 
-@inject NavigationManager Navigation
+@inject NavigationManager Navigation;
+@inject ClientDataProvider DataProvider
 
 <MudGrid Spacing="20">
 
-    @foreach (ProductDto p in _productsSlice)
+    @foreach (ProductDto p in _products)
     {
         var (minPrice, minDiscountPrice) = p.GetMinPriceAndDiscount();
         bool willShowDiscountPrice = minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
 
         <MudItem xs="6" md="4" lg="3" Class="" @onclick="() => GoToProduct(p)">
             <div class="cursor-pointer pa-6">
-                
+
                 <div class="relative">
                     <MudImage Class="hovering mb-7" Src=@(p.Images.GetMainImageSrc()) ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center" Style="aspect-ratio: 1 / 0.8; width: 100%; height: auto;" />
 
@@ -45,25 +47,18 @@
 
 @code {
     [Parameter]
-    public IEnumerable<ProductDto> Products { get; set; }
-    [Parameter]
-    public int Take { get; set; }
-    [Parameter]
-    public int Skip { get; set; }
+    public ProductFilter Filter { get; set; }
 
-    private IEnumerable<ProductDto> _productsSlice
+    private IEnumerable<ProductDto> _products = new List<ProductDto>();
+
+    protected override async Task OnParametersSetAsync()
     {
-        get
-        {
-            if (Skip > 0)
-            {
-                if (Take > 0) return Products.Skip(Skip).Take(Take);
-                return Products.Skip(Skip);
-            }
-            if (Take > 0) return Products.Take(Take);
+        await LoadProducts();
+    }
 
-            return Products;
-        }
+    private async Task LoadProducts()
+    {
+        _products = await DataProvider.GetFilteredProducts(Filter);
     }
 
     private void GoToProduct(ProductDto product)
