@@ -1,4 +1,4 @@
-﻿@* @using NMShop.Client.Layout
+﻿@using NMShop.Client.Layout
 @using NMShop.Shared.Models
 @using NMShop.Client.Data
 @using NMShop.Client.Layout
@@ -6,13 +6,13 @@
 @inject ClientDataProvider DataProvider
 @inject NavigationManager Navigation
 
-@page "/catalog/{productType}/{productCode}"
+@page "/catalog/{productParentType}/{article}"
 
 <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
     <div class="d-flex relative" style=@($"color: #666666; gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
         <MudLink Typo="Typo.h5" Color="Color.Inherit" Href="/catalog">Каталог</MudLink>
         /
-        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@($"/catalog/{productType}")>@productType.Localize()</MudLink>
+        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@($"/catalog/{productParentType}")>@productParentType.Localize()</MudLink>
         /
         <MudText Typo="Typo.h5" Color="Color.Inherit" >@product.Article</MudText>
         <MudSpacer/>
@@ -178,8 +178,8 @@
 </MudContainer>
 
 @code {
-    [Parameter] public string productType { get; set; }
-    [Parameter] public string productCode { get; set; }
+    [Parameter] public string productParentType { get; set; }
+    [Parameter] public string article { get; set; }
 
     private ProductDto product = new();
 
@@ -202,7 +202,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var parsedSuccesfully = int.TryParse(productCode, out var parsedId);
+        var parsedSuccesfully = int.TryParse(article, out var parsedId);
         if (parsedSuccesfully)
         {
             product = await DataProvider.GetById(parsedId);
@@ -229,4 +229,4 @@
 
     };
 
-} *@
+}

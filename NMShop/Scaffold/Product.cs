@@ -21,12 +21,12 @@ public partial class Product
     public string Name { get; set; } = null!;
 
     [Column("Brand_Id")]
-    [DisplayName( "Названиее Бренда")]
+    [DisplayName( "Бренд")]
     
     public int BrandId { get; set; }
 
     [StringLength(150)]
-    [DisplayName( "Артикль товара")]
+    [DisplayName( "Артикул товара")]
 
     public string Article { get; set; } = null!;
 
