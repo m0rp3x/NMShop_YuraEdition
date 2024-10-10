@@ -21,11 +21,11 @@ namespace NMShop.Shared.Models
             if (filter.IsAscending) queryParams["IsAscending"] = "true";
             if (filter.Skip.HasValue) queryParams["Skip"] = filter.Skip.Value.ToString();
             if (filter.Take.HasValue) queryParams["Take"] = filter.Take.Value.ToString();
-            if (filter.MinSize.HasValue) queryParams["MinSize"] = filter.MinSize.Value.ToString();
-            if (filter.MaxSize.HasValue) queryParams["MaxSize"] = filter.MaxSize.Value.ToString();
 
             return string.Join("&", queryParams.Select(kv => $"{kv.Key}={HttpUtility.UrlEncode(kv.Value)}"));
         }
+
+        static string _placeHolder = "assets/placeholder.jpg";
 
         public static string ToSrcString(this byte[]? imageBytes)
         {
@@ -33,10 +33,7 @@ namespace NMShop.Shared.Models
             {
                 return "data:image/jpeg;base64," + Convert.ToBase64String(imageBytes);
             }
-            else
-            {
-                return $"assets/{GetPlaceHolderName()}.jpg";
-            }
+            else return _placeHolder;
         }
 
         public static string GetMainImageSrc(this List<ProductImage> productImages)
@@ -49,19 +46,7 @@ namespace NMShop.Shared.Models
                 }
                 return productImages.Single(pi => pi.IsMain).Bytes.ToSrcString();
             }
-            else
-            {
-                return $"assets/{GetPlaceHolderName()}.jpg";
-            }
-        }
-
-        private static readonly Random random = new Random();
-
-        public static string GetPlaceHolderName()
-        {
-            string[] strings = { "placeholder", "bebra", "biba", "boba" };
-            int index = random.Next(strings.Length);
-            return strings[index];
+            else return _placeHolder;
         }
 
         public static string ToPreFormatedString(this decimal? me) => Math.Abs(me ?? 0).ToString("# ### ### ### ###");

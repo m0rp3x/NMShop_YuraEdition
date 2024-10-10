@@ -49,16 +49,35 @@
     [Parameter]
     public ProductFilter Filter { get; set; }
 
+    [Parameter]
+    public EventCallback<int> OnProductCountChanged { get; set; }
+
+    private ProductFilter _previousFilter;
+
     private IEnumerable<ProductDto> _products = new List<ProductDto>();
 
     protected override async Task OnParametersSetAsync()
     {
-        await LoadProducts();
+        if (!Filter.Equals(_previousFilter))
+        {
+            _previousFilter = Filter.Clone();
+            await LoadProducts();
+        }
     }
 
     private async Task LoadProducts()
     {
-        _products = await DataProvider.GetFilteredProducts(Filter);
+        try
+        {
+
+            _products = await DataProvider.GetFilteredProducts(Filter);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        await OnProductCountChanged.InvokeAsync(_products.Count());
     }
 
     private void GoToProduct(ProductDto product)

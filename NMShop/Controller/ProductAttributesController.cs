@@ -28,28 +28,29 @@ namespace NMShop.Controller
         [HttpGet("product-types")]
         public async Task<ActionResult<IEnumerable<string>>> GetProductTypes([FromQuery] string parentCategory = null)
         {
-            if (string.IsNullOrEmpty(parentCategory))
-            {
-                var productTypes = await _context.ProductTypes
-                    .Select(pt => pt.Name)
-                    .ToListAsync();
-
-                return Ok(productTypes);
-            }
-            else
+            if (!string.IsNullOrEmpty(parentCategory))
             {
                 var parentType = await _context.ProductTypes
                     .Include(pt => pt.InverseParentType)
                     .FirstOrDefaultAsync(pt => EF.Functions.ILike(pt.Name, parentCategory));
 
-                if (parentType == null || !parentType.InverseParentType.Any())
+                if (parentType == null)
                 {
-                    return NotFound("Parent category not found or has no subcategories.");
+                    return NotFound("Parent category not found.");
                 }
 
                 var subCategories = parentType.InverseParentType
                     .Select(pt => pt.Name)
                     .ToList();
+
+                return Ok(subCategories);
+            }
+            else
+            {
+                var subCategories = await _context.ProductTypes
+                    .Where(pt => pt.ParentTypeId != null)
+                    .Select(pt => pt.Name)
+                    .ToListAsync();
 
                 return Ok(subCategories);
             }
