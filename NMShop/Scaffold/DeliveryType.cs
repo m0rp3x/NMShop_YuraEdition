@@ -16,5 +16,13 @@ public partial class DeliveryType
     public string Name { get; set; } = null!;
 
     [InverseProperty("DeliveryType")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
+
 }

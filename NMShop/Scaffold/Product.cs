@@ -65,5 +65,12 @@ public partial class Product
     public virtual SellingCategory SellingCategory { get; set; } = null!;
 
     [InverseProperty("Product")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<StockInfo> StockInfos { get; set; } = new List<StockInfo>();
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace NMShop.Scaffold;
@@ -42,27 +41,25 @@ public partial class Order
 
     [ForeignKey("DeliveryTypeId")]
     [InverseProperty("Orders")]
-    [JsonIgnore]
-
-    
+    [Display(AutoGenerateField = false)]
     public virtual DeliveryType DeliveryType { get; set; } = null!;
 
     [InverseProperty("Order")]
-    [JsonIgnore]
-
     public virtual ICollection<OrderPart> OrderParts { get; set; } = new List<OrderPart>();
 
     [ForeignKey("OrderStatusId")]
     [InverseProperty("Orders")]
-    [JsonIgnore]
-
+    [Display(AutoGenerateField = false)]
     public virtual OrderStatus OrderStatus { get; set; } = null!;
 
     [ForeignKey("PaymentTypeId")]
     [InverseProperty("Orders")]
-    [JsonIgnore]
-
+    [Display(AutoGenerateField = false)]
     public virtual PaymentType PaymentType { get; set; } = null!;
     
- 
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

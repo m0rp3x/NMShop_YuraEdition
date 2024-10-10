@@ -19,12 +19,21 @@ public partial class ProductType
     public int? ParentTypeId { get; set; }
 
     [InverseProperty("ParentType")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<ProductType> InverseParentType { get; set; } = new List<ProductType>();
 
     [ForeignKey("ParentTypeId")]
     [InverseProperty("InverseParentType")]
+    [Display(AutoGenerateField = false)]
     public virtual ProductType? ParentType { get; set; }
 
     [InverseProperty("ProductType")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

@@ -38,7 +38,6 @@ builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 builder.Services.AddCoreAdmin(); // после DbContext-а
 
 var app = builder.Build();
-
 // Настройка CORS
 app.UseCors("CorsPolicy");
 
@@ -60,7 +59,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 app.MapControllers();
-
+app.UseCoreAdminCustomUrl("adolfhitler");
+app.UseCoreAdminCustomTitle("Я ебу собак");
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(NMShop.Client._Imports).Assembly);

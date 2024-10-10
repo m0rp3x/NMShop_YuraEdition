@@ -16,5 +16,12 @@ public partial class OrderStatus
     public string Name { get; set; } = null!;
 
     [InverseProperty("OrderStatus")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    
+    public override string ToString()
+    {
+        return Id.ToString();  // Отображать ID бренда
+    }
+
 }

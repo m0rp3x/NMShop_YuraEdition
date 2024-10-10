@@ -16,5 +16,12 @@ public partial class PaymentType
     public string Name { get; set; } = null!;
 
     [InverseProperty("PaymentType")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    
+    public override string ToString()
+    {
+        return Id.ToString() + Name;  // Отображать ID бренда
+    }
+
 }
