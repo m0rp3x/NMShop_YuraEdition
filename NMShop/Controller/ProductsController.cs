@@ -2,9 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using NMShop.Scaffold;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using NMShop.Shared.Models;
 
 namespace NMShop.Controller

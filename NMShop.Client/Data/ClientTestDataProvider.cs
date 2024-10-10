@@ -12,76 +12,33 @@ namespace NMShop.Client.Data
             _http = http;
         }
 
-        public static string[] GetTestBrands()
+        public async Task<IEnumerable<string>> GetBrandsAsync()
         {
-            return new string[]
-            {
-                "Nike",
-                "Adidas",
-                "Puma",
-                "Reebok",
-                "Under Armour",
-                "New Balance",
-                "Converse",
-                "Vans",
-                "Gucci",
-                "Louis Vuitton",
-                "Prada",
-                "Versace",
-                "Balenciaga",
-                "H&M",
-                "Zara",
-                "Uniqlo",
-                "Levi's",
-                "Calvin Klein",
-                "Tommy Hilfiger",
-                "Ralph Lauren"
-            };
+            return await _http.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7279/api/productattributes/brands");
         }
 
-
-        public static string[] GetTestGenders()
+        public async Task<IEnumerable<string>> GetGendersAsync()
         {
-            return new string[]
-            {
-                "Унисекс",
-                "Мужской",
-                "Женский",
-            };
+            return await _http.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7279/api/productattributes/genders");
         }
 
-        public static string[] GetTestSubCategory()
+        public async Task<IEnumerable<string>> GetSubCategoriesAsync()
         {
-            return new string[]
-            {
-              "Кеды и Кроссовки",
-              "Ботинки и Угги",
-              "Слайды",
-              "Детское"
-            };
+            return await _http.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7279/api/productattributes/product-types");
         }
-        public static string[] GetTestSelCategory()
-        {
-            return new string[]
-            {
-                "Новые релизы",
-                "Хиты продаж",
-                "Коллаборации",
-                "Эксклюзивы",
-                "Маст-хэв"
-            };
-        }
-        
 
-       
+        public async Task<IEnumerable<string>> GetSelCategoriesAsync()
+        {
+            return await _http.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7279/api/productattributes/selling-categories");
+        }
 
         public async Task<IEnumerable<ProductDto>> GetAll() => await _http.GetFromJsonAsync<IEnumerable<ProductDto>>("https://localhost:7279/api/products");
         public async Task<ProductDto> GetById(int id) => await _http.GetFromJsonAsync<ProductDto>($"https://localhost:7279/api/products/id/{id}");
+
         // Дополнительные методы для доступа к данным
         public async Task<IEnumerable<ProductDto>> GetShoes() => await _http.GetFromJsonAsync<IEnumerable<ProductDto>>("https://localhost:7279/api/products/category/Обувь");
         public async Task<IEnumerable<ProductDto>> GetClothes() => await _http.GetFromJsonAsync<IEnumerable<ProductDto>>("https://localhost:7279/api/products/category/Одежда");
         public async Task<IEnumerable<ProductDto>> GetAccessories() => await _http.GetFromJsonAsync<IEnumerable<ProductDto>>("https://localhost:7279/api/products/category/Аксессуары");
-
 
         public async Task<IEnumerable<ReferenceInfo>> GetAllReferenceInfo() => await _http.GetFromJsonAsync<IEnumerable<ReferenceInfo>>("https://localhost:7279/api/referenceinfo");
         public async Task<ReferenceInfo> GetReferenceInfoByTopic(string topic) => await _http.GetFromJsonAsync<ReferenceInfo>($"https://localhost:7279/api/referenceinfo/{topic}");

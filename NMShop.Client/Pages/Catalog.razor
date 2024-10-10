@@ -182,6 +182,23 @@
                 Products = await DataProvider.GetAll();
                 break;
         }
+
+        // Инициализируем список брендов
+        Brands = (await DataProvider.GetBrandsAsync())
+            .Select(name => new BrandModel { Name = name })
+            .ToList();
+
+        Genders = (await DataProvider.GetGendersAsync())
+            .Select(name => new GenderModel { Name = name })
+            .ToList();
+
+        SubCategory = (await DataProvider.GetSubCategoriesAsync())
+            .Select(name => new SubCategoryModel { Name = name })
+            .ToList();
+
+        SelCategory = (await DataProvider.GetSelCategoriesAsync())
+            .Select(name => new SelCategoryModel { Name = name })
+            .ToList();
     }
     
     
@@ -232,29 +249,6 @@
         new SortOption { Name = "НОВИЗНЕ", Type = "newest" },
         new SortOption { Name = "ЦЕНЕ", Type = "price" }
     };
-
-    protected override void OnInitialized()
-    {
-        // Инициализируем список брендов
-        Brands = ClientTestDataProvider.GetTestBrands()
-            .Select(name => new BrandModel { Name = name})
-            .ToList();
-
-        Genders = ClientTestDataProvider.GetTestGenders()
-            .Select(name => new GenderModel { Name = name})
-            .ToList();
-        
-        SubCategory = ClientTestDataProvider.GetTestSubCategory()
-            .Select(name => new SubCategoryModel { Name = name })
-            .ToList();
-
-        SelCategory = ClientTestDataProvider.GetTestSelCategory()
-            .Select(name => new SelCategoryModel { Name = name })
-            .ToList();
-
-
-
-    }
 
     private async Task LoadProducts()
     {
