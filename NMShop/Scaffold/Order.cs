@@ -22,12 +22,12 @@ public partial class Order
     public string ClientFullName { get; set; } = null!;
 
     [StringLength(11)]
-    [DisplayName( "Телфон Клиента")]
+    [DisplayName( "Телефон Клиента")]
 
     public string ClientPhone { get; set; } = null!;
 
     [StringLength(500)]
-    [DisplayName( "Адресс доставки")]
+    [DisplayName( "Адрес доставки")]
 
     public string DeliveryAdress { get; set; } = null!;
 
@@ -45,12 +45,12 @@ public partial class Order
     public int OrderStatusId { get; set; }
 
     [StringLength(250)]
-    [DisplayName( "Фио доставщика")]
+    [DisplayName( "ФИО получателя")]
 
     public string DeliveryRecipientFullName { get; set; } = null!;
 
     [StringLength(11)]
-    [DisplayName( "Телефон доставщика")]
+    [DisplayName("Телефон получателя")]
 
     public string DeliveryRecipientPhone { get; set; } = null!;
 
@@ -79,7 +79,7 @@ public partial class Order
     
     public override string ToString()
     {
-        return $"Заказ Номер: {Id.ToString()}"; // Отображать ID бренда
+        return $"Заказ #{Id}"; // Отображать ID бренда
     }
 
 }

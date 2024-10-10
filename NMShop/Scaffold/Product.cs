@@ -89,7 +89,7 @@ public partial class Product
     
     public override string ToString()
     {
-        return $"Продукт {Id} - {Name}"; // Отображать ID бренда
+        return $"#{Id} - {Name}"; // Отображать ID бренда
     }
 
 }

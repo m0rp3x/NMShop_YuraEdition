@@ -16,15 +16,13 @@ public partial class OrderPart
 
     [Column("Order_Id")]
     [DisplayName( "Идентификатор заказа")]
-    
     public int OrderId { get; set; }
 
     [Column("Product_Id")]
-    [DisplayName( "Продукт")]
-
+    [DisplayName("Продукт")]
     public int ProductId { get; set; }
-    [DisplayName( "Количество")]
 
+    [DisplayName( "Количество")]
     public int Amount { get; set; }
 
     [ForeignKey("OrderId")]
@@ -39,7 +37,7 @@ public partial class OrderPart
     
     public override string ToString()
     {
-        return Id.ToString() + Product.Name;  // Отображать ID бренда
+        return Id.ToString() + Product.Name; 
     }
 
 }

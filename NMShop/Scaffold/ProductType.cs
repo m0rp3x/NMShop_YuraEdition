@@ -21,7 +21,7 @@ public partial class ProductType
     public string Name { get; set; } = null!;
 
     [Column("ParentType_Id")]
-    [DisplayName( "Родительских тип продукта")]
+    [DisplayName( "Родительский тип продукта")]
 
     public int? ParentTypeId { get; set; }
 
@@ -40,7 +40,7 @@ public partial class ProductType
     
     public override string ToString()
     {
-        return $"{Name}, родительский тип продукта: {ParentType.Name}";  // Отображать ID бренда
+        return Name + (ParentType is null ? "" : $", родительский - {ParentType.Name}" );  // Отображать ID бренда
     }
 
 }
