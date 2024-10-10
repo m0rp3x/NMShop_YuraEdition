@@ -10,6 +10,8 @@ builder.Services.AddSingleton(sp =>
 
 builder.Services.AddScoped<ClientTestDataProvider>();
 
+
+
 // Регистрация MudBlazor
 builder.Services.AddMudServices();
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace NMShop.Scaffold;
@@ -41,16 +42,27 @@ public partial class Order
 
     [ForeignKey("DeliveryTypeId")]
     [InverseProperty("Orders")]
+    [JsonIgnore]
+
+    
     public virtual DeliveryType DeliveryType { get; set; } = null!;
 
     [InverseProperty("Order")]
+    [JsonIgnore]
+
     public virtual ICollection<OrderPart> OrderParts { get; set; } = new List<OrderPart>();
 
     [ForeignKey("OrderStatusId")]
     [InverseProperty("Orders")]
+    [JsonIgnore]
+
     public virtual OrderStatus OrderStatus { get; set; } = null!;
 
     [ForeignKey("PaymentTypeId")]
     [InverseProperty("Orders")]
+    [JsonIgnore]
+
     public virtual PaymentType PaymentType { get; set; } = null!;
+    
+ 
 }

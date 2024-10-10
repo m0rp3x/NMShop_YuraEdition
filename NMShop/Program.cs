@@ -26,6 +26,8 @@ builder.Services.AddMudServices();
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
+
+
 builder.Services.AddDbContext<NMShopContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("TestConnection"));
