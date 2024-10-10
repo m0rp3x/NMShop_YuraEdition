@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +11,18 @@ namespace NMShop.Scaffold;
 public partial class ProductType
 {
     [Key]
+    [DisplayName( "Идентификатор")]
+
     public int Id { get; set; }
 
     [StringLength(50)]
+    [DisplayName( "Название")]
+
     public string Name { get; set; } = null!;
 
     [Column("ParentType_Id")]
+    [DisplayName( "Родительских тип продукта")]
+
     public int? ParentTypeId { get; set; }
 
     [InverseProperty("ParentType")]
@@ -33,7 +40,7 @@ public partial class ProductType
     
     public override string ToString()
     {
-        return Id.ToString();  // Отображать ID бренда
+        return $"{Name}, родительский тип продукта: {ParentType.Name}";  // Отображать ID бренда
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,33 +11,52 @@ namespace NMShop.Scaffold;
 public partial class Order
 {
     [Key]
-    public int Id { get; set; }
+    [DisplayName( "Идентификатор")]
 
+    public int Id { get; set; }
+    
     [StringLength(250)]
+    [DisplayName( "ФИО Клиента")]
+
+
     public string ClientFullName { get; set; } = null!;
 
     [StringLength(11)]
+    [DisplayName( "Телфон Клиента")]
+
     public string ClientPhone { get; set; } = null!;
 
     [StringLength(500)]
+    [DisplayName( "Адресс доставки")]
+
     public string DeliveryAdress { get; set; } = null!;
 
     [Column("DeliveryType_Id")]
+    [DisplayName( "Тип доставки")]
+
     public int DeliveryTypeId { get; set; }
 
     [Column("PaymentType_Id")]
+    [DisplayName( "Тип оплаты")]
     public int PaymentTypeId { get; set; }
 
     [Column("OrderStatus_Id")]
+    [DisplayName( "Статус заказа")]
     public int OrderStatusId { get; set; }
 
     [StringLength(250)]
+    [DisplayName( "Фио доставщика")]
+
     public string DeliveryRecipientFullName { get; set; } = null!;
 
     [StringLength(11)]
+    [DisplayName( "Телефон доставщика")]
+
     public string DeliveryRecipientPhone { get; set; } = null!;
 
     [StringLength(1000)]
+    [DisplayName( "Коментарий к заказу")]
+
     public string Comment { get; set; } = null!;
 
     [ForeignKey("DeliveryTypeId")]
@@ -59,7 +79,7 @@ public partial class Order
     
     public override string ToString()
     {
-        return Id.ToString();  // Отображать ID бренда
+        return $"Заказ Номер: {Id.ToString()}"; // Отображать ID бренда
     }
 
 }

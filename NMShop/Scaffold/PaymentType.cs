@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +11,13 @@ namespace NMShop.Scaffold;
 public partial class PaymentType
 {
     [Key]
+    [DisplayName( "Идентификатор")]
+
     public int Id { get; set; }
 
     [StringLength(100)]
+    [DisplayName( "Название")]
+
     public string Name { get; set; } = null!;
 
     [InverseProperty("PaymentType")]
@@ -21,7 +26,8 @@ public partial class PaymentType
     
     public override string ToString()
     {
-        return Id.ToString() + Name;  // Отображать ID бренда
+        return $"{Name}";  // Отображать ID бренда
+}
     }
 
-}
+

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,32 +11,50 @@ namespace NMShop.Scaffold;
 public partial class Product
 {
     [Key]
+    [DisplayName( "Идентификатор")]
+
     public int Id { get; set; }
 
     [StringLength(150)]
+    [DisplayName( "Название")]
+
     public string Name { get; set; } = null!;
 
     [Column("Brand_Id")]
+    [DisplayName( "Названиее Бренда")]
+    
     public int BrandId { get; set; }
 
     [StringLength(150)]
+    [DisplayName( "Артикль товара")]
+
     public string Article { get; set; } = null!;
 
     [StringLength(1000)]
+    [DisplayName( "Описание товара")]
+
     public string Description { get; set; } = null!;
 
     [Column("Gender_Id")]
+    [DisplayName( "Гендер")]
+
     public int GenderId { get; set; }
 
     [Column("ProductType_Id")]
+    [DisplayName( "тип продукта")]
+
     public int ProductTypeId { get; set; }
 
     [Column("SellingCategory_Id")]
-    public int SellingCategoryId { get; set; }
+    [DisplayName( "Категория продажи")]
 
+    public int SellingCategoryId { get; set; }
+    [DisplayName( "Дата добавления")]
     public DateOnly DateAdded { get; set; }
 
     [Column("Color_Id")]
+    [DisplayName( "Цвет")]
+
     public int ColorId { get; set; }
 
     [ForeignKey("BrandId")]
@@ -70,7 +89,7 @@ public partial class Product
     
     public override string ToString()
     {
-        return Id.ToString();  // Отображать ID бренда
+        return $"Продукт {Id} - {Name}"; // Отображать ID бренда
     }
 
 }

@@ -9,7 +9,7 @@ builder.Services.AddSingleton(sp =>
     new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddScoped<ClientDataProvider>();
-
+builder.Services.AddLocalization();
 // Регистрация MudBlazor
 builder.Services.AddMudServices();
 

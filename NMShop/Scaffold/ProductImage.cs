@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +11,19 @@ namespace NMShop.Scaffold;
 public partial class ProductImage
 {
     [Key]
+    [DisplayName( "Идентификатор")]
+
     public int Id { get; set; }
+    
+    [DisplayName( "Изображение")]
 
     public byte[] Bytes { get; set; } = null!;
 
     [Column("Product_Id")]
+    [DisplayName( "Название продукта")]
+
     public int ProductId { get; set; }
+    [DisplayName( "Основной")]
 
     public bool IsMain { get; set; }
 
@@ -26,7 +34,7 @@ public partial class ProductImage
     
     public override string ToString()
     {
-        return Id.ToString();  // Отображать ID бренда
+        return $"Изображение продукта: {Product.Name} Идентификатор продукта: {ProductId}";  // Отображать ID бренда
     }
 
 }

@@ -10,8 +10,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="оред контроллер">
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="я ебу собак">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/Brand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/Brand.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/DeliveryType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/DeliveryType.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop/Scaffold/Gender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Scaffold/Gender.cs" afterDir="false" />
@@ -53,6 +55,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Scaffold/Order.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -180,7 +183,7 @@
       <workItem from="1728483178079" duration="11799000" />
       <workItem from="1728506038958" duration="354000" />
       <workItem from="1728512738764" duration="951000" />
-      <workItem from="1728571880726" duration="14086000" />
+      <workItem from="1728571880726" duration="20040000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -286,7 +289,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728579629932</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Админка(кастом линк &quot;adolfhitler&quot;, удаление ненужного из выборки, вывод нужного) никто не читает коммиты до этого места по этому никто не узнает что i love jsonchiki">
+      <option name="closed" value="true" />
+      <created>1728590705255</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1728590705255</updated>
+    </task>
+    <task id="LOCAL-00015" summary="я ебу собак">
+      <option name="closed" value="true" />
+      <created>1728590980974</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1728590980974</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,7 +328,9 @@
     <MESSAGE value="Продолжить покупки" />
     <MESSAGE value="Компонент справочной инфы" />
     <MESSAGE value="оред контроллер" />
-    <option name="LAST_COMMIT_MESSAGE" value="оред контроллер" />
+    <MESSAGE value="Админка(кастом линк &quot;adolfhitler&quot;, удаление ненужного из выборки, вывод нужного) никто не читает коммиты до этого места по этому никто не узнает что i love jsonchiki" />
+    <MESSAGE value="я ебу собак" />
+    <option name="LAST_COMMIT_MESSAGE" value="я ебу собак" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +11,11 @@ namespace NMShop.Scaffold;
 public partial class DeliveryType
 {
     [Key]
+    [DisplayName  ("Идентификатор")]
     public int Id { get; set; }
 
     [StringLength(100)]
+    [DisplayName  ("Название")]
     public string Name { get; set; } = null!;
 
     [InverseProperty("DeliveryType")]
@@ -21,7 +24,7 @@ public partial class DeliveryType
     
     public override string ToString()
     {
-        return Id.ToString();  // Отображать ID бренда
+        return $"{Name}";  // Отображать ID бренда
     }
 
 

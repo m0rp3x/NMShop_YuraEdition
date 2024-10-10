@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ClientDataProvider>();
 
 builder.Services.AddHttpClient();
-
+builder.Services.AddControllersWithViews()
+    .AddDataAnnotationsLocalization();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", builder => builder
@@ -36,6 +37,7 @@ builder.Services.AddDbContext<NMShopContext>(options =>
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddCoreAdmin(); // после DbContext-а
+
 
 var app = builder.Build();
 // Настройка CORS

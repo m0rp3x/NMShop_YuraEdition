@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,12 +11,18 @@ namespace NMShop.Scaffold;
 public partial class ProductColor
 {
     [Key]
+    [DisplayName( "Идентификатор")]
+
     public int Id { get; set; }
 
     [StringLength(6)]
+    [DisplayName( "Код цвета")]
+
     public string Value { get; set; } = null!;
 
     [StringLength(30)]
+    [DisplayName( "Название")]
+
     public string Name { get; set; } = null!;
 
     [InverseProperty("Color")]
@@ -24,7 +31,7 @@ public partial class ProductColor
     
     public override string ToString()
     {
-        return Id.ToString();  // Отображать ID бренда
+        return $"{Name}";  // Отображать ID бренда
     }
 
 }

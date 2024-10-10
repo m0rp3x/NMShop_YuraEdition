@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,19 @@ namespace NMShop.Scaffold;
 public partial class OrderPart
 {
     [Key]
+    [DisplayName( "Идентификатор")]
     public int Id { get; set; }
 
     [Column("Order_Id")]
+    [DisplayName( "Идентификатор заказа")]
+    
     public int OrderId { get; set; }
 
     [Column("Product_Id")]
+    [DisplayName( "Продукт")]
+
     public int ProductId { get; set; }
+    [DisplayName( "Количество")]
 
     public int Amount { get; set; }
 
@@ -32,7 +39,7 @@ public partial class OrderPart
     
     public override string ToString()
     {
-        return Id.ToString();  // Отображать ID бренда
+        return Id.ToString() + Product.Name;  // Отображать ID бренда
     }
 
 }
