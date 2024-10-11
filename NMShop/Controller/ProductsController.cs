@@ -28,6 +28,7 @@ namespace NMShop.Controller
         //        .Include(p => p.Color)
         //        .Include(p => p.Gender)
         //        .Include(p => p.ProductType)
+        //            .ThenInclude(pt => pt.ParentType)
         //        .Include(p => p.SellingCategory)
         //        .Include(p => p.ProductImages)
         //        .Include(p => p.StockInfos)
@@ -44,6 +45,7 @@ namespace NMShop.Controller
                 .Include(p => p.Color)
                 .Include(p => p.Gender)
                 .Include(p => p.ProductType)
+                    .ThenInclude(pt => pt.ParentType)
                 .Include(p => p.SellingCategory)
                 .Include(p => p.ProductImages)
                 .Include(p => p.StockInfos)
@@ -73,6 +75,7 @@ namespace NMShop.Controller
                 .Include(p => p.Color)
                 .Include(p => p.Gender)
                 .Include(p => p.ProductType)
+                    .ThenInclude(pt => pt.ParentType)
                 .Include(p => p.SellingCategory)
                 .Include(p => p.StockInfos)
                 .FirstOrDefaultAsync(p => EF.Functions.ILike(p.Article, article));
@@ -100,6 +103,7 @@ namespace NMShop.Controller
         //        .Include(p => p.Color)
         //        .Include(p => p.Gender)
         //        .Include(p => p.ProductType)
+        //            .ThenInclude(pt => pt.ParentType)
         //        .Include(p => p.SellingCategory)
         //        .Include(p => p.ProductImages)
         //        .Include(p => p.StockInfos)
@@ -124,6 +128,7 @@ namespace NMShop.Controller
                     .Include(p => p.Color)
                     .Include(p => p.Gender)
                     .Include(p => p.ProductType)
+                        .ThenInclude(pt => pt.ParentType)
                     .Include(p => p.SellingCategory)
                     .Include(p => p.ProductImages)
                     .Include(p => p.StockInfos)
@@ -249,11 +254,11 @@ namespace NMShop.Controller
                 var products = await productsQuery.ToListAsync();
                 return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return BadRequest(ex);
             }
         }
-
 
     }
 }
