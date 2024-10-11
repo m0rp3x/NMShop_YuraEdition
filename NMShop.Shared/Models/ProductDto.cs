@@ -20,7 +20,7 @@ public class ProductDto
     {
         Color = new Dictionary<string, string>();
         PriceInfos = new List<PriceInfo>();
-        Images = new List<ProductImage>() { new() { IsMain = true}, new() {}, new() { } };
+        Images = new List<ProductImage>() { new() { IsMain = true} };
         Gender = "unisex";
     }
 }

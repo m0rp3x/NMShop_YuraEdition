@@ -6,22 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="2992ba10-ac5c-4fd5-ab58-61a4d501a0e4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b/storage_v2/_src_/database/NMShop_dollsawour.-HqN_g/schema/NMShop.VWF-iQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/87d017af-7ea5-484c-a8f4-44329a6eaf5b/storage_v2/_src_/database/NMShop_dollsawour.-HqN_g/schema/NMShop.VWF-iQ.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.sql" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/CategoryPreview.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/CategoryPreview.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/ReferenseInfoList.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/ReferenseInfoList.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Data/ClientTestDataProvider.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Data/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Data/ClientDataProvider.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/Home.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/ProductPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/ProductPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Models/ProductFilter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Models/ProductFilter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Models/ProductDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Models/ProductDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/AppMappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/AppMappingProfile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Controller/ProductAttributesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Controller/ProductAttributesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../NMShop/Controller/ProductsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Controller/ProductsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Data/TestDataProvider.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Scaffold/DeliveryType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Scaffold/DeliveryType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Scaffold/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Scaffold/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Scaffold/ProductType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Scaffold/ProductType.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

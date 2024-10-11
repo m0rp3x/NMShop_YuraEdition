@@ -11,13 +11,14 @@
 
 @code {
     [Parameter]
-    public string code { get; set; }
-    private ReferenceInfo refInfo;
+    public string Code { get; set; }
+
+    private ReferenceInfo refInfo = new();
     
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        Console.WriteLine(code);
-        refInfo = await DataProvider.GetReferenceInfoByTopic(code);
-        
+        Console.WriteLine(Code);
+        refInfo = await DataProvider.GetReferenceInfoByTopic(Code);
     }
+
 }

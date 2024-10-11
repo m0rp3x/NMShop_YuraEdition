@@ -71,6 +71,22 @@ namespace NMShop.Client.Data
             SetCache(cacheKey, data);
             return data;
         }
+        public async Task<string> GetCategorySizeDisplayTypeAsync(string category)
+        {
+            var cacheKey = $"categorySizeDisplayType_{category}";
+            var cachedData = GetFromCache<string>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            string url = "https://localhost:7279/api/productattributes/category-size-display-type";
+            if (!string.IsNullOrEmpty(category))
+            {
+                url += $"?category={HttpUtility.UrlEncode(category)}";
+            }
+
+            var data = await _http.GetStringAsync(url);
+            SetCache(cacheKey, data);
+            return data;
+        }
 
         public async Task<IEnumerable<string>> GetSelCategoriesAsync()
         {
@@ -83,7 +99,7 @@ namespace NMShop.Client.Data
             return data;
         }
 
-        public async Task<ProductDto> GetById(int id)
+        public async Task<ProductDto> GetProductByIdAsync(int id)
         {
             var cacheKey = $"product_{id}";
             var cachedData = GetFromCache<ProductDto>(cacheKey);
@@ -92,6 +108,18 @@ namespace NMShop.Client.Data
             var data = await _http.GetFromJsonAsync<ProductDto>($"https://localhost:7279/api/products/id/{id}");
             SetCache(cacheKey, data);
             return data;
+        }
+
+        public async Task<ProductDto> GetProductByArticleAsync(string article)
+        {
+            var cacheKey = $"productByArticle_{article}";
+            var cachedData = GetFromCache<ProductDto>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            string url = $"https://localhost:7279/api/products/product-by-article?article={HttpUtility.UrlEncode(article)}";
+            var product = await _http.GetFromJsonAsync<ProductDto>(url);
+            SetCache(cacheKey, product);
+            return product;
         }
 
         public async Task<IEnumerable<ReferenceInfo>> GetAllReferenceInfo()

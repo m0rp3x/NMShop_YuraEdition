@@ -50,11 +50,11 @@
                     </MudExpansionPanel>
 
 
-                    @if (Filter.Category == "Обувь" || Filter.Category == "Одежда")
+                    @if (CategorySizeDisplayType != "none")
                     {
                         <MudExpansionPanel Text="Размер">
 
-                            @if (Filter.Category == "Одежда")
+                            @if (CategorySizeDisplayType == "string")
                             {
                                  <MudSelect T="int?" @bind-Value="MinClothingSize" Variant="Variant.Outlined" Placeholder="Выбрать" Label="От">
                                      @foreach (var sizeOption in Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(e => (int?)e).Where(e => !MaxClothingSize.HasValue || e <= MaxClothingSize).ToList())
@@ -70,7 +70,7 @@
                                          }
                                  </MudSelect>
                             }
-                            else if (Filter.Category == "Обувь")
+                            else if (CategorySizeDisplayType == "decimal")
                             {
                                 <div class="d-flex" style="gap: 15px;">
                                     <MudNumericField @onfocusout="OnShoeSizeChanged" @bind-Value="MinShoeSize" Label="От" Step="1" Variant="Variant.Outlined" />
@@ -185,7 +185,8 @@
     private List<GenderModel> Genders = new();
     private List<SubCategoryModel> SubCategory = new();
     private List<SelCategoryModel> SelCategory = new();
-    private static List<ClothingSizeOption> ClothingSizeOptions = Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(cs => new ClothingSizeOption() { Size = cs }).ToList();
+
+    private string CategorySizeDisplayType = "none";
 
     private int? _minClothingSize;
     private int? MinClothingSize
@@ -241,7 +242,7 @@
         Genders = (await DataProvider.GetGendersAsync()).Select(g => new GenderModel { Name = g }).ToList();
         SubCategory = (await DataProvider.GetSubCategoriesAsync(string.IsNullOrEmpty(Filter.Category) ? null : Filter.Category)).Select(sc => new SubCategoryModel { Name = sc }).ToList();
         SelCategory = (await DataProvider.GetSelCategoriesAsync()).Select(sc => new SelCategoryModel { Name = sc }).ToList();
-
+        if (!string.IsNullOrEmpty(Filter.Category)) CategorySizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(Filter.Category);
         // Инициализация выбранных значений из фильтра
         InitializeSelectedFilterOptions();
     }
@@ -321,17 +322,6 @@
             {
                 if (newFilter.SelCategory == selCategory.Name)
                     newFilter.SelCategory = null;
-            }
-        }
-        else if (filterOption is ClothingSizeOption sizeOption)
-        {
-            if (sizeOption.IsSelected)
-            {
-                newFilter.Sizes.Add((int)sizeOption.Size);
-            }
-            else
-            {
-                newFilter.Sizes.Remove((int)sizeOption.Size);
             }
         }
 
@@ -499,20 +489,6 @@
     {
         public string Name { get; set; } = "Uninitialized";
         public bool IsSelected { get; set; } = false;
-    }
-
-    public class SizeOption : IFilterOption
-    {
-        public int Size { get; set; }
-        public string Name => Size.ToString();
-        public bool IsSelected { get; set; }
-    }
-
-    public class ClothingSizeOption : IFilterOption
-    {
-        public ClothingSize Size { get; set; }
-        public string Name => Size.ToString();
-        public bool IsSelected { get; set; }
     }
 
     public class SortOption

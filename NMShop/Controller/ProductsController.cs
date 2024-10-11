@@ -57,6 +57,34 @@ namespace NMShop.Controller
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
+        [HttpGet("product-by-article")]
+        public async Task<ActionResult<ProductDto>> GetProductByArticle([FromQuery] string article)
+        {
+            if (string.IsNullOrEmpty(article))
+            {
+                return BadRequest("Article is required.");
+            }
+
+            Console.Clear();
+            Console.WriteLine(article);
+
+            var product = await _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Color)
+                .Include(p => p.Gender)
+                .Include(p => p.ProductType)
+                .Include(p => p.SellingCategory)
+                .Include(p => p.StockInfos)
+                .FirstOrDefaultAsync(p => EF.Functions.ILike(p.Article, article));
+
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+
+            return Ok(_mapper.Map<ProductDto>(product));
+        }
+
         //[HttpGet("category/{category}")]
         //public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory(string category)
         //{

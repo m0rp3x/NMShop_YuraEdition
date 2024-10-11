@@ -11,19 +11,23 @@ namespace NMShop.Scaffold;
 public partial class ProductType
 {
     [Key]
-    [DisplayName( "Идентификатор")]
+    [DisplayName("Идентификатор")]
 
     public int Id { get; set; }
 
     [StringLength(50)]
-    [DisplayName( "Название")]
+    [DisplayName("Название")]
 
     public string Name { get; set; } = null!;
 
     [Column("ParentType_Id")]
-    [DisplayName( "Родительский тип продукта")]
+    [DisplayName("Родительский тип продукта")]
 
     public int? ParentTypeId { get; set; }
+
+    [DisplayName("Тип отображения размера")]
+    [StringLength(10)]
+    public string? SizeDisplayType { get; set; }
 
     [InverseProperty("ParentType")]
     [Display(AutoGenerateField = false)]

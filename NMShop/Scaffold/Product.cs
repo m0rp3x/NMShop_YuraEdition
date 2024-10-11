@@ -41,7 +41,7 @@ public partial class Product
     public int GenderId { get; set; }
 
     [Column("ProductType_Id")]
-    [DisplayName( "тип продукта")]
+    [DisplayName( "Тип продукта")]
 
     public int ProductTypeId { get; set; }
 

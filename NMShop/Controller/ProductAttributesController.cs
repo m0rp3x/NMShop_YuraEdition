@@ -56,6 +56,28 @@ namespace NMShop.Controller
             }
         }
 
+        [HttpGet("category-size-display-type")]
+        public async Task<ActionResult<string>> GetCategorySizeDisplayType([FromQuery] string category = null)
+        {
+            if (string.IsNullOrEmpty(category))
+            {
+                return BadRequest("Category is required.");
+            }
+
+            var productType = await _context.ProductTypes
+                .Include(pt => pt.ParentType)
+                .FirstOrDefaultAsync(pt => EF.Functions.ILike(pt.Name, category));
+
+            if (productType == null)
+            {
+                return NotFound("Category not found.");
+            }
+
+            string sizeDisplayType = productType.ParentType?.SizeDisplayType ?? productType.SizeDisplayType ?? "none";
+
+            return Ok(sizeDisplayType);
+        }
+
         [HttpGet("selling-categories")]
         public async Task<ActionResult<IEnumerable<string>>> GetSellingCategories()
         {

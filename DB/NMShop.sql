@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS "ProductTypes" (
 	"Id" serial NOT NULL UNIQUE,
 	"Name" varchar(50) NOT NULL,
 	"ParentType_Id" integer,
+    "SizeDisplayType" varchar(10),
 	PRIMARY KEY ("Id")
 );
 
@@ -175,25 +176,25 @@ INSERT INTO "SellingCategories" ("Name") VALUES
   ('Эксклюзивы'),
   ('Маст-хэв');
 
-INSERT INTO "ProductTypes" ("Name", "ParentType_Id") VALUES
-  ('Одежда', NULL),
-  ('Куртки и пуховики', 1),
-  ('Футболки и лонгсливы', 1),
-  ('Штаны и джинсы', 1),
-  ('Шорты', 1),
-  ('Худи и свитшоты', 1),
-  ('Бельё', 1),
-  ('Аксессуары', NULL),
-  ('Головные уборы', 8),
-  ('Рюкзаки и сумки', 8),
-  ('Кошельки', 8),
-  ('Очки', 8),
-  ('Другие аксессуары', 8),
-  ('Обувь', NULL),
-  ('Кеды и кроссовки', 14),
-  ('Ботинки и угги', 14),
-  ('Слайды', 14),
-  ('Детское', 14);
+INSERT INTO "ProductTypes" ("Name", "ParentType_Id", "SizeDisplayType") VALUES
+  ('Одежда', NULL, 'string'),
+  ('Куртки и пуховики', 1, NULL),
+  ('Футболки и лонгсливы', 1, NULL),
+  ('Штаны и джинсы', 1, NULL),
+  ('Шорты', 1, NULL),
+  ('Худи и свитшоты', 1, NULL),
+  ('Бельё', 1, NULL),
+  ('Аксессуары', NULL, 'none'),
+  ('Головные уборы', 8, NULL),
+  ('Рюкзаки и сумки', 8, NULL),
+  ('Кошельки', 8, NULL),
+  ('Очки', 8, NULL),
+  ('Другие аксессуары', 8, NULL),
+  ('Обувь', NULL, 'decimal'),
+  ('Кеды и кроссовки', 14, NULL),
+  ('Ботинки и угги', 14, NULL),
+  ('Слайды', 14, NULL),
+  ('Детское', 14, NULL);
 
 INSERT INTO "ProductColors" ("Value", "Name") VALUES ('FF5733', 'Красный'), ('33FF57', 'Зелёный'), ('3357FF', 'Синий');
 
