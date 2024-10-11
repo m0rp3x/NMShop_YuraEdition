@@ -12,7 +12,7 @@
     <div class="d-flex relative" style=@($"color: #666666; gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
         <MudLink Typo="Typo.h5" Color="Color.Inherit" Href="/catalog">Каталог</MudLink>
         /
-        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@($"/catalog/{productParentType}")>@productParentType.Localize()</MudLink>
+        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@($"/catalog/{productParentType}")>@productParentType</MudLink>
         /
         <MudText Typo="Typo.h5" Color="Color.Inherit" >@product.Article</MudText>
         <MudSpacer/>
