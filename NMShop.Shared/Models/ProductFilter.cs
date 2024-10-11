@@ -16,7 +16,7 @@ namespace NMShop.Shared.Models
         public List<string> SubCategories { get; set; } = new List<string>();
         public string? SelCategory { get; set; }
         public string? SortBy { get; set; }
-        public bool IsAscending { get; set; } = true;
+        public bool IsAscending { get; set; } = false;
         public int? Skip { get; set; }
         public int? Take { get; set; }
         public string SearchQuery { get; set; } = string.Empty;

@@ -44,9 +44,8 @@
 
                         @foreach (var brand in Brands)
                         {
-                            <MudCheckBox T="bool" @bind-Value="brand.IsSelected" @oninput="() => OnFilterChanged(brand)" Label="@brand.Name" />
+                             <MudCheckBox T="bool" @bind-Value="brand.IsSelected" Label="@brand.Name" />
                         }
-
                     </MudExpansionPanel>
 
 
@@ -85,7 +84,8 @@
 
                         @foreach (var gender in Genders)
                         {
-                            <MudCheckBox T="bool" @bind-Value="gender.IsSelected" @oninput="() => OnFilterChanged(gender)" Label="@gender.Name" />
+                            <MudCheckBox T="bool" @bind-Value="gender.IsSelected" Label="@gender.Name" />
+
                         }
 
                     </MudExpansionPanel>
@@ -94,7 +94,8 @@
 
                         @foreach (var selCategory in SelCategory)
                         {
-                            <MudCheckBox T="bool" @bind-Value="selCategory.IsSelected" @oninput="() => OnFilterChanged(selCategory)" Label="@selCategory.Name" />
+                            <MudCheckBox T="bool" @bind-Value="selCategory.IsSelected" Label="@selCategory.Name" />
+
                         }
 
                     </MudExpansionPanel>
@@ -103,7 +104,7 @@
 
                         @foreach (var subCategories in SubCategory)
                         {
-                            <MudCheckBox T="bool" @bind-Value="subCategories.IsSelected" @oninput="() => OnFilterChanged(subCategories)" Label="@subCategories.Name" />
+                            <MudCheckBox T="bool" @bind-Value="subCategories.IsSelected" Label="@subCategories.Name" />
                         }
 
                     </MudExpansionPanel>
@@ -237,17 +238,46 @@
         {
             Filter = ParseFilter(filter);
         }
+        
+        Brands = (await DataProvider.GetBrandsAsync())
+            .Select(b =>
+            {
+                var brandModel = new BrandModel { Name = b };
+                brandModel.OnValueChanged = () => OnFilterChanged(brandModel);
+                return brandModel;
+            }).ToList();
 
-        Brands = (await DataProvider.GetBrandsAsync()).Select(b => new BrandModel { Name = b }).ToList();
-        Genders = (await DataProvider.GetGendersAsync()).Select(g => new GenderModel { Name = g }).ToList();
-        SubCategory = (await DataProvider.GetSubCategoriesAsync(string.IsNullOrEmpty(Filter.Category) ? null : Filter.Category)).Select(sc => new SubCategoryModel { Name = sc }).ToList();
-        SelCategory = (await DataProvider.GetSelCategoriesAsync()).Select(sc => new SelCategoryModel { Name = sc }).ToList();
-        if (!string.IsNullOrEmpty(Filter.Category)) CategorySizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(Filter.Category);
+        Genders = (await DataProvider.GetGendersAsync()).Select(g =>
+        {
+            var genderModel = new GenderModel { Name = g };
+            genderModel.OnValueChanged = () => OnFilterChanged(genderModel);
+            return genderModel;
+        }).ToList();
+        
+        SubCategory = (await DataProvider.GetSubCategoriesAsync(string.IsNullOrEmpty(Filter.Category) ? null : Filter.Category))
+            .Select(sc =>
+            {
+                var subCategoryModel = new SubCategoryModel { Name = sc };
+                subCategoryModel.OnValueChanged = () => OnFilterChanged(subCategoryModel);
+                return subCategoryModel;
+            })
+            .ToList();
+    
+        
+        SelCategory = (await DataProvider.GetSelCategoriesAsync())
+            .Select(sc =>
+            {
+                var selCategoryModel = new SelCategoryModel { Name = sc };
+                selCategoryModel.OnValueChanged = () => OnFilterChanged(selCategoryModel);
+                return selCategoryModel;
+            })
+            .ToList();
+
         // Инициализация выбранных значений из фильтра
-        InitializeSelectedFilterOptions();
+        await InitializeSelectedFilterOptions();
     }
 
-    private void InitializeSelectedFilterOptions()
+    private async Task InitializeSelectedFilterOptions()
     {
         foreach (var brand in Brands)
         {
@@ -324,8 +354,19 @@
                     newFilter.SelCategory = null;
             }
         }
-
+        else if (filterOption is ClothingSizeOption sizeOption)
+        {
+            if (sizeOption.IsSelected)
+            {
+                newFilter.Sizes.Add((int)sizeOption.Size);
+            }
+            else
+            {
+                newFilter.Sizes.Remove((int)sizeOption.Size);
+            }
+        }
         Filter = newFilter;
+        StateHasChanged();
     }
 
     private void OnShoeSizeChanged()
@@ -363,6 +404,7 @@
         newFilter.IsAscending = !newFilter.IsAscending;
 
         Filter = newFilter;
+        StateHasChanged();
     }
 
     private void ResetFilters()
@@ -460,6 +502,43 @@
         return filter;
     }
 
+    
+    
+    
+    public abstract class FilterOptionBase : IFilterOption
+    {
+        public virtual string Name { get; set; } // Виртуальный, чтобы его можно было переопределить в дочерних классах
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    Console.WriteLine($"IsSelected changed to: {_isSelected} for {Name}");
+                    OnValueChanged?.Invoke(); // Вызов обработчика при изменении
+                    OnPropertyChanged(); // Уведомление об изменении свойства
+                }
+            }
+        }
+
+        public Action OnValueChanged { get; set; }
+
+        public event Action PropertyChanged;
+
+        protected virtual void OnPropertyChanged()
+        {
+            PropertyChanged?.Invoke();
+        }
+    }
+
+
+    
+    
+    
     // Модели
     public interface IFilterOption
     {
@@ -467,28 +546,43 @@
         bool IsSelected { get; set; }
     }
 
-    private class BrandModel : IFilterOption
+    
+   
+
+
+    private class BrandModel : FilterOptionBase
     {
-        public string Name { get; set; } = "Uninitialized";
-        public bool IsSelected { get; set; } = false;
+       
+
     }
 
-    private class SubCategoryModel : IFilterOption
+    private class SubCategoryModel : FilterOptionBase
     {
-        public string Name { get; set; } = "Uninitialized";
-        public bool IsSelected { get; set; } = false;
+     
+
     }
 
-    private class SelCategoryModel : IFilterOption
+    private class SelCategoryModel : FilterOptionBase
     {
-        public string Name { get; set; } = "Uninitialized";
-        public bool IsSelected { get; set; } = false;
+      
+
     }
 
-    public class GenderModel : IFilterOption
+    public class GenderModel : FilterOptionBase
     {
-        public string Name { get; set; } = "Uninitialized";
-        public bool IsSelected { get; set; } = false;
+     
+    }
+
+    public class SizeOption : FilterOptionBase
+    {
+        public int Size { get; set; }
+        public string Name => Size.ToString();
+    }
+
+    public class ClothingSizeOption : FilterOptionBase
+    {
+        public ClothingSize Size { get; set; }
+        public string Name => Size.ToString();
     }
 
     public class SortOption
