@@ -273,6 +273,7 @@
             })
             .ToList();
 
+        if (!string.IsNullOrEmpty(Filter.Category)) CategorySizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(Filter.Category);
         // Инициализация выбранных значений из фильтра
         await InitializeSelectedFilterOptions();
     }
