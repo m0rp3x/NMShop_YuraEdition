@@ -1,8 +1,9 @@
 ﻿using NMShop.Shared.Models;
 using System.Net.Http.Json;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace NMShop.Client.Data
+namespace NMShop.Client.Services
 {
     public class ClientDataProvider
     {
@@ -71,6 +72,7 @@ namespace NMShop.Client.Data
             SetCache(cacheKey, data);
             return data;
         }
+
         public async Task<string> GetCategorySizeDisplayTypeAsync(string category)
         {
             var cacheKey = $"categorySizeDisplayType_{category}";

@@ -2,13 +2,14 @@ using MudBlazor.Services;
 using NMShop.Components;
 using Microsoft.EntityFrameworkCore;
 using NMShop.Scaffold;
-using NMShop.Client.Data;
+using NMShop.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ClientDataProvider>();
-
 builder.Services.AddHttpClient();
+
+builder.Services.AddSingleton<ClientDataProvider>();
+
 builder.Services.AddControllersWithViews()
     .AddDataAnnotationsLocalization();
 builder.Services.AddCors(options =>

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
-using NMShop.Client.Data;
+using NMShop.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -8,7 +8,8 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.Services.AddSingleton(sp =>
     new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.AddScoped<ClientDataProvider>();
+builder.Services.AddSingleton<ClientDataProvider>();
+builder.Services.AddSingleton<CartService>();
 builder.Services.AddLocalization();
 // Регистрация MudBlazor
 builder.Services.AddMudServices();
