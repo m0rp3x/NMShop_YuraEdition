@@ -2,6 +2,7 @@
 @using NMShop.Client.Services
 
 @inject ClientDataProvider DataProvider
+@inject NavigationManager Navigation
 
 <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-10">
 
@@ -12,7 +13,7 @@
 
         <MudSpacer/>
 
-        <MudButton>
+        <MudButton OnClick="() => Navigation.NavigateTo(GetPath())">
             <MudText Typo="Typo.h5">Каталог</MudText>
             <MudIcon Icon="@Icons.Material.Filled.ArrowOutward" Size="Size.Medium"/>
         </MudButton>
@@ -26,4 +27,6 @@
 @code {
     [Parameter]
     public string CategoryType { get; set; }
+
+    string GetPath() => "/catalog/" + new ProductFilter() { Category = CategoryType }.ToQueryString();
 }

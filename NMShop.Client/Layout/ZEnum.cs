@@ -5,5 +5,6 @@
         AppBar = 10,
         SortOptionsDropDown = 5,
         ProductPath = 2,
+        Cart = 30
     }
 }

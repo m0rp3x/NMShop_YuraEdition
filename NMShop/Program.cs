@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<ClientDataProvider>();
+builder.Services.AddSingleton<CartService>();
 
 builder.Services.AddControllersWithViews()
     .AddDataAnnotationsLocalization();

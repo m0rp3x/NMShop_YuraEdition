@@ -6,7 +6,7 @@ namespace NMShop.Client.Services
     {
         public event Action OnChange;
         private List<ProductDto> _products = new List<ProductDto>();
-        private bool _isCartOpen;
+        private bool _isCartOpen = false;
 
         public IReadOnlyList<ProductDto> Products => _products.AsReadOnly();
         public bool IsCartOpen => _isCartOpen;
