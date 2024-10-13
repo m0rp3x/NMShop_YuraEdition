@@ -92,21 +92,21 @@ namespace NMShop.Client.Services
         }
 
         public async Task<string> GetCategorySizeDisplayTypeAsync(string category)
-        {
-            var cacheKey = $"categorySizeDisplayType_{category}";
-            var cachedData = GetFromCache<string>(cacheKey);
-            if (cachedData != null) return cachedData;
-
-            string url = "https://localhost:7279/api/productattributes/category-size-display-type";
-            if (!string.IsNullOrEmpty(category))
-            {
-                url += $"?category={HttpUtility.UrlEncode(category)}";
-            }
-
-            var data = await _http.GetStringAsync(url);
-            SetCache(cacheKey, data);
-            return data;
-        }
+                 {
+                     var cacheKey = $"categorySizeDisplayType_{category}";
+                     var cachedData = GetFromCache<string>(cacheKey);
+                     if (cachedData != null) return cachedData;
+         
+                     string url = "https://localhost:7279/api/productattributes/category-size-display-type";
+                     if (!string.IsNullOrEmpty(category))
+                     {
+                         url += $"?category={HttpUtility.UrlEncode(category)}";
+                     }
+         
+                     var data = await _http.GetStringAsync(url);
+                     SetCache(cacheKey, data);
+                     return data;
+                 }
 
         public async Task<IEnumerable<string>> GetSelCategoriesAsync()
         {
@@ -129,6 +129,8 @@ namespace NMShop.Client.Services
             SetCache(cacheKey, data);
             return data;
         }
+        
+        
 
         public async Task<ProductDto> GetProductByArticleAsync(string article)
         {
