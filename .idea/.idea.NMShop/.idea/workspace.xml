@@ -11,10 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Models/ProductColorDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Controller/ProductAttributesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/ProductAttributesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Controller/ProductsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/ProductsController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,12 +43,9 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Program.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Scaffold/Brand.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop/Scaffold/Order.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://diff.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -58,30 +57,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.NMShop: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.NMShop: http.executor": "Run",
-    ".NET Launch Settings Profile.NMShop: https.executor": "Run",
-    ".NET Project.NMShop.Client.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.NMShop: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.NMShop: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.NMShop: https.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.NMShop.Client.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "ChangesTree.GroupingKeys": [],
-    "DatabaseDriversLRU": [
-      "sqlserver.localdb",
-      "sqlserver"
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [],
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlserver.localdb&quot;,
+      &quot;sqlserver&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: https">
     <configuration name="NMShop.Client" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -173,7 +172,8 @@
       <workItem from="1728506038958" duration="354000" />
       <workItem from="1728512738764" duration="951000" />
       <workItem from="1728571880726" duration="20728000" />
-      <workItem from="1728652978502" duration="10485000" />
+      <workItem from="1728652978502" duration="12093000" />
+      <workItem from="1728835737453" duration="15441000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -303,7 +303,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728596703868</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Фильтры обрели вторую жизнь эти коммиты никто не читает поэтому никто не узнает что путин бомба взрыв чечня">
+      <option name="closed" value="true" />
+      <created>1728663614440</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1728663614440</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -329,7 +337,8 @@
     <MESSAGE value="Админка(кастом линк &quot;adolfhitler&quot;, удаление ненужного из выборки, вывод нужного) никто не читает коммиты до этого места по этому никто не узнает что i love jsonchiki" />
     <MESSAGE value="я ебу собак" />
     <MESSAGE value="админка 2.0 - комменты летят так быстро что никто не узнает что я слушаю вайперов" />
-    <option name="LAST_COMMIT_MESSAGE" value="админка 2.0 - комменты летят так быстро что никто не узнает что я слушаю вайперов" />
+    <MESSAGE value="Фильтры обрели вторую жизнь эти коммиты никто не читает поэтому никто не узнает что путин бомба взрыв чечня" />
+    <option name="LAST_COMMIT_MESSAGE" value="Фильтры обрели вторую жизнь эти коммиты никто не читает поэтому никто не узнает что путин бомба взрыв чечня" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -360,11 +369,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NMShop.Client/Components/ReferenseInfoList.razor</url>
-          <line>18</line>
+          <line>19</line>
           <properties isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor</url>
+          <line>67</line>
+          <properties isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
+          </properties>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

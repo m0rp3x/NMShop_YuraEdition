@@ -125,10 +125,10 @@ namespace NMShop.Controller
 
                 var productsQuery = _context.Products
                     .Include(p => p.Brand)
-                    .Include(p => p.Color)
+                    .Include(p => p.Color) 
                     .Include(p => p.Gender)
                     .Include(p => p.ProductType)
-                        .ThenInclude(pt => pt.ParentType)
+                    .ThenInclude(pt => pt.ParentType)
                     .Include(p => p.SellingCategory)
                     .Include(p => p.ProductImages)
                     .Include(p => p.StockInfos)
@@ -214,6 +214,11 @@ namespace NMShop.Controller
                 if (!string.IsNullOrEmpty(filter.SearchQuery))
                 {
                     productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Name, $"%{filter.SearchQuery}%"));
+                }
+                
+                if (!string.IsNullOrEmpty(filter.Color))
+                {
+                    productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Color.Name, filter.Color));
                 }
 
                 // Сортировка

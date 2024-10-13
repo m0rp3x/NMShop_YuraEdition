@@ -110,6 +110,27 @@
 
                     </MudExpansionPanel>
 
+                    <MudExpansionPanel Text="Цвет">
+                        <MudGrid Spacing="2">
+                            @foreach (var color in Colors)
+                            {
+                            <MudItem xs="6" sm="4" md="4" lg="4" xl="4">
+                                <div class="d-flex flex-column align-items-center justify-content-center text-center m-2">
+                                    <MudIconButton OnClick="() => OnColorSelected(color)"
+                                                   Class="mud-circle"
+                                                   Style="@GetColorStyle(color)"
+                                                   Size="Size.Large" />
+                                    <MudText Typo="Typo.body2" Style="display: inline-block; width: 100%; text-align: left; margin-top: 5px; margin-left: -9px">@color.Name</MudText>
+                                </div>
+                            </MudItem>
+                            }
+                        </MudGrid>
+                    </MudExpansionPanel>
+
+
+
+
+
                 </MudExpansionPanels>
             </div>
 
@@ -150,15 +171,18 @@
                 <div class="d-flex align-center" style="cursor: pointer;" @onclick="ToggleSortDirection">
                     @if (Filter.IsAscending)
                     {
-                        <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down">
-                            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                        
+                        
+                        <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down-alt">
+                            <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293V3.5zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"></path>
                         </svg>
                     }
                     else
                     {
-                        <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down-alt">
-                            <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293V3.5zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"></path>
-                        </svg>
+                    <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down">
+                        <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                    </svg>
+
                     }
                 </div>
             </div>
@@ -187,7 +211,7 @@
     private List<GenderModel> Genders = new();
     private List<SubCategoryModel> SubCategory = new();
     private List<SelCategoryModel> SelCategory = new();
-
+    private List<ColorsModel> Colors = new();
     private string CategorySizeDisplayType = "none";
 
     private int? _minClothingSize;
@@ -218,6 +242,19 @@
         }
     }
 
+    
+    private void OnColorSelected(ColorsModel color)
+    {
+        color.IsSelected = !color.IsSelected;
+        StateHasChanged();
+    }
+
+    private string GetColorStyle(ColorsModel color)
+    {
+        return $"background-color: #{color.Value}; width: 40px; height: 40px; border-radius: 50%; border: {(color.IsSelected ? "2px solid black" : "none")};";
+    }
+
+   
 
     private decimal? MinShoeSize { get; set; }
     private decimal? MaxShoeSize { get; set; }
@@ -263,7 +300,6 @@
                 return subCategoryModel;
             })
             .ToList();
-    
         
         SelCategory = (await DataProvider.GetSelCategoriesAsync())
             .Select(sc =>
@@ -273,6 +309,16 @@
                 return selCategoryModel;
             })
             .ToList();
+        
+        Colors = (await DataProvider.GetProductColorsAsync())
+            .Select(c =>
+            {
+                var ColorsModel = new ColorsModel { Name = c.Name, Value = c.Value};
+                ColorsModel.OnValueChanged = () => OnFilterChanged(ColorsModel);
+                return ColorsModel;
+
+            }).ToList();
+        
 
         if (!string.IsNullOrEmpty(Filter.Category)) CategorySizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(Filter.Category);
         // Инициализация выбранных значений из фильтра
@@ -303,6 +349,12 @@
         {
             if (Filter.SelCategory == selCategory.Name)
                 selCategory.IsSelected = true;
+        }
+
+        foreach (var color in Colors)
+        {
+            if (Filter.Color == color.Name)
+                color.IsSelected = true;
         }
     }
 
@@ -367,9 +419,23 @@
                 newFilter.Sizes.Remove((int)sizeOption.Size);
             }
         }
+        else if (filterOption is ColorsModel colorsModel)
+        {
+            if (colorsModel.IsSelected)
+            {
+                newFilter.Color = colorsModel.Name;
+            }
+            else
+            {
+                if (newFilter.Color == colorsModel.Name)
+                    newFilter.Color = null;
+            }
+        }
         Filter = newFilter;
         StateHasChanged();
     }
+    
+   
 
     private void OnShoeSizeChanged()
     {
@@ -432,6 +498,11 @@
         {
             selCategory.IsSelected = false;
         }
+
+        foreach (var colors in Colors)
+        {
+            colors.IsSelected = false;
+        }
     }
 
     private void OnProductCountChanged(int count)
@@ -471,7 +542,7 @@
                     case "InStock":
                         filter.InStock = bool.Parse(value);
                         break;
-                    case "Color":
+                    case "productColors":
                         filter.Color = value;
                         break;
                     case "SubCategories":
@@ -536,57 +607,31 @@
             PropertyChanged?.Invoke();
         }
     }
-
-
-    
-    
-    
     // Модели
     public interface IFilterOption
     {
         string Name { get; }
         bool IsSelected { get; set; }
     }
+    private class BrandModel : FilterOptionBase{}
+    private class SubCategoryModel : FilterOptionBase{}
 
-    
-   
-
-
-    private class BrandModel : FilterOptionBase
+    private class ColorsModel : FilterOptionBase
     {
-       
-
+       public  string Value { get; set; }
     }
-
-    private class SubCategoryModel : FilterOptionBase
-    {
-     
-
-    }
-
-    private class SelCategoryModel : FilterOptionBase
-    {
-      
-
-    }
-
-    public class GenderModel : FilterOptionBase
-    {
-     
-    }
-
+    private class SelCategoryModel : FilterOptionBase{}
+    public class GenderModel : FilterOptionBase{}
     public class SizeOption : FilterOptionBase
     {
         public int Size { get; set; }
         public string Name => Size.ToString();
     }
-
     public class ClothingSizeOption : FilterOptionBase
     {
         public ClothingSize Size { get; set; }
         public string Name => Size.ToString();
     }
-
     public class SortOption
     {
         public string Name { get; set; }

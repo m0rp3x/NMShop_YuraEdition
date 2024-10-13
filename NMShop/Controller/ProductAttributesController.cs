@@ -97,5 +97,14 @@ namespace NMShop.Controller
 
             return Ok(genders);
         }
+
+        [HttpGet("colors")]
+        public async Task<ActionResult<IEnumerable<ProductColor>>> GetColors()
+        {
+            var colors = await _context.ProductColors
+                .Select(c => new { c.Name, c.Value })
+                .ToListAsync();
+            return Ok(colors);
+        }
     }
 }

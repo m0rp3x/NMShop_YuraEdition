@@ -72,6 +72,24 @@ namespace NMShop.Client.Services
             SetCache(cacheKey, data);
             return data;
         }
+        
+        public async Task<IEnumerable<ProductColorDto>> GetProductColorsAsync()
+        {
+            var cacheKey = "productColors";
+            var cachedData = GetFromCache<IEnumerable<ProductColorDto>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<ProductColorDto>>("https://localhost:7279/api/productattributes/colors");
+            SetCache(cacheKey, data);
+            return data;
+        }
+        
+        public async Task<IEnumerable<ProductDto>> GetFilteredProductsByColor(ProductFilter filter, string color)
+        {
+            var queryString = filter.ToQueryString();
+            var url = $"https://localhost:7279/api/products/filter?{queryString}&Color={HttpUtility.UrlEncode(color)}";
+            return await _http.GetFromJsonAsync<IEnumerable<ProductDto>>(url);
+        }
 
         public async Task<string> GetCategorySizeDisplayTypeAsync(string category)
         {
