@@ -114,13 +114,13 @@
                         <MudGrid Spacing="2">
                             @foreach (var color in Colors)
                             {
-                            <MudItem xs="6" sm="4" md="4" lg="4" xl="4">
-                                <div class="d-flex flex-column align-items-center justify-content-center text-center m-2">
+                            <MudItem xs="6" md="4">
+                                <div class="d-flex flex-column">
                                     <MudIconButton OnClick="() => OnColorSelected(color)"
-                                                   Class="mud-circle"
+                                                   Class="mud-circle mx-auto"
                                                    Style="@GetColorStyle(color)"
                                                    Size="Size.Large" />
-                                    <MudText Typo="Typo.body2" Style="display: inline-block; width: 100%; text-align: left; margin-top: 5px; margin-left: -9px">@color.Name</MudText>
+                                    <MudText Typo="Typo.body2" Style="width: 100%; text-align: center; margin-top: 5px;">@color.Name</MudText>
                                 </div>
                             </MudItem>
                             }
@@ -251,7 +251,7 @@
 
     private string GetColorStyle(ColorsModel color)
     {
-        return $"background-color: #{color.Value}; width: 40px; height: 40px; border-radius: 50%; border: {(color.IsSelected ? "2px solid black" : "none")};";
+        return $"background-color: #{color.Value}; width: 40px; height: 40px; border-radius: 50%; border: {(color.IsSelected ? "4px solid black" : "none")};";
     }
 
    

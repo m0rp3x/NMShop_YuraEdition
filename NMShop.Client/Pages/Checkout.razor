@@ -1,0 +1,41 @@
+﻿@page "/checkout"
+
+<div>
+    <MudText Typo="Typo.h4">ОФРМЛЕНИЕ ЗАКАЗА</MudText>
+
+    <div class="d-flex">
+
+        <div>
+            
+            <MudText Typo="Typo.h4">ЛИЧНЫЕ ДАННЫЕ</MudText>
+
+            <MudTextField @bind-Value="Form_FIO" Variant="Variant.Filled" Label="Имя, фамилия" />
+
+            <MudTextField Label="Телефон" @bind-Value="Form_PhoneNumber" Variant="@Variant.Filled" />
+
+            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="@Variant.Filled" />
+
+            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="@Variant.Filled" />
+
+            <MudText Typo="Typo.h5">ДОСТАВКА</MudText>
+
+            <MudTextField Label="Город" @bind-Value="Form_City" Variant="@Variant.Filled" />
+
+            <div class="d-flex">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    public string Form_FIO { get; set; }
+
+    public string Form_PhoneNumber { get; set; }
+
+    public string Form_Email { get; set; }
+
+    public string Form_City { get; set; }
+}

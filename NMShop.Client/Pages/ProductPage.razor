@@ -1,11 +1,11 @@
 ﻿@using NMShop.Client.Layout
 @using NMShop.Shared.Models
 @using NMShop.Client.Services
-@using NMShop.Client.Layout
 @using NMShop.Client.Components
 
 @inject ClientDataProvider DataProvider
 @inject NavigationManager Navigation
+@inject CartService CartService
 
 @page "/catalog/{productParentType}/{article}"
 
@@ -32,7 +32,7 @@
         <MudItem xs="4" Class="d-flex flex-column">
 
             <div class="mb-2">
-                @if (minDiscountPrice is not null)
+                @if (product.HasDiscount)
                 {
                     <MudText Typo="Typo.body1" Style="width: fit-content; border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
                 }
@@ -45,25 +45,33 @@
             <MudText Typo="Typo.h3">@product.Name</MudText>
 
             <div class="my-5" style="gap: 23px;">
-                @if (willShowDiscountPrice)
+                @if (seletedSize != null)
                 {
-                    <MudText Typo="Typo.h4" Style="line-height: 100%;" Color="Color.Error">
-                        <MudText Inline="true" Typo="Typo.h4" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@minDiscountPrice.ToPreFormatedString()</MudText> ₽
-                    </MudText>
-                }
 
-                <MudText Typo="Typo.h4" Color="Color.Dark" Style=@("line-height: 100%; font-weight: 700;" + (willShowDiscountPrice ? "text-decoration: line-through; text-decoration-color: red;" : null))>@minPrice.ToPreFormatedString() ₽</MudText>
+                    @if (seletedSize.DiscountPrice.HasValue)
+                    {
+                        <MudText Typo="Typo.h4" Style="line-height: 100%;" Color="Color.Error">
+                            <MudText Inline="true" Typo="Typo.h4" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@seletedSize.DiscountPrice.ToPreFormatedString()</MudText> ₽
+                        </MudText>
+                    }
+
+                    <MudText Typo="Typo.h4" Color="Color.Dark" Style=@("line-height: 100%; font-weight: 700;" + (product.HasDiscount ? "text-decoration: line-through; text-decoration-color: red;" : null))>@seletedSize.Price.ToPreFormatedString() ₽</MudText>
+                }
             </div>
 
             <MudText Class="d-flex align-center justify-center px-4 py-4 mb-4" Typo="Typo.h5"
                      @onmouseover="() => {_isAddToCartButtonHovered = true;}"
                      @onmouseout="() => {_isAddToCartButtonHovered = false;}"
-                     @onclick="() => {Console.WriteLine('A');}"
-                     style=@FilterButtonStyle>
+                     @onclick="() => {
+                                        if(selectedInfo != null) {
+                                            CartService.AddProduct(product, seletedSize);
+                                            CartService.ToggleCart();}
+                                     }"
+                     style=@AddToCartButtonStyle>
                 Добавить в корзину
             </MudText>
 
-            @if (SizeDisplayType != "none")
+            @if (product.SizeDisplayType != "none")
             {
 
                 <MudText Typo="Typo.h5" Class="mx-auto" Style="font-weight: 700; width: fit-content;">Размеры:</MudText>
@@ -78,7 +86,7 @@
 
                         <MudItem xs="3" >
                             <div @onmouseout="() => {pi.isHovered = false;}" @onmouseover="() => {pi.isHovered = true;}" @onclick="() => {seletedSize = pi;}" class="pa-1 d-flex flex-column align-center cursor-pointer" style=@($"transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 4px; background-color: " + (seletedSize == pi ? "rgba(26, 26, 26, 1)" : (pi.isHovered ? "#E6E6E6" : "#f2f2f2")) + ';')>
-                                <MudText Style=@("line-height: 1.2; color: " + (seletedSize == pi ? "white" : "black") + ';') Typo="Typo.h5">@(SizeDisplayType == "string" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
+                                <MudText Style=@("line-height: 1.2; color: " + (seletedSize == pi ? "white" : "black") + ';') Typo="Typo.h5">@(product.SizeDisplayType == "string" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
                                 <MudText Style=@("line-height: 1.2; color: " + (isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
                             </div>
                         </MudItem>
@@ -183,21 +191,16 @@
     [Parameter] public string article { get; set; }
 
     private ProductDto product = new();
-    private string SizeDisplayType = "none";
 
     private bool _isAddToCartButtonHovered = false;
 
-    private PriceInfo seletedSize = new();
+    private PriceInfo? seletedSize;
 
     private InfoButton selectedInfo = InfoButtons[0];
 
     private IEnumerable<ReferenceInfo> refInfoList = new ReferenceInfo[0];
 
-    decimal minPrice;
-    decimal? minDiscountPrice;
-    bool willShowDiscountPrice => minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
-
-    private string FilterButtonStyle =>
+    private string AddToCartButtonStyle =>
         "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
         + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
@@ -206,9 +209,14 @@
         if (!string.IsNullOrEmpty(article))
         {
             product = await DataProvider.GetProductByArticleAsync(article);
-            SizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(product.ProductType);
 
-            (minPrice, minDiscountPrice) = product.GetMinPriceAndDiscount();
+            var lowestPriceInfo = product.PriceInfos.OrderBy(pi => pi.DiscountPrice ?? pi.Price).FirstOrDefault();
+
+            if (lowestPriceInfo != null)
+            {
+                seletedSize = lowestPriceInfo;
+            }
+
         }
         else Navigation.NavigateTo("/notFound");
     }

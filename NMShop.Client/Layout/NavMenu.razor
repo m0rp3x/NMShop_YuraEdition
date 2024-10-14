@@ -3,7 +3,7 @@
 @inject NavigationManager Navigation
 @inject CartService CartService
 
-<MudAppBar Elevation="0" >
+<MudAppBar Elevation="0" Style=@($"z-index: {(int)ZEnum.AppBar}") >
 
     <div class="px-3 py-10"  style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
         <!-- Логотип слева -->
@@ -31,7 +31,7 @@
     @if (!_menuHidden)
     {
         <MudPaper Class="d-flex justify-center absolute" 
-        Style=@($"top: 100%; left: 0; right: 0; z-index: {(int)ZEnum.AppBar}; background-color: #F8F8F8; width: 100%; padding: 20px;")
+        Style=@($"top: 100%; left: 0; right: 0; background-color: #F8F8F8; width: 100%; padding: 20px;")
         Elevation="1"
         @onmouseleave="HideMenu">
             <div style="display: grid; grid-template-columns: repeat(@_menuSubCategoriesBatchAmount, 1fr); justify-content: center; gap: 20px; text-align: center; width: fit-content;">

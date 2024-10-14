@@ -1,0 +1,7 @@
+﻿.cartUnit {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 4fr 1fr 1.7fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+}

@@ -9,10 +9,10 @@ public class ProductDto
     public string Description { get; set; } // Описание товара
     public List<ProductImage> Images { get; set; } // Изображения товара
     public string Gender { get; set; }  // Пол: мужское, женское, унисекс, детское
+    public string SizeDisplayType { get; set; } // Тип отображения размера: string (S, M, L..), decimal (44, 44.5 ...) или none
+    public string ProductType { get; set; } // Тип товара: обувь, одежда, аксессуары
     public string SubCategory { get; set; } // Подкатегория товара (например, спортивная обувь, верхняя одежда)
     public string SelCategory { get; set; } //Категория продаж (например, новые релизы,хиты продаж)
-    public string ProductType { get; set; } // Тип товара: обувь, одежда, аксессуары
-    public DateOnly ReleaseDate { get; set; }
     public Dictionary<string, string> Color { get; set; } // Цвет: название-значение (например, "Красный" => "#FF0000")
     public List<PriceInfo> PriceInfos { get; set; } // Список информации о цене и размере
 
@@ -23,6 +23,8 @@ public class ProductDto
         Images = new List<ProductImage>() { new() { IsMain = true} };
         Gender = "unisex";
     }
+
+    public bool HasDiscount => PriceInfos.Where(pi => pi.DiscountPrice.HasValue).Count() > 0;
 }
     
 public class PriceInfo

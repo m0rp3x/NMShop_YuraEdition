@@ -10,6 +10,7 @@ public class AppMappingProfile : Profile
             .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.Brand.Name))
             .ForMember(dest => dest.Color, opt => opt.MapFrom(src => new Dictionary<string, string> { { src.Color.Name, src.Color.Value } }))
             .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.Name))
+            .ForMember(dest => dest.SizeDisplayType, opt => opt.MapFrom(src => (src.ProductType.ParentType == null ? (src.ProductType.SizeDisplayType ?? "none") : src.ProductType.ParentType.SizeDisplayType)))
             .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => (src.ProductType.ParentType == null ? src.ProductType.Name : src.ProductType.ParentType.Name)))
             .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.ProductType.Name))
             .ForMember(dest => dest.SelCategory, opt => opt.MapFrom(src => src.SellingCategory.Name))
