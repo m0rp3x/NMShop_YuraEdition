@@ -21,6 +21,9 @@ namespace NMShop.Shared.Models
         public int? Take { get; set; }
         public string SearchQuery { get; set; } = string.Empty;
         public List<decimal> Sizes { get; set; } = new ();
+        
+        public decimal? MinSize { get; set; }
+        public decimal? MaxSize { get; set; }
 
         public bool Equals(ProductFilter other)
         {
@@ -30,6 +33,8 @@ namespace NMShop.Shared.Models
             return
                 this.MinPrice == other.MinPrice &&
                 this.MaxPrice == other.MaxPrice &&
+                this.MinSize == other.MinSize &&
+                this.MaxSize == other.MaxSize &&
                 this.Gender == other.Gender &&
                 this.Category == other.Category &&
                 this.InStock == other.InStock &&
@@ -43,6 +48,7 @@ namespace NMShop.Shared.Models
                 this.Brands.SequenceEqual(other.Brands) &&
                 this.SubCategories.SequenceEqual(other.SubCategories) &&
                 this.Sizes.SequenceEqual(other.Sizes);
+       
         }
 
         public override bool Equals(object obj) => Equals(obj as ProductFilter);
@@ -62,6 +68,9 @@ namespace NMShop.Shared.Models
             hashCode.Add(Skip);
             hashCode.Add(Take);
             hashCode.Add(SearchQuery);
+            hashCode.Add(MinSize);
+            hashCode.Add(MaxSize);
+            
 
             foreach (var brand in Brands)
                 hashCode.Add(brand);
@@ -93,8 +102,11 @@ namespace NMShop.Shared.Models
                 Skip = this.Skip,
                 Take = this.Take,
                 SearchQuery = this.SearchQuery,
+                MinSize = this.MinSize,
+                MaxSize = this.MaxSize,
                 Sizes = new List<decimal>(this.Sizes)
             };
         }
+        
     }
 }

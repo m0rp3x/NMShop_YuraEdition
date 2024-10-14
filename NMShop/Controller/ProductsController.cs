@@ -191,6 +191,16 @@ namespace NMShop.Controller
                 {
                     productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Price <= filter.MaxPrice.Value));
                 }
+                
+                if (filter.MinSize.HasValue)
+                {
+                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Size >= filter.MinSize.Value));
+                }
+
+                if (filter.MaxSize.HasValue)
+                {
+                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Size <= filter.MaxSize.Value));
+                }
 
                 // Фильтрация по цвету
                 if (!string.IsNullOrEmpty(filter.Color))
@@ -205,10 +215,8 @@ namespace NMShop.Controller
                 }
 
                 // **Фильтрация по размерам**
-                if (filter.Sizes != null && filter.Sizes.Any())
-                {
-                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => filter.Sizes.Contains(si.Size)));
-                }
+              
+
 
                 // Фильтрация по поисковому запросу
                 if (!string.IsNullOrEmpty(filter.SearchQuery))

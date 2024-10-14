@@ -21,6 +21,10 @@ namespace NMShop.Shared.Models
             if (filter.IsAscending) queryParams["IsAscending"] = "true";
             if (filter.Skip.HasValue) queryParams["Skip"] = filter.Skip.Value.ToString();
             if (filter.Take.HasValue) queryParams["Take"] = filter.Take.Value.ToString();
+            if (filter.MinSize.HasValue) queryParams["MinSize"] = filter.MinSize.Value.ToString();
+            if (filter.MaxSize.HasValue) queryParams["MaxSize"] = filter.MaxSize.Value.ToString();
+
+
 
             return string.Join("&", queryParams.Select(kv => $"{kv.Key}={HttpUtility.UrlEncode(kv.Value)}"));
         }

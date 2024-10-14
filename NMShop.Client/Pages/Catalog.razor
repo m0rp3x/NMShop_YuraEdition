@@ -50,36 +50,14 @@
                     </MudExpansionPanel>
 
 
-                    @if (CategorySizeDisplayType != "none")
-                    {
+                    
                         <MudExpansionPanel Text="Размер">
-
-                            @if (CategorySizeDisplayType == "string")
-                            {
-                                 <MudSelect T="int?" @bind-Value="MinClothingSize" Variant="Variant.Outlined" Placeholder="Выбрать" Label="От">
-                                     @foreach (var sizeOption in Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(e => (int?)e).Where(e => !MaxClothingSize.HasValue || e <= MaxClothingSize).ToList())
-                                         {
-                                             <MudSelectItem Value="@sizeOption">@(((ClothingSize)sizeOption).ToString())</MudSelectItem>
-                                         }
-                                 </MudSelect>
-                                 
-                                 <MudSelect T="int?" @bind-Value="MaxClothingSize" Variant="Variant.Outlined" Placeholder="Выбрать" Label="До">
-                                     @foreach (var sizeOption in Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(e => (int?)e).Where(e => !MinClothingSize.HasValue || e >= MinClothingSize).ToList())
-                                         {
-                                             <MudSelectItem Value="@sizeOption">@(((ClothingSize)sizeOption).ToString())</MudSelectItem>
-                                         }
-                                 </MudSelect>
-                            }
-                            else if (CategorySizeDisplayType == "decimal")
-                            {
-                                <div class="d-flex" style="gap: 15px;">
-                                    <MudNumericField @onfocusout="OnShoeSizeChanged" @bind-Value="MinShoeSize" Label="От" Step="1" Variant="Variant.Outlined" />
-                                    <MudNumericField @onfocusout="OnShoeSizeChanged" @bind-Value="MaxShoeSize" Label="До" Step="1" Variant="Variant.Outlined" />
-                                </div>
-                            }
-
+                            <div class="d-flex" style="gap: 15px;">
+                                <MudNumericField  @bind-Value="Filter.MinSize" Label="От" Step="10" Variant="Variant.Outlined" />
+                                <MudNumericField  @bind-Value="Filter.MaxSize" Label="До" Step="10" Variant="Variant.Outlined" />
+                            </div>
                         </MudExpansionPanel>
-                    }
+                    
 
                     <MudExpansionPanel Text="Пол">
 
@@ -214,33 +192,6 @@
     private List<ColorsModel> Colors = new();
     private string CategorySizeDisplayType = "none";
 
-    private int? _minClothingSize;
-    private int? MinClothingSize
-    {
-        get => _minClothingSize;
-        set
-        {
-            _minClothingSize = value;
-            if (MaxClothingSize.HasValue && _minClothingSize.HasValue && _minClothingSize > MaxClothingSize)
-            {
-                MaxClothingSize = _minClothingSize;
-            }
-        }
-    }
-
-    private int? _maxClothingSize;
-    private int? MaxClothingSize
-    {
-        get => _maxClothingSize;
-        set
-        {
-            _maxClothingSize = value;
-            if (MinClothingSize.HasValue && _maxClothingSize.HasValue && _maxClothingSize < MinClothingSize)
-            {
-                MinClothingSize = _maxClothingSize;
-            }
-        }
-    }
 
     
     private void OnColorSelected(ColorsModel color)
@@ -256,8 +207,7 @@
 
    
 
-    private decimal? MinShoeSize { get; set; }
-    private decimal? MaxShoeSize { get; set; }
+
 
     private static List<SortOption> SortOptions = new List<SortOption>
     {
@@ -437,24 +387,7 @@
     
    
 
-    private void OnShoeSizeChanged()
-    {
-        // var newFilter = Filter.Clone();
 
-        // if (MinShoeSize.HasValue && MaxShoeSize.HasValue && MinShoeSize <= MaxShoeSize)
-        // {
-        //     // Генерируем список размеров для обуви
-        //     var sizes = Enumerable.Range(MinShoeSize.Value, MaxShoeSize.Value - MinShoeSize.Value + 1).ToList();
-
-        //     // Удаляем предыдущие размеры обуви из фильтра
-        //     newFilter.Sizes.RemoveAll(size => size >= MinShoeSize.Value && size <= MaxShoeSize.Value);
-
-        //     // Добавляем новые размеры
-        //     newFilter.Sizes.AddRange(sizes);
-        // }
-
-        // Filter = newFilter;
-    }
 
     private void OnSortOptionChanged(SortOption selectedSortOption)
     {
@@ -566,8 +499,11 @@
                     case "SearchQuery":
                         filter.SearchQuery = value;
                         break;
-                    case "Sizes":
-                        filter.Sizes = value.Split(',').Select(s => decimal.Parse(s)).ToList();
+                    case "MinSize":
+                        filter.MinSize = decimal.Parse(value);
+                        break;
+                    case "MaxSize":
+                        filter.MaxSize = decimal.Parse(value);
                         break;
                 }
             }
