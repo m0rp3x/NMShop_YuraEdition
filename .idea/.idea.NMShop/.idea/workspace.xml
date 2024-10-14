@@ -11,12 +11,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Models/ProductColorDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop.Client/Components/Trash.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/Controller/ProductAttributesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/ProductAttributesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/Controller/ProductsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/ProductsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/NMShop.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/NMShop.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Checkout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Checkout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/NMShop.Shared.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/NMShop.Shared.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/NMShop.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/NMShop.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +174,10 @@
       <workItem from="1728512738764" duration="951000" />
       <workItem from="1728571880726" duration="20728000" />
       <workItem from="1728652978502" duration="12093000" />
-      <workItem from="1728835737453" duration="15441000" />
+      <workItem from="1728835737453" duration="21723000" />
+      <workItem from="1728915979689" duration="6648000" />
+      <workItem from="1728922738818" duration="55000" />
+      <workItem from="1728922817893" duration="7562000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -311,7 +315,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728663614440</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="фильтр цвета продукта">
+      <option name="closed" value="true" />
+      <created>1728851262484</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1728851262484</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Размеры">
+      <option name="closed" value="true" />
+      <created>1728858826546</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1728858826546</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -338,7 +358,9 @@
     <MESSAGE value="я ебу собак" />
     <MESSAGE value="админка 2.0 - комменты летят так быстро что никто не узнает что я слушаю вайперов" />
     <MESSAGE value="Фильтры обрели вторую жизнь эти коммиты никто не читает поэтому никто не узнает что путин бомба взрыв чечня" />
-    <option name="LAST_COMMIT_MESSAGE" value="Фильтры обрели вторую жизнь эти коммиты никто не читает поэтому никто не узнает что путин бомба взрыв чечня" />
+    <MESSAGE value="фильтр цвета продукта" />
+    <MESSAGE value="Размеры" />
+    <option name="LAST_COMMIT_MESSAGE" value="Размеры" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -377,11 +399,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor</url>
-          <line>67</line>
+          <line>75</line>
           <properties isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NMShop.Client/Pages/Checkout.razor</url>
+          <line>65</line>
+          <properties isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
+          </properties>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -11,6 +11,7 @@
     <ProjectReference Include="..\NMShop.Client\NMShop.Client.csproj" />
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="CoreAdmin" Version="3.0.0" />
+    <PackageReference Include="DaData.ApiClient" Version="1.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">

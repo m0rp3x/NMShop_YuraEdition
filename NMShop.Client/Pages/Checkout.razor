@@ -1,41 +1,93 @@
-﻿@page "/checkout"
+﻿@using NMShop.Client.Services
+@using NMShop.Client.Components
+@page "/checkout"
 
-<div>
-    <MudText Typo="Typo.h4">ОФРМЛЕНИЕ ЗАКАЗА</MudText>
+<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4 mt-4">
+    <MudGrid>
+        <MudItem xs="6" style="position: relative;">
+            <MudText Typo="Typo.h5" Class="mb-3">ЛИЧНЫЕ ДАННЫЕ</MudText>
+            <MudTextField Label="Имя, фамилия" @bind-Value="Form_FIO" Variant="Variant.Filled" Class="mb-3" />
+            <MudTextField Label="Телефон" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled" Class="mb-3" />
+            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="Variant.Filled" Class="mb-3" />
+        </MudItem>
 
-    <div class="d-flex">
+        <MudItem xs="6" style="max-height: 60vh; position: absolute; right: 10%; width: 30%; overflow-y: auto;">
+            <Trash />
+            <MudGrid Class="mt-4">
+                <MudItem xs="12">
+                    <MudText Typo="Typo.h6" Class="mb-1">ЕСЛИ У ВАС ЕСТЬ ПРОМОКОД, ВВЕДИТЕ ЕГО СЮДА</MudText>
+                    <div class="d-flex">
+                        <MudTextField @bind-Value="Promo" Placeholder="Введите промокод" Class="me-3" />
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
+                    </div>
+                </MudItem>
+                
 
-        <div>
-            
-            <MudText Typo="Typo.h4">ЛИЧНЫЕ ДАННЫЕ</MudText>
+                <MudItem xs="12" Class="text-right mt-3">
+                    <MudText Typo="Typo.h6">ОБЩАЯ СТОИМОСТЬ:</MudText>
+                    <MudText Typo="Typo.h5" Class="font-weight-bold">ИТОГО</MudText>
+                    <MudText Typo="Typo.h4" Class="font-weight-bold">140 380 ₽</MudText>
+                </MudItem>
 
-            <MudTextField @bind-Value="Form_FIO" Variant="Variant.Filled" Label="Имя, фамилия" />
+                <MudItem xs="12" Class="text-center mt-3">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width: 100%">ОФОРМИТЬ ЗАКАЗ</MudButton>
+                </MudItem>
 
-            <MudTextField Label="Телефон" @bind-Value="Form_PhoneNumber" Variant="@Variant.Filled" />
+                <MudItem xs="12" Class="text-center mt-2">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Оформляя заказ, Вы подтверждаете согласие с <MudLink Href="#">Пользовательским соглашением</MudLink>, <MudLink Href="#">Политикой конфиденциальности</MudLink> и <MudLink Href="#">Договором оферты</MudLink>.
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+    
+    <MudItem xs="12">
+        <MudText Typo="Typo.h5" Class="mb-3">СПОСОБ ДОСТАВКИ</MudText>
+        <MudRadioGroup @bind-Value="SelectedDeliveryMethod" Class="mb-3">
+            <MudRadio T="string"  Label="Доставка курьером" >Доставка курьером</MudRadio>
+            <MudRadio T="string"  Label="Самовывоз" >Самовывоз</MudRadio>
+            <MudRadio T="string"  Label="Доставка почтой" >Доставка почтой</MudRadio>
+        </MudRadioGroup>
+    </MudItem>
+    
+    <MudItem xs="12" sm="6">
 
-            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="@Variant.Filled" />
+        <MudText Typo="Typo.h5" Class="mb-3">АДРЕС ДОСТАВКИ</MudText>
+        <MudTextField Label="Адрес" @bind-Value="Form_Address" Variant="Variant.Filled" Class="mb-3" />
+        <MudTextField Label="Регион" @bind-Value="Form_Region" Variant="Variant.Filled" Class="mb-3" />
+        <MudTextField Label="Индекс" @bind-Value="Form_Index" Variant="Variant.Filled" Class="mb-3" />
+    
+        <MudCheckBox T="bool" Label="Я получатель" @bind-Value="IsRecipient" />
 
-            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="@Variant.Filled" />
+        @if (!IsRecipient)
+        {
+        <MudTextField Label="ФИО Получателя" @bind-Value="Form_FIO" Variant="Variant.Filled" Class="mb-3" />
+        <MudTextField Label="Телефон Получателя" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled" Class="mb-3" />
+        }
+    </MudItem>
 
-            <MudText Typo="Typo.h5">ДОСТАВКА</MudText>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h5" Class="mb-3">СПОСОБ ОПЛАТЫ</MudText>
+        <MudRadioGroup @bind-Value="SelectedPaymentMethod" Class="mb-3">
+            <MudRadio T="string"  Label="Оплата картой" >Оплата картой</MudRadio>
+            <MudRadio T="string"  Label="Сбербанк Онлайн" >Сбербанк Онлайн</MudRadio>
+            <MudRadio T="string"  Label="Наличные" >Наличные</MudRadio>
+        </MudRadioGroup>
+    </MudItem>
+</MudContainer>
 
-            <MudTextField Label="Город" @bind-Value="Form_City" Variant="@Variant.Filled" />
 
-            <div class="d-flex">
-
-            </div>
-        </div>
-
-    </div>
-</div>
 
 @code {
-
-    public string Form_FIO { get; set; }
-
-    public string Form_PhoneNumber { get; set; }
-
-    public string Form_Email { get; set; }
-
-    public string Form_City { get; set; }
+public string? Form_FIO { get; set; }
+public string? Promo { get; set; }
+public string? Form_PhoneNumber { get; set; }
+public string? Form_Email { get; set; }
+public string? Form_Address { get; set; }
+public string? Form_Region { get; set; }
+public string? Form_Index { get; set; }
+public bool IsRecipient { get; set; } = true;
+public string? SelectedDeliveryMethod { get; set; }
+public string? SelectedPaymentMethod { get; set; }
 }

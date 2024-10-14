@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DaData.ApiClient" Version="1.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.*" />
     <PackageReference Include="MudBlazor" Version="7.*" />
   </ItemGroup>
