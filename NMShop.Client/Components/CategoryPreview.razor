@@ -4,29 +4,38 @@
 @inject ClientDataProvider DataProvider
 @inject NavigationManager Navigation
 
-<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-10">
+@if(_categoryId != null)
+{
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-10">
 
-    <MudStack Row="true">
-        <MudText Align="Align.Left" Typo="Typo.h4" Style="font-weight: 800; text-transform: uppercase;">
-            @CategoryType
-        </MudText>
+        <MudStack Row="true">
+            <MudText Align="Align.Left" Typo="Typo.h4" Style="font-weight: 800; text-transform: uppercase;">
+                @CategoryType
+            </MudText>
 
-        <MudSpacer/>
+            <MudSpacer />
 
-        <MudButton OnClick="() => Navigation.NavigateTo(GetPath())">
-            <MudText Typo="Typo.h5">Каталог</MudText>
-            <MudIcon Icon="@Icons.Material.Filled.ArrowOutward" Size="Size.Medium"/>
-        </MudButton>
-    </MudStack>
+            <MudButton OnClick="() => Navigation.NavigateTo(GetPath())">
+                <MudText Typo="Typo.h5">Каталог</MudText>
+                <MudIcon Icon="@Icons.Material.Filled.ArrowOutward" Size="Size.Medium" />
+            </MudButton>
+        </MudStack>
 
-    <ProductGrid Filter="new() { Category = CategoryType, Take=4 }" />
-    
+        <ProductGrid Filter="new() { CategoryId = _categoryId, Take=4 }" />
 
-</MudContainer>
+    </MudContainer>
+}
 
 @code {
     [Parameter]
     public string CategoryType { get; set; }
 
-    string GetPath() => "/catalog/" + new ProductFilter() { Category = CategoryType }.ToQueryString();
+    private int? _categoryId;
+
+    string GetPath() => "/catalog/" + new ProductFilter() { CategoryId = _categoryId }.ToQueryString();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categoryId = await DataProvider.GetCategoryIdByNameAsync(CategoryType);
+    }
 }

@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace NMShop.Scaffold;
+namespace NMShop.Shared.Scaffold;
 
-[Table("Genders", Schema = "NMShop")]
-public partial class Gender
+[Table("Brands", Schema = "NMShop")]
+public partial class Brand
 {
     [Key]
     [DisplayName("Идентификатор")]
-
     public int Id { get; set; }
-    
-    [StringLength(50)]
-    [DisplayName ("Название")]
+
+    [StringLength(100)]
+    [DisplayName("Название")]
     public string Name { get; set; } = null!;
 
-    [InverseProperty("Gender")]
+    [InverseProperty("Brand")]
     [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
-    
+
     public override string ToString()
     {
-        return  $"{Name}";  // Отображать ID бренда
+        return $"Бренд {Name}";  // Отображать ID бренда
     }
 
+
 }
+

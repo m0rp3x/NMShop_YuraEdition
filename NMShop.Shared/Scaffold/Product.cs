@@ -1,59 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace NMShop.Scaffold;
+namespace NMShop.Shared.Scaffold;
 
 [Table("Product", Schema = "NMShop")]
 public partial class Product
 {
     [Key]
-    [DisplayName( "Идентификатор")]
+    [DisplayName("Идентификатор")]
 
     public int Id { get; set; }
 
     [StringLength(150)]
-    [DisplayName( "Название")]
+    [DisplayName("Название")]
 
     public string Name { get; set; } = null!;
 
     [Column("Brand_Id")]
-    [DisplayName( "Бренд")]
-    
+    [DisplayName("Бренд")]
+
     public int BrandId { get; set; }
 
     [StringLength(150)]
-    [DisplayName( "Артикул товара")]
+    [DisplayName("Артикул товара")]
 
     public string Article { get; set; } = null!;
 
     [StringLength(1000)]
-    [DisplayName( "Описание товара")]
+    [DisplayName("Описание товара")]
 
     public string Description { get; set; } = null!;
 
     [Column("Gender_Id")]
-    [DisplayName( "Гендер")]
+    [DisplayName("Гендер")]
 
     public int GenderId { get; set; }
 
     [Column("ProductType_Id")]
-    [DisplayName( "Тип продукта")]
+    [DisplayName("Тип продукта")]
 
     public int ProductTypeId { get; set; }
 
     [Column("SellingCategory_Id")]
-    [DisplayName( "Категория продажи")]
+    [DisplayName("Категория продажи")]
 
     public int SellingCategoryId { get; set; }
-    [DisplayName( "Дата добавления")]
+    [DisplayName("Дата добавления")]
     public DateOnly DateAdded { get; set; }
 
     [Column("Color_Id")]
-    [DisplayName( "Цвет")]
+    [DisplayName("Цвет")]
 
     public int ColorId { get; set; }
 
@@ -86,7 +83,7 @@ public partial class Product
     [InverseProperty("Product")]
     [Display(AutoGenerateField = false)]
     public virtual ICollection<StockInfo> StockInfos { get; set; } = new List<StockInfo>();
-    
+
     public override string ToString()
     {
         return $"#{Id} - {Name}"; // Отображать ID бренда

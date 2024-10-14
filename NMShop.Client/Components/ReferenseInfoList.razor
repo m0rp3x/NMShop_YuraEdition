@@ -14,11 +14,24 @@
     public string Code { get; set; }
 
     private ReferenceInfo refInfo = new();
-    
+
+    private static ReferenceInfo _errorHolder = new()
+    {
+            Topic = "Error getting ReferenceInfo",
+            Contents = new()
+            {
+                new()
+                {
+                    Size = "h2",
+                    Text = "Error getting ReferenceInfo"
+                }
+            }
+    };
+
     protected override async Task OnParametersSetAsync()
     {
         Console.WriteLine(Code);
-        refInfo = await DataProvider.GetReferenceInfoByTopic(Code);
+        refInfo = (await DataProvider.GetReferenceInfo(Code)).FirstOrDefault() ?? _errorHolder;
     }
 
 }

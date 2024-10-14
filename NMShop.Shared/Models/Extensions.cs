@@ -8,23 +8,21 @@ namespace NMShop.Shared.Models
         {
             var queryParams = new Dictionary<string, string>();
 
-            if (filter.Brands != null && filter.Brands.Any()) queryParams["Brands"] = string.Join(",", filter.Brands);
+            if (filter.BrandIds != null && filter.BrandIds.Any()) queryParams["BrandIds"] = string.Join(",", filter.BrandIds);
             if (filter.MinPrice.HasValue) queryParams["MinPrice"] = filter.MinPrice.Value.ToString();
             if (filter.MaxPrice.HasValue) queryParams["MaxPrice"] = filter.MaxPrice.Value.ToString();
-            if (!string.IsNullOrEmpty(filter.Gender)) queryParams["Gender"] = filter.Gender;
-            if (!string.IsNullOrEmpty(filter.Category)) queryParams["Category"] = filter.Category;
+            if (filter.GenderIds != null && filter.GenderIds.Any()) queryParams["GenderIds"] = string.Join(",", filter.GenderIds);
+            if (filter.CategoryId.HasValue) queryParams["CategoryId"] = filter.CategoryId.Value.ToString();
             if (filter.InStock) queryParams["InStock"] = "true";
-            if (!string.IsNullOrEmpty(filter.Color)) queryParams["Color"] = filter.Color;
-            if (filter.SubCategories != null && filter.SubCategories.Any()) queryParams["SubCategories"] = string.Join(",", filter.SubCategories);
-            if (!string.IsNullOrEmpty(filter.SelCategory)) queryParams["SelCategory"] = filter.SelCategory;
+            if (filter.ColorIds != null && filter.ColorIds.Any()) queryParams["ColorIds"] = string.Join(",", filter.ColorIds);
+            if (filter.SubCategoryIds != null && filter.SubCategoryIds.Any()) queryParams["SubCategoryIds"] = string.Join(",", filter.SubCategoryIds);
+            if (filter.SelCategoryIds != null && filter.SelCategoryIds.Any()) queryParams["SelCategoryIds"] = string.Join(",", filter.SelCategoryIds);
             if (!string.IsNullOrEmpty(filter.SortBy)) queryParams["SortBy"] = filter.SortBy;
             if (filter.IsAscending) queryParams["IsAscending"] = "true";
             if (filter.Skip.HasValue) queryParams["Skip"] = filter.Skip.Value.ToString();
             if (filter.Take.HasValue) queryParams["Take"] = filter.Take.Value.ToString();
             if (filter.MinSize.HasValue) queryParams["MinSize"] = filter.MinSize.Value.ToString();
             if (filter.MaxSize.HasValue) queryParams["MaxSize"] = filter.MaxSize.Value.ToString();
-
-
 
             return string.Join("&", queryParams.Select(kv => $"{kv.Key}={HttpUtility.UrlEncode(kv.Value)}"));
         }

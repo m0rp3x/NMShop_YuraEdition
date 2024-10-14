@@ -13,7 +13,7 @@ namespace NMShop.Client.Services
 
         public void AddProduct(ProductDto product, PriceInfo priceInfo, int quantity = 1)
         {
-            var existingItem = _items.FirstOrDefault(item => item.Product.Id == product.Id && item.PriceInfo.Size == priceInfo.Size);
+            var existingItem = _items.FirstOrDefault(item => item.Product.Article == product.Article && item.PriceInfo.Size == priceInfo.Size);
             if (existingItem != null)
             {
                 existingItem.Quantity += quantity;
@@ -27,7 +27,7 @@ namespace NMShop.Client.Services
 
         public void RemoveProduct(ProductDto product, PriceInfo priceInfo)
         {
-            var existingItem = _items.FirstOrDefault(item => item.Product.Id == product.Id && item.PriceInfo.Size == priceInfo.Size);
+            var existingItem = _items.FirstOrDefault(item => item.Product.Article == product.Article && item.PriceInfo.Size == priceInfo.Size);
             if (existingItem != null)
             {
                 _items.Remove(existingItem);
@@ -37,7 +37,7 @@ namespace NMShop.Client.Services
 
         public void UpdateQuantity(ProductDto product, PriceInfo priceInfo, int quantity)
         {
-            var existingItem = _items.FirstOrDefault(item => item.Product.Id == product.Id && item.PriceInfo.Size == priceInfo.Size);
+            var existingItem = _items.FirstOrDefault(item => item.Product.Article == product.Article && item.PriceInfo.Size == priceInfo.Size);
             if (existingItem != null && quantity > 0 && quantity < 100)
             {
                 existingItem.Quantity = quantity;

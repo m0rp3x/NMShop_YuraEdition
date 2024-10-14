@@ -2,7 +2,6 @@
 
 public class ProductDto
 {
-    public int Id { get; set; } // Уникальный идентификатор товара
     public string Name { get; set; } // Название товара
     public string Brand { get; set; } // Бренд товара
     public string Article { get; set; } // Артикул

@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace NMShop.Scaffold;
+namespace NMShop.Shared.Scaffold;
 
 [Table("OrderParts", Schema = "NMShop")]
 public partial class OrderPart
 {
     [Key]
-    [DisplayName( "Идентификатор")]
+    [DisplayName("Идентификатор")]
     public int Id { get; set; }
 
     [Column("Order_Id")]
-    [DisplayName( "Идентификатор заказа")]
+    [DisplayName("Идентификатор заказа")]
     public int OrderId { get; set; }
 
     [Column("Product_Id")]
     [DisplayName("Продукт")]
     public int ProductId { get; set; }
 
-    [DisplayName( "Количество")]
+    [DisplayName("Количество")]
     public int Amount { get; set; }
 
     [ForeignKey("OrderId")]
@@ -34,10 +31,10 @@ public partial class OrderPart
     [InverseProperty("OrderParts")]
     [Display(AutoGenerateField = false)]
     public virtual Product Product { get; set; } = null!;
-    
+
     public override string ToString()
     {
-        return Id.ToString() + Product.Name; 
+        return Id.ToString() + Product.Name;
     }
 
 }

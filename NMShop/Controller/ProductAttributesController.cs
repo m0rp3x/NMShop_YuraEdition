@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NMShop.Scaffold;
+using NMShop.Shared.Scaffold;
 
 namespace NMShop.Controller
 {
@@ -16,23 +16,23 @@ namespace NMShop.Controller
         }
 
         [HttpGet("brands")]
-        public async Task<ActionResult<IEnumerable<string>>> GetBrands()
+        public async Task<ActionResult<IEnumerable<Brand>>> GetBrands()
         {
             var brands = await _context.Brands
-                .Select(b => b.Name)
+                .Select(b => new { b.Id, b.Name })
                 .ToListAsync();
 
             return Ok(brands);
         }
 
         [HttpGet("product-types")]
-        public async Task<ActionResult<IEnumerable<string>>> GetProductTypes([FromQuery] string parentCategory = null)
+        public async Task<ActionResult<IEnumerable<object>>> GetProductTypes([FromQuery] int? parentCategoryId = null)
         {
-            if (!string.IsNullOrEmpty(parentCategory))
+            if (parentCategoryId.HasValue)
             {
                 var parentType = await _context.ProductTypes
                     .Include(pt => pt.InverseParentType)
-                    .FirstOrDefaultAsync(pt => EF.Functions.ILike(pt.Name, parentCategory));
+                    .FirstOrDefaultAsync(pt => pt.Id == parentCategoryId);
 
                 if (parentType == null)
                 {
@@ -40,7 +40,7 @@ namespace NMShop.Controller
                 }
 
                 var subCategories = parentType.InverseParentType
-                    .Select(pt => pt.Name)
+                    .Select(pt => new { pt.Id, pt.Name })
                     .ToList();
 
                 return Ok(subCategories);
@@ -49,7 +49,7 @@ namespace NMShop.Controller
             {
                 var subCategories = await _context.ProductTypes
                     .Where(pt => pt.ParentTypeId != null)
-                    .Select(pt => pt.Name)
+                    .Select(pt => new { pt.Id, pt.Name })
                     .ToListAsync();
 
                 return Ok(subCategories);
@@ -57,16 +57,11 @@ namespace NMShop.Controller
         }
 
         [HttpGet("category-size-display-type")]
-        public async Task<ActionResult<string>> GetCategorySizeDisplayType([FromQuery] string category = null)
+        public async Task<ActionResult<string>> GetCategorySizeDisplayType([FromQuery] int categoryId)
         {
-            if (string.IsNullOrEmpty(category))
-            {
-                return BadRequest("Category is required.");
-            }
-
             var productType = await _context.ProductTypes
                 .Include(pt => pt.ParentType)
-                .FirstOrDefaultAsync(pt => EF.Functions.ILike(pt.Name, category));
+                .FirstOrDefaultAsync(pt => pt.Id == categoryId);
 
             if (productType == null)
             {
@@ -79,20 +74,20 @@ namespace NMShop.Controller
         }
 
         [HttpGet("selling-categories")]
-        public async Task<ActionResult<IEnumerable<string>>> GetSellingCategories()
+        public async Task<ActionResult<IEnumerable<SellingCategory>>> GetSellingCategories()
         {
             var categories = await _context.SellingCategories
-                .Select(sc => sc.Name)
+                .Select(sc => new { sc.Id, sc.Name })
                 .ToListAsync();
 
             return Ok(categories);
         }
 
         [HttpGet("genders")]
-        public async Task<ActionResult<IEnumerable<string>>> GetGenders()
+        public async Task<ActionResult<IEnumerable<Gender>>> GetGenders()
         {
             var genders = await _context.Genders
-                .Select(g => g.Name)
+                .Select(g => new { g.Id, g.Name })
                 .ToListAsync();
 
             return Ok(genders);
@@ -102,9 +97,30 @@ namespace NMShop.Controller
         public async Task<ActionResult<IEnumerable<ProductColor>>> GetColors()
         {
             var colors = await _context.ProductColors
-                .Select(c => new { c.Name, c.Value })
+                .Select(c => new { c.Id, c.Name, c.Value })
                 .ToListAsync();
             return Ok(colors);
+        }
+
+        [HttpGet("category-id-by-name")]
+        public async Task<ActionResult<int?>> GetCategoryIdByName([FromQuery] string categoryName)
+        {
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                return BadRequest("Category name is required.");
+            }
+
+            var category = await _context.ProductTypes
+                .Where(pt => EF.Functions.ILike(pt.Name, categoryName))
+                .Select(pt => pt.Id)
+                .FirstOrDefaultAsync();
+
+            if (category == 0)
+            {
+                return NotFound("Category not found.");
+            }
+
+            return Ok(category);
         }
     }
 }

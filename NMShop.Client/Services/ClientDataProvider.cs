@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
+using NMShop.Shared.Scaffold;
 
 namespace NMShop.Client.Services
 {
@@ -34,87 +35,76 @@ namespace NMShop.Client.Services
             _cache[key] = (DateTime.Now, value);
         }
 
-        public async Task<IEnumerable<string>> GetBrandsAsync()
+        public async Task<IEnumerable<Brand>> GetBrandsAsync()
         {
             var cacheKey = "brands";
-            var cachedData = GetFromCache<IEnumerable<string>>(cacheKey);
+            var cachedData = GetFromCache<IEnumerable<Brand>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7279/api/productattributes/brands");
+            var data = await _http.GetFromJsonAsync<IEnumerable<Brand>>("https://localhost:7279/api/productattributes/brands");
             SetCache(cacheKey, data);
             return data;
         }
 
-        public async Task<IEnumerable<string>> GetGendersAsync()
+        public async Task<IEnumerable<Gender>> GetGendersAsync()
         {
             var cacheKey = "genders";
-            var cachedData = GetFromCache<IEnumerable<string>>(cacheKey);
+            var cachedData = GetFromCache<IEnumerable<Gender>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7279/api/productattributes/genders");
+            var data = await _http.GetFromJsonAsync<IEnumerable<Gender>>("https://localhost:7279/api/productattributes/genders");
             SetCache(cacheKey, data);
             return data;
         }
 
-        public async Task<IEnumerable<string>> GetSubCategoriesAsync(string parentCategory = null)
+        public async Task<IEnumerable<ProductType>> GetSubCategoriesAsync(int? parentCategoryId = null)
         {
-            var cacheKey = parentCategory == null ? "subCategories" : $"subCategories_{parentCategory}";
-            var cachedData = GetFromCache<IEnumerable<string>>(cacheKey);
+            var cacheKey = parentCategoryId == null ? "subCategories" : $"subCategories_{parentCategoryId}";
+            var cachedData = GetFromCache<IEnumerable<ProductType>>(cacheKey);
             if (cachedData != null) return cachedData;
 
             string url = "https://localhost:7279/api/productattributes/product-types";
-            if (!string.IsNullOrEmpty(parentCategory))
+            if (parentCategoryId.HasValue)
             {
-                url += $"?parentCategory={HttpUtility.UrlEncode(parentCategory)}";
+                url += $"?parentCategoryId={parentCategoryId}";
             }
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<string>>(url);
+            var data = await _http.GetFromJsonAsync<IEnumerable<ProductType>>(url);
             SetCache(cacheKey, data);
             return data;
         }
-        
-        public async Task<IEnumerable<ProductColorDto>> GetProductColorsAsync()
+
+        public async Task<IEnumerable<ProductColor>> GetProductColorsAsync()
         {
             var cacheKey = "productColors";
-            var cachedData = GetFromCache<IEnumerable<ProductColorDto>>(cacheKey);
+            var cachedData = GetFromCache<IEnumerable<ProductColor>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<ProductColorDto>>("https://localhost:7279/api/productattributes/colors");
+            var data = await _http.GetFromJsonAsync<IEnumerable<ProductColor>>("https://localhost:7279/api/productattributes/colors");
             SetCache(cacheKey, data);
             return data;
         }
-        
-        public async Task<IEnumerable<ProductDto>> GetFilteredProductsByColor(ProductFilter filter, string color)
-        {
-            var queryString = filter.ToQueryString();
-            var url = $"https://localhost:7279/api/products/filter?{queryString}&Color={HttpUtility.UrlEncode(color)}";
-            return await _http.GetFromJsonAsync<IEnumerable<ProductDto>>(url);
-        }
 
-        public async Task<string> GetCategorySizeDisplayTypeAsync(string category)
-                 {
-                     var cacheKey = $"categorySizeDisplayType_{category}";
-                     var cachedData = GetFromCache<string>(cacheKey);
-                     if (cachedData != null) return cachedData;
-         
-                     string url = "https://localhost:7279/api/productattributes/category-size-display-type";
-                     if (!string.IsNullOrEmpty(category))
-                     {
-                         url += $"?category={HttpUtility.UrlEncode(category)}";
-                     }
-         
-                     var data = await _http.GetStringAsync(url);
-                     SetCache(cacheKey, data);
-                     return data;
-                 }
-
-        public async Task<IEnumerable<string>> GetSelCategoriesAsync()
+        public async Task<string> GetCategorySizeDisplayTypeAsync(int categoryId)
         {
-            var cacheKey = "sellingCategories";
-            var cachedData = GetFromCache<IEnumerable<string>>(cacheKey);
+            var cacheKey = $"categorySizeDisplayType_{categoryId}";
+            var cachedData = GetFromCache<string>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<string>>("https://localhost:7279/api/productattributes/selling-categories");
+            string url = $"https://localhost:7279/api/productattributes/category-size-display-type?categoryId={categoryId}";
+
+            var data = await _http.GetStringAsync(url);
+            SetCache(cacheKey, data);
+            return data;
+        }
+
+        public async Task<IEnumerable<SellingCategory>> GetSellingCategoriesAsync()
+        {
+            var cacheKey = "sellingCategories";
+            var cachedData = GetFromCache<IEnumerable<SellingCategory>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<SellingCategory>>("https://localhost:7279/api/productattributes/selling-categories");
             SetCache(cacheKey, data);
             return data;
         }
@@ -129,8 +119,6 @@ namespace NMShop.Client.Services
             SetCache(cacheKey, data);
             return data;
         }
-        
-        
 
         public async Task<ProductDto> GetProductByArticleAsync(string article)
         {
@@ -144,33 +132,39 @@ namespace NMShop.Client.Services
             return product;
         }
 
-        public async Task<IEnumerable<ReferenceInfo>> GetAllReferenceInfo()
+        public async Task<IEnumerable<ReferenceInfo>> GetReferenceInfo(string topic = null)
         {
-            var cacheKey = "referenceInfo";
+            var cacheKey = topic == null ? "referenceInfo" : $"referenceInfo_{topic}";
             var cachedData = GetFromCache<IEnumerable<ReferenceInfo>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<ReferenceInfo>>("https://localhost:7279/api/referenceinfo");
-            SetCache(cacheKey, data);
-            return data;
-        }
+            string url = topic == null
+                ? "https://localhost:7279/api/referenceinfo"
+                : $"https://localhost:7279/api/referenceinfo/{HttpUtility.UrlEncode(topic)}";
 
-        public async Task<ReferenceInfo> GetReferenceInfoByTopic(string topic)
-        {
-            var cacheKey = $"referenceInfo_{topic}";
-            var cachedData = GetFromCache<ReferenceInfo>(cacheKey);
-            if (cachedData != null) return cachedData;
-
-            var data = await _http.GetFromJsonAsync<ReferenceInfo>($"https://localhost:7279/api/referenceinfo/{topic}");
+            var data = await _http.GetFromJsonAsync<IEnumerable<ReferenceInfo>>(url);
             SetCache(cacheKey, data);
             return data;
         }
 
         public async Task<IEnumerable<ProductDto>> GetFilteredProducts(ProductFilter filter)
         {
-            var queryString = filter.ToQueryString();
-            var url = $"https://localhost:7279/api/products/filter?{queryString}";
-            return await _http.GetFromJsonAsync<IEnumerable<ProductDto>>(url);
+            var url = "https://localhost:7279/api/products/filter";
+            var response = await _http.PostAsJsonAsync(url, filter);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<IEnumerable<ProductDto>>();
+        }
+
+        public async Task<int?> GetCategoryIdByNameAsync(string categoryName)
+        {
+            var cacheKey = $"categoryId_{categoryName}";
+            var cachedData = GetFromCache<int?>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var url = $"https://localhost:7279/api/productattributes/category-id-by-name?categoryName={HttpUtility.UrlEncode(categoryName)}";
+            var data = await _http.GetFromJsonAsync<int?>(url);
+            SetCache(cacheKey, data);
+            return data;
         }
     }
 }

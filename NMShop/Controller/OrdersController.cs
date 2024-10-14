@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NMShop.Scaffold;
+using NMShop.Shared.Scaffold;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

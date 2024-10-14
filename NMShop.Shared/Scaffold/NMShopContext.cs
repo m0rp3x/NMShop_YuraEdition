@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace NMShop.Scaffold;
+namespace NMShop.Shared.Scaffold;
 
 public partial class NMShopContext : DbContext
 {

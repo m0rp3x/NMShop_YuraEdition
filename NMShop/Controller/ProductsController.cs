@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using NMShop.Scaffold;
+using NMShop.Shared.Scaffold;
 using NMShop.Shared.Models;
 using System.Linq;
 
@@ -19,23 +19,6 @@ namespace NMShop.Controller
             _context = context;
             _mapper = mapper;
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
-        //{
-        //    var products = await _context.Products
-        //        .Include(p => p.Brand)
-        //        .Include(p => p.Color)
-        //        .Include(p => p.Gender)
-        //        .Include(p => p.ProductType)
-        //            .ThenInclude(pt => pt.ParentType)
-        //        .Include(p => p.SellingCategory)
-        //        .Include(p => p.ProductImages)
-        //        .Include(p => p.StockInfos)
-        //        .ToListAsync();
-
-        //    return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
-        //}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
@@ -67,9 +50,6 @@ namespace NMShop.Controller
                 return BadRequest("Article is required.");
             }
 
-            Console.Clear();
-            Console.WriteLine(article);
-
             var product = await _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.Color)
@@ -88,190 +68,135 @@ namespace NMShop.Controller
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
-        //[HttpGet("category/{category}")]
-        //public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory(string category)
-        //{
-        //    var productType = await _context.ProductTypes.FirstOrDefaultAsync(pt => pt.Name.Equals(category));
-
-        //    if (productType == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var products = await _context.Products
-        //        .Include(p => p.Brand)
-        //        .Include(p => p.Color)
-        //        .Include(p => p.Gender)
-        //        .Include(p => p.ProductType)
-        //            .ThenInclude(pt => pt.ParentType)
-        //        .Include(p => p.SellingCategory)
-        //        .Include(p => p.ProductImages)
-        //        .Include(p => p.StockInfos)
-        //        .Where(p => p.ProductTypeId == productType.Id)
-        //        .ToListAsync();
-
-        //    return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
-        //}
-
-        [HttpGet("filter")]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetFilteredProducts([FromQuery] ProductFilter filter)
+        // Controller Method
+        [HttpPost("filter")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetFilteredProducts([FromBody] ProductFilter filter)
         {
-            try
+            if (filter.Take > 100)
             {
-                if (filter.Take > 100)
-                {
-                    return BadRequest("Cannot request more than 100 products at a time.");
-                }
-
-                var productsQuery = _context.Products
-                    .Include(p => p.Brand)
-                    .Include(p => p.Color) 
-                    .Include(p => p.Gender)
-                    .Include(p => p.ProductType)
-                    .ThenInclude(pt => pt.ParentType)
-                    .Include(p => p.SellingCategory)
-                    .Include(p => p.ProductImages)
-                    .Include(p => p.StockInfos)
-                    .AsQueryable();
-
-                // Фильтрация по категории
-                if (!string.IsNullOrEmpty(filter.Category))
-                {
-                    var productType = await _context.ProductTypes.Include(pt => pt.InverseParentType)
-                        .FirstOrDefaultAsync(pt => EF.Functions.ILike(pt.Name, filter.Category));
-
-                    if (productType != null)
-                    {
-                        if (productType.InverseParentType.Any())
-                        {
-                            // Если указанный тип является родительским, получаем продукты дочерних типов
-                            var childTypeIds = productType.InverseParentType.Select(pt => pt.Id).ToList();
-                            productsQuery = productsQuery.Where(p => childTypeIds.Contains(p.ProductTypeId));
-                        }
-                        else
-                        {
-                            // Если указанный тип является дочерним, получаем продукты этого типа
-                            productsQuery = productsQuery.Where(p => p.ProductTypeId == productType.Id);
-                        }
-                    }
-                }
-
-                // Фильтрация по подкатегориям
-                if (filter.SubCategories != null && filter.SubCategories.Any())
-                {
-                    productsQuery = productsQuery.Where(p => filter.SubCategories.Contains(p.ProductType.Name));
-                }
-
-                // Фильтрация по брендам
-                if (filter.Brands != null && filter.Brands.Any())
-                {
-                    productsQuery = productsQuery.Where(p => filter.Brands.Contains(p.Brand.Name));
-                }
-
-                // Фильтрация по рейтингу продаж
-                if (!string.IsNullOrEmpty(filter.SelCategory))
-                {
-                    productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.SellingCategory.Name, filter.SelCategory));
-                }
-
-                // Фильтрация по полу
-                if (!string.IsNullOrEmpty(filter.Gender))
-                {
-                    productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Gender.Name, filter.Gender));
-                }
-
-                // Фильтрация по минимальной цене
-                if (filter.MinPrice.HasValue)
-                {
-                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Price >= filter.MinPrice.Value));
-                }
-
-                // Фильтрация по максимальной цене
-                if (filter.MaxPrice.HasValue)
-                {
-                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Price <= filter.MaxPrice.Value));
-                }
-                
-                if (filter.MinSize.HasValue)
-                {
-                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Size >= filter.MinSize.Value));
-                }
-
-                if (filter.MaxSize.HasValue)
-                {
-                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Size <= filter.MaxSize.Value));
-                }
-
-                // Фильтрация по цвету
-                if (!string.IsNullOrEmpty(filter.Color))
-                {
-                    productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Color.Name, filter.Color));
-                }
-
-                // Фильтрация по наличию на складе
-                if (filter.InStock)
-                {
-                    productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.AmountInStock > 0));
-                }
-
-                // **Фильтрация по размерам**
-              
-
-
-                // Фильтрация по поисковому запросу
-                if (!string.IsNullOrEmpty(filter.SearchQuery))
-                {
-                    productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Name, $"%{filter.SearchQuery}%"));
-                }
-                
-                if (!string.IsNullOrEmpty(filter.Color))
-                {
-                    productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Color.Name, filter.Color));
-                }
-
-                // Сортировка
-                if (!string.IsNullOrEmpty(filter.SortBy))
-                {
-                    switch (filter.SortBy.ToLower())
-                    {
-                        case "price":
-                            productsQuery = filter.IsAscending
-                                ? productsQuery.OrderBy(p => p.StockInfos.Min(si => si.Price))
-                                : productsQuery.OrderByDescending(p => p.StockInfos.Max(si => si.Price));
-                            break;
-                        case "newest":
-                            productsQuery = filter.IsAscending
-                                ? productsQuery.OrderBy(p => p.DateAdded)
-                                : productsQuery.OrderByDescending(p => p.DateAdded);
-                            break;
-                        case "popularity":
-                        default:
-                            productsQuery = filter.IsAscending
-                                ? productsQuery.OrderBy(p => p.OrderParts.Sum(op => op.Amount))
-                                : productsQuery.OrderByDescending(p => p.OrderParts.Sum(op => op.Amount));
-                            break;
-                    }
-                }
-
-                // Пропуск и ограничение количества записей
-                if (filter.Skip > 0)
-                {
-                    productsQuery = productsQuery.Skip(filter.Skip.Value);
-                }
-
-                if (filter.Take > 0)
-                {
-                    productsQuery = productsQuery.Take(filter.Take.Value);
-                }
-
-                var products = await productsQuery.ToListAsync();
-                return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+                return BadRequest("Cannot request more than 100 products at a time.");
             }
-            catch (Exception ex)
+
+            var productsQuery = _context.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Color)
+                .Include(p => p.Gender)
+                .Include(p => p.ProductType)
+                .ThenInclude(pt => pt.ParentType)
+                .Include(p => p.SellingCategory)
+                .Include(p => p.ProductImages)
+                .Include(p => p.StockInfos)
+                .AsQueryable();
+
+            // Filter by Parent Category
+            if (filter.CategoryId.HasValue)
             {
-                return BadRequest(ex);
+                productsQuery = productsQuery.Where(p => p.ProductType.ParentTypeId == filter.CategoryId);
             }
+
+            // Filter by Subcategories
+            if (filter.SubCategoryIds != null && filter.SubCategoryIds.Any())
+            {
+                productsQuery = productsQuery.Where(p => filter.SubCategoryIds.Contains(p.ProductTypeId));
+            }
+
+            // Filter by Brands
+            if (filter.BrandIds != null && filter.BrandIds.Any())
+            {
+                productsQuery = productsQuery.Where(p => filter.BrandIds.Contains(p.BrandId));
+            }
+
+            // Filter by Selling Category
+            if (filter.SelCategoryIds != null && filter.SelCategoryIds.Any())
+            {
+                productsQuery = productsQuery.Where(p => filter.SelCategoryIds.Contains(p.SellingCategoryId));
+            }
+
+            // Filter by Gender
+            if (filter.GenderIds != null && filter.GenderIds.Any())
+            {
+                productsQuery = productsQuery.Where(p => filter.GenderIds.Contains(p.GenderId));
+            }
+
+            // Filter by Minimum Price
+            if (filter.MinPrice.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Price >= filter.MinPrice.Value));
+            }
+
+            // Filter by Maximum Price
+            if (filter.MaxPrice.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Price <= filter.MaxPrice.Value));
+            }
+
+            // Filter by Minimum Size
+            if (filter.MinSize.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Size >= filter.MinSize.Value));
+            }
+
+            // Filter by Maximum Size
+            if (filter.MaxSize.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.Size <= filter.MaxSize.Value));
+            }
+
+            // Filter by In Stock
+            if (filter.InStock)
+            {
+                productsQuery = productsQuery.Where(p => p.StockInfos.Any(si => si.AmountInStock > 0));
+            }
+
+            // Filter by Search Query
+            if (!string.IsNullOrEmpty(filter.SearchQuery))
+            {
+                productsQuery = productsQuery.Where(p => EF.Functions.ILike(p.Name, $"%{filter.SearchQuery}%"));
+            }
+
+            // Filter by Colors
+            if (filter.ColorIds != null && filter.ColorIds.Any())
+            {
+                productsQuery = productsQuery.Where(p => filter.ColorIds.Contains(p.ColorId));
+            }
+
+            // Sorting
+            if (!string.IsNullOrEmpty(filter.SortBy))
+            {
+                switch (filter.SortBy.ToLower())
+                {
+                    case "price":
+                        productsQuery = filter.IsAscending
+                            ? productsQuery.OrderBy(p => p.StockInfos.Min(si => si.Price))
+                            : productsQuery.OrderByDescending(p => p.StockInfos.Max(si => si.Price));
+                        break;
+                    case "newest":
+                        productsQuery = filter.IsAscending
+                            ? productsQuery.OrderBy(p => p.DateAdded)
+                            : productsQuery.OrderByDescending(p => p.DateAdded);
+                        break;
+                    case "popularity":
+                    default:
+                        productsQuery = filter.IsAscending
+                            ? productsQuery.OrderBy(p => p.OrderParts.Sum(op => op.Amount))
+                            : productsQuery.OrderByDescending(p => p.OrderParts.Sum(op => op.Amount));
+                        break;
+                }
+            }
+
+            // Skip and Take
+            if (filter.Skip > 0)
+            {
+                productsQuery = productsQuery.Skip(filter.Skip.Value);
+            }
+
+            if (filter.Take > 0)
+            {
+                productsQuery = productsQuery.Take(filter.Take.Value);
+            }
+
+            var products = await productsQuery.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
-
     }
 }

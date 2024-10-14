@@ -13,7 +13,7 @@
     <div class="d-flex relative" style=@($"color: #666666; gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
         <MudLink Typo="Typo.h5" Color="Color.Inherit" Href="/catalog">Каталог</MudLink>
         /
-        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@("/catalog/" + new ProductFilter(){Category = productParentType}.ToQueryString())>@productParentType</MudLink>
+        <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@("/catalog/" + new ProductFilter(){CategoryId = parentTypeId}.ToQueryString())>@productParentType</MudLink>
         /
         <MudText Typo="Typo.h5" Color="Color.Inherit" >@product.Article</MudText>
         <MudSpacer/>
@@ -191,6 +191,7 @@
     [Parameter] public string article { get; set; }
 
     private ProductDto product = new();
+    private int? parentTypeId;
 
     private bool _isAddToCartButtonHovered = false;
 
@@ -209,6 +210,7 @@
         if (!string.IsNullOrEmpty(article))
         {
             product = await DataProvider.GetProductByArticleAsync(article);
+            parentTypeId = await DataProvider.GetCategoryIdByNameAsync(productParentType);
 
             var lowestPriceInfo = product.PriceInfos.OrderBy(pi => pi.DiscountPrice ?? pi.Price).FirstOrDefault();
 

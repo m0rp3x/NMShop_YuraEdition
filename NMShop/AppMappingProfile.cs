@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NMShop.Scaffold;
+using NMShop.Shared.Scaffold;
 using NMShop.Shared.Models;
 
 public class AppMappingProfile : Profile

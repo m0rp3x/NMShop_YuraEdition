@@ -1,51 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
-namespace NMShop.Scaffold;
+namespace NMShop.Shared.Scaffold;
 
 [Table("Orders", Schema = "NMShop")]
 public partial class Order
 {
     [Key]
-    [DisplayName( "Идентификатор")]
+    [DisplayName("Идентификатор")]
 
     public int Id { get; set; }
-    
+
     [StringLength(250)]
-    [DisplayName( "ФИО Клиента")]
+    [DisplayName("ФИО Клиента")]
 
 
     public string ClientFullName { get; set; } = null!;
 
     [StringLength(11)]
-    [DisplayName( "Телефон Клиента")]
+    [DisplayName("Телефон Клиента")]
 
     public string ClientPhone { get; set; } = null!;
 
     [StringLength(500)]
-    [DisplayName( "Адрес доставки")]
+    [DisplayName("Адрес доставки")]
 
     public string DeliveryAdress { get; set; } = null!;
 
     [Column("DeliveryType_Id")]
-    [DisplayName( "Тип доставки")]
+    [DisplayName("Тип доставки")]
 
     public int DeliveryTypeId { get; set; }
 
     [Column("PaymentType_Id")]
-    [DisplayName( "Тип оплаты")]
+    [DisplayName("Тип оплаты")]
     public int PaymentTypeId { get; set; }
 
     [Column("OrderStatus_Id")]
-    [DisplayName( "Статус заказа")]
+    [DisplayName("Статус заказа")]
     public int OrderStatusId { get; set; }
 
     [StringLength(250)]
-    [DisplayName( "ФИО получателя")]
+    [DisplayName("ФИО получателя")]
 
     public string DeliveryRecipientFullName { get; set; } = null!;
 
@@ -55,7 +52,7 @@ public partial class Order
     public string DeliveryRecipientPhone { get; set; } = null!;
 
     [StringLength(1000)]
-    [DisplayName( "Коментарий к заказу")]
+    [DisplayName("Коментарий к заказу")]
 
     public string Comment { get; set; } = null!;
 
@@ -76,7 +73,7 @@ public partial class Order
     [InverseProperty("Orders")]
     [Display(AutoGenerateField = false)]
     public virtual PaymentType PaymentType { get; set; } = null!;
-    
+
     public override string ToString()
     {
         return $"Заказ #{Id}"; // Отображать ID бренда

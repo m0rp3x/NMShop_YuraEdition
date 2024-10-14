@@ -1,7 +1,7 @@
 using MudBlazor.Services;
 using NMShop.Components;
 using Microsoft.EntityFrameworkCore;
-using NMShop.Scaffold;
+using NMShop.Shared.Scaffold;
 using NMShop.Client.Services;
 
 var builder = WebApplication.CreateBuilder(args);

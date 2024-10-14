@@ -42,29 +42,48 @@
                     </MudExpansionPanel>
 
                     <MudExpansionPanel Text="Бренды">
-
                         @foreach (var brand in Brands)
                         {
                              <MudCheckBox T="bool" @bind-Value="brand.IsSelected" Label="@brand.Name" />
                         }
                     </MudExpansionPanel>
 
-
-                    
+                    @if (CategorySizeDisplayType != "none")
+                    {
                         <MudExpansionPanel Text="Размер">
-                            <div class="d-flex" style="gap: 15px;">
-                                <MudNumericField  @bind-Value="Filter.MinSize" Label="От" Step="10" Variant="Variant.Outlined" />
-                                <MudNumericField  @bind-Value="Filter.MaxSize" Label="До" Step="10" Variant="Variant.Outlined" />
-                            </div>
+
+                            @if (CategorySizeDisplayType == "string")
+                            {
+                                <MudSelect T="int?" @bind-Value="MinStringSize" Variant="Variant.Outlined" Placeholder="Выбрать" Label="От">
+                                    @foreach (var sizeOption in Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(e => (int?)e).Where(e => !MaxStringSize.HasValue || e <= MaxStringSize).ToList())
+                                    {
+                                        <MudSelectItem Value="@sizeOption">@(((ClothingSize)sizeOption).ToString())</MudSelectItem>
+                                    }
+                                </MudSelect>
+
+                                <MudSelect T="int?" @bind-Value="MaxStringSize" Variant="Variant.Outlined" Placeholder="Выбрать" Label="До">
+                                    @foreach (var sizeOption in Enum.GetValues(typeof(ClothingSize)).Cast<ClothingSize>().Select(e => (int?)e).Where(e => !MinStringSize.HasValue || e >= MinStringSize).ToList())
+                                    {
+                                        <MudSelectItem Value="@sizeOption">@(((ClothingSize)sizeOption).ToString())</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            }
+                            else if (CategorySizeDisplayType == "decimal")
+                            {
+                                <div class="d-flex" style="gap: 15px;">
+                                    <MudNumericField @bind-Value="Filter.MinSize" Label="От" Step="1" Variant="Variant.Outlined" />
+                                    <MudNumericField @bind-Value="Filter.MaxSize" Label="До" Step="1" Variant="Variant.Outlined" />
+                                </div>
+                            }
+
                         </MudExpansionPanel>
-                    
+                    }
 
                     <MudExpansionPanel Text="Пол">
 
                         @foreach (var gender in Genders)
                         {
                             <MudCheckBox T="bool" @bind-Value="gender.IsSelected" Label="@gender.Name" />
-
                         }
 
                     </MudExpansionPanel>
@@ -74,7 +93,6 @@
                         @foreach (var selCategory in SelCategory)
                         {
                             <MudCheckBox T="bool" @bind-Value="selCategory.IsSelected" Label="@selCategory.Name" />
-
                         }
 
                     </MudExpansionPanel>
@@ -92,15 +110,15 @@
                         <MudGrid Spacing="2">
                             @foreach (var color in Colors)
                             {
-                            <MudItem xs="6" md="4">
-                                <div class="d-flex flex-column">
-                                    <MudIconButton OnClick="() => OnColorSelected(color)"
+                                <MudItem xs="6" md="4">
+                                    <div class="d-flex flex-column">
+                                        <MudIconButton OnClick="() => OnColorSelected(color)"
                                                    Class="mud-circle mx-auto"
                                                    Style="@GetColorStyle(color)"
                                                    Size="Size.Large" />
-                                    <MudText Typo="Typo.body2" Style="width: 100%; text-align: center; margin-top: 5px;">@color.Name</MudText>
-                                </div>
-                            </MudItem>
+                                        <MudText Typo="Typo.body2" Style="width: 100%; text-align: center; margin-top: 5px;">@color.Name</MudText>
+                                    </div>
+                                </MudItem>
                             }
                         </MudGrid>
                     </MudExpansionPanel>
@@ -190,10 +208,48 @@
     private List<SubCategoryModel> SubCategory = new();
     private List<SelCategoryModel> SelCategory = new();
     private List<ColorsModel> Colors = new();
+
     private string CategorySizeDisplayType = "none";
 
+    private int? MinStringSize
+    {
+        get => Filter.MinSize.HasValue ? (int?)Filter.MinSize.Value : null;
+        set
+        {
+            if (value.HasValue)
+                Filter.MinSize = value.Value;
+            else
+                Filter.MinSize = null;
 
-    
+            if (MaxStringSize.HasValue && value.HasValue && value > MaxStringSize)
+            {
+                MaxStringSize = value;
+            }
+        }
+    }
+
+    private int? MaxStringSize
+    {
+        get => Filter.MaxSize.HasValue ? (int?)Filter.MaxSize.Value : null;
+        set
+        {
+            if (value.HasValue)
+                Filter.MaxSize = value.Value;
+            else
+                Filter.MaxSize = null;
+
+            if (MinStringSize.HasValue && value.HasValue && value < MinStringSize)
+            {
+                MinStringSize = value;
+            }
+        }
+    }
+
+    private ProductFilter Filter { get; set; } = new ProductFilter();
+
+    private int _productCount = 0;
+
+
     private void OnColorSelected(ColorsModel color)
     {
         color.IsSelected = !color.IsSelected;
@@ -205,10 +261,6 @@
         return $"background-color: #{color.Value}; width: 40px; height: 40px; border-radius: 50%; border: {(color.IsSelected ? "4px solid black" : "none")};";
     }
 
-   
-
-
-
     private static List<SortOption> SortOptions = new List<SortOption>
     {
         new SortOption { Name = "ПОПУЛЯРНОСТИ", Type = "popularity" },
@@ -216,61 +268,58 @@
         new SortOption { Name = "ЦЕНЕ", Type = "price" }
     };
 
-    private ProductFilter Filter { get; set; } = new ProductFilter();
-
-    private int _productCount = 0;
-
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(filter))
         {
             Filter = ParseFilter(filter);
         }
-        
+
         Brands = (await DataProvider.GetBrandsAsync())
-            .Select(b =>
-            {
-                var brandModel = new BrandModel { Name = b };
-                brandModel.OnValueChanged = () => OnFilterChanged(brandModel);
-                return brandModel;
-            }).ToList();
+        .Select(b =>
+        {
+            var brandModel = new BrandModel { Id = b.Id, Name = b.Name };
+            brandModel.OnValueChanged = () => OnFilterChanged(brandModel);
+            return brandModel;
+        }).ToList();
 
         Genders = (await DataProvider.GetGendersAsync()).Select(g =>
         {
-            var genderModel = new GenderModel { Name = g };
+            var genderModel = new GenderModel { Id = g.Id, Name = g.Name };
             genderModel.OnValueChanged = () => OnFilterChanged(genderModel);
             return genderModel;
         }).ToList();
-        
-        SubCategory = (await DataProvider.GetSubCategoriesAsync(string.IsNullOrEmpty(Filter.Category) ? null : Filter.Category))
+
+        SubCategory = (await DataProvider.GetSubCategoriesAsync(Filter.CategoryId))
             .Select(sc =>
             {
-                var subCategoryModel = new SubCategoryModel { Name = sc };
+                var subCategoryModel = new SubCategoryModel { Id = sc.Id, Name = sc.Name };
                 subCategoryModel.OnValueChanged = () => OnFilterChanged(subCategoryModel);
                 return subCategoryModel;
             })
             .ToList();
-        
-        SelCategory = (await DataProvider.GetSelCategoriesAsync())
+
+        SelCategory = (await DataProvider.GetSellingCategoriesAsync())
             .Select(sc =>
             {
-                var selCategoryModel = new SelCategoryModel { Name = sc };
+                var selCategoryModel = new SelCategoryModel { Id = sc.Id, Name = sc.Name };
                 selCategoryModel.OnValueChanged = () => OnFilterChanged(selCategoryModel);
                 return selCategoryModel;
             })
             .ToList();
-        
+
         Colors = (await DataProvider.GetProductColorsAsync())
             .Select(c =>
             {
-                var ColorsModel = new ColorsModel { Name = c.Name, Value = c.Value};
-                ColorsModel.OnValueChanged = () => OnFilterChanged(ColorsModel);
-                return ColorsModel;
-
+                var colorsModel = new ColorsModel { Id = c.Id, Name = c.Name, Value = c.Value };
+                colorsModel.OnValueChanged = () => OnFilterChanged(colorsModel);
+                return colorsModel;
             }).ToList();
-        
 
-        if (!string.IsNullOrEmpty(Filter.Category)) CategorySizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(Filter.Category);
+        if (Filter.CategoryId.HasValue)
+        {
+            CategorySizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(Filter.CategoryId.Value);
+        }
         // Инициализация выбранных значений из фильтра
         await InitializeSelectedFilterOptions();
     }
@@ -279,31 +328,31 @@
     {
         foreach (var brand in Brands)
         {
-            if (Filter.Brands.Contains(brand.Name))
+            if (Filter.BrandIds != null && Filter.BrandIds.Contains(brand.Id))
                 brand.IsSelected = true;
         }
 
         foreach (var gender in Genders)
         {
-            if (Filter.Gender == gender.Name)
+            if (Filter.GenderIds != null && Filter.GenderIds.Contains(gender.Id))
                 gender.IsSelected = true;
         }
 
         foreach (var subCategory in SubCategory)
         {
-            if (Filter.SubCategories.Contains(subCategory.Name))
+            if (Filter.SubCategoryIds != null && Filter.SubCategoryIds.Contains(subCategory.Id))
                 subCategory.IsSelected = true;
         }
 
         foreach (var selCategory in SelCategory)
         {
-            if (Filter.SelCategory == selCategory.Name)
+            if (Filter.SelCategoryIds != null && Filter.SelCategoryIds.Contains(selCategory.Id))
                 selCategory.IsSelected = true;
         }
 
         foreach (var color in Colors)
         {
-            if (Filter.Color == color.Name)
+            if (Filter.ColorIds != null && Filter.ColorIds.Contains(color.Id))
                 color.IsSelected = true;
         }
     }
@@ -316,78 +365,65 @@
         {
             if (brand.IsSelected)
             {
-                newFilter.Brands.Add(brand.Name);
+                newFilter.BrandIds ??= new List<int>();
+                newFilter.BrandIds.Add(brand.Id);
             }
             else
             {
-                newFilter.Brands.Remove(brand.Name);
+                newFilter.BrandIds?.Remove(brand.Id);
             }
         }
         else if (filterOption is GenderModel gender)
         {
             if (gender.IsSelected)
             {
-                newFilter.Gender = gender.Name;
+                newFilter.GenderIds ??= new List<int>();
+                newFilter.GenderIds.Add(gender.Id);
             }
             else
             {
-                if (newFilter.Gender == gender.Name)
-                    newFilter.Gender = null;
+                newFilter.GenderIds?.Remove(gender.Id);
             }
         }
         else if (filterOption is SubCategoryModel subCategory)
         {
             if (subCategory.IsSelected)
             {
-                newFilter.SubCategories.Add(subCategory.Name);
+                newFilter.SubCategoryIds ??= new List<int>();
+                newFilter.SubCategoryIds.Add(subCategory.Id);
             }
             else
             {
-                newFilter.SubCategories.Remove(subCategory.Name);
+                newFilter.SubCategoryIds?.Remove(subCategory.Id);
             }
         }
         else if (filterOption is SelCategoryModel selCategory)
         {
             if (selCategory.IsSelected)
             {
-                newFilter.SelCategory = selCategory.Name;
+                newFilter.SelCategoryIds ??= new List<int>();
+                newFilter.SelCategoryIds.Add(selCategory.Id);
             }
             else
             {
-                if (newFilter.SelCategory == selCategory.Name)
-                    newFilter.SelCategory = null;
-            }
-        }
-        else if (filterOption is ClothingSizeOption sizeOption)
-        {
-            if (sizeOption.IsSelected)
-            {
-                newFilter.Sizes.Add((int)sizeOption.Size);
-            }
-            else
-            {
-                newFilter.Sizes.Remove((int)sizeOption.Size);
+                newFilter.SelCategoryIds?.Remove(selCategory.Id);
             }
         }
         else if (filterOption is ColorsModel colorsModel)
         {
             if (colorsModel.IsSelected)
             {
-                newFilter.Color = colorsModel.Name;
+                newFilter.ColorIds ??= new List<int>();
+                newFilter.ColorIds.Add(colorsModel.Id);
             }
             else
             {
-                if (newFilter.Color == colorsModel.Name)
-                    newFilter.Color = null;
+                newFilter.ColorIds?.Remove(colorsModel.Id);
             }
         }
         Filter = newFilter;
         StateHasChanged();
     }
-    
-   
-
-
 
     private void OnSortOptionChanged(SortOption selectedSortOption)
     {
@@ -457,8 +493,8 @@
 
                 switch (key)
                 {
-                    case "Brands":
-                        filter.Brands = value.Split(',').ToList();
+                    case "BrandIds":
+                        filter.BrandIds = value.Split(',').Select(int.Parse).ToList();
                         break;
                     case "MinPrice":
                         filter.MinPrice = decimal.Parse(value);
@@ -466,23 +502,23 @@
                     case "MaxPrice":
                         filter.MaxPrice = decimal.Parse(value);
                         break;
-                    case "Gender":
-                        filter.Gender = value;
+                    case "GenderId":
+                        filter.GenderIds = value.Split(',').Select(int.Parse).ToList();
                         break;
-                    case "Category":
-                        filter.Category = value;
+                    case "CategoryId":
+                        filter.CategoryId = int.Parse(value);
                         break;
                     case "InStock":
                         filter.InStock = bool.Parse(value);
                         break;
-                    case "productColors":
-                        filter.Color = value;
+                    case "ColorIds":
+                        filter.ColorIds = value.Split(',').Select(int.Parse).ToList();
                         break;
-                    case "SubCategories":
-                        filter.SubCategories = value.Split(',').ToList();
+                    case "SubCategoryIds":
+                        filter.SubCategoryIds = value.Split(',').Select(int.Parse).ToList();
                         break;
-                    case "SelCategory":
-                        filter.SelCategory = value;
+                    case "SelCategoryId":
+                        filter.SelCategoryIds = value.Split(',').Select(int.Parse).ToList();
                         break;
                     case "SortBy":
                         filter.SortBy = value;
@@ -511,12 +547,10 @@
         return filter;
     }
 
-    
-    
-    
     public abstract class FilterOptionBase : IFilterOption
     {
-        public virtual string Name { get; set; } // Виртуальный, чтобы его можно было переопределить в дочерних классах
+        public int Id { get; set; }
+        public virtual string Name { get; set; }
 
         private bool _isSelected;
         public bool IsSelected
@@ -528,8 +562,8 @@
                 {
                     _isSelected = value;
                     Console.WriteLine($"IsSelected changed to: {_isSelected} for {Name}");
-                    OnValueChanged?.Invoke(); // Вызов обработчика при изменении
-                    OnPropertyChanged(); // Уведомление об изменении свойства
+                    OnValueChanged?.Invoke();
+                    OnPropertyChanged();
                 }
             }
         }
@@ -543,31 +577,30 @@
             PropertyChanged?.Invoke();
         }
     }
-    // Модели
+
     public interface IFilterOption
     {
+        int Id { get; }
         string Name { get; }
         bool IsSelected { get; set; }
     }
-    private class BrandModel : FilterOptionBase{}
-    private class SubCategoryModel : FilterOptionBase{}
+
+    private class BrandModel : FilterOptionBase { }
+    private class SubCategoryModel : FilterOptionBase { }
 
     private class ColorsModel : FilterOptionBase
     {
-       public  string Value { get; set; }
+        public string Value { get; set; }
     }
-    private class SelCategoryModel : FilterOptionBase{}
-    public class GenderModel : FilterOptionBase{}
+    private class SelCategoryModel : FilterOptionBase { }
+    public class GenderModel : FilterOptionBase { }
+
     public class SizeOption : FilterOptionBase
     {
         public int Size { get; set; }
         public string Name => Size.ToString();
     }
-    public class ClothingSizeOption : FilterOptionBase
-    {
-        public ClothingSize Size { get; set; }
-        public string Name => Size.ToString();
-    }
+
     public class SortOption
     {
         public string Name { get; set; }

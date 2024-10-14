@@ -2,27 +2,28 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace NMShop.Scaffold;
+namespace NMShop.Shared.Scaffold;
 
-[Table("DeliveryTypes", Schema = "NMShop")]
-public partial class DeliveryType
+[Table("OrderStatuses", Schema = "NMShop")]
+public partial class OrderStatus
 {
     [Key]
-    [DisplayName  ("Идентификатор")]
+    [DisplayName("Идентификатор")]
+
     public int Id { get; set; }
 
     [StringLength(100)]
-    [DisplayName  ("Название")]
+    [DisplayName("Название")]
+
     public string Name { get; set; } = null!;
 
-    [InverseProperty("DeliveryType")]
+    [InverseProperty("OrderStatus")]
     [Display(AutoGenerateField = false)]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-    
+
     public override string ToString()
     {
-        return $"{Name}";  // Отображать ID бренда
+        return Name.ToString();  // Отображать ID бренда
     }
-
 
 }
