@@ -31,12 +31,12 @@
         </MudItem>
         <MudItem xs="4" Class="d-flex flex-column">
 
-            <div class="mb-2">
+            <div class="mb-2 d-flex" style="gap: 7px;">
                 @if (product.HasDiscount)
                 {
                     <MudText Typo="Typo.body1" Style="width: fit-content; border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
                 }
-                @if (product.Gender == "female")
+                @if (product.Gender == "Женский")
                 {
                     <MudText Typo="Typo.body1" Style="width: fit-content; border-radius: 8px; background-color: #ff60b850;" Class="px-2 py-1">Женский</MudText>
                 }
@@ -80,14 +80,14 @@
 
                 <MudGrid Class="mb-7">
 
-                    @foreach (PriceInfo pi in product.PriceInfos)
+                    @foreach (PriceInfo pi in product.PriceInfos.OrderBy(p => p.Size))
                     {
                         bool isDiscounted = pi.DiscountPrice is not null && pi.DiscountPrice > 0;
 
                         <MudItem xs="3" >
                             <div @onmouseout="() => {pi.isHovered = false;}" @onmouseover="() => {pi.isHovered = true;}" @onclick="() => {seletedSize = pi;}" class="pa-1 d-flex flex-column align-center cursor-pointer" style=@($"transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 4px; background-color: " + (seletedSize == pi ? "rgba(26, 26, 26, 1)" : (pi.isHovered ? "#E6E6E6" : "#f2f2f2")) + ';')>
                                 <MudText Style=@("line-height: 1.2; color: " + (seletedSize == pi ? "white" : "black") + ';') Typo="Typo.h5">@(product.SizeDisplayType == "string" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
-                                <MudText Style=@("line-height: 1.2; color: " + (isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
+                                <MudText Style=@("line-height: 1.2; color: " + (!isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
                             </div>
                         </MudItem>
                     }
@@ -96,7 +96,7 @@
             }
 
 
-            <MudText Style="background-color: #baff2450; border-radius: 8px;" Class="px-2 py-1 mt-auto mb-10" Typo="Typo.h6">Товар прошел проверку на качество и оригинальность</MudText>
+            <MudText Style="background-color: #baff2450; border-radius: 8px;" Class="px-2 py-1 mt-auto mb-10" Typo="Typo.h6">Товар прошел проверку на качество</MudText>
 
         </MudItem>
     </MudGrid>
@@ -233,7 +233,6 @@
     {
         new() { Label = "Детали", Code = "details" },
         new() { Label = "Способы доставки", Code = "delivery_methods" },
-        new() { Label = "Правила возврата", Code = "return_policy" },
         new() { Label = "Способы оплат", Code = "payment_methods" },
         new() { Label = "FAQ", Code = "faq" },
 

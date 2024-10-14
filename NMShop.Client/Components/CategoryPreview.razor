@@ -21,7 +21,7 @@
             </MudButton>
         </MudStack>
 
-        <ProductGrid Filter="new() { CategoryId = _categoryId, Take=4 }" />
+        <ProductGrid Filter="new() { CategoryId = _categoryId, Take= Take }" />
 
     </MudContainer>
 }
@@ -29,6 +29,8 @@
 @code {
     [Parameter]
     public string CategoryType { get; set; }
+    [Parameter]
+    public int Take { get; set; } = 4;
 
     private int? _categoryId;
 

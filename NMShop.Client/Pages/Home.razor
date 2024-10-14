@@ -12,19 +12,19 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudCarousel Class="mud-width-full" Style="aspect-ratio: 4375 / 1100;" ShowArrows=true ShowBullets=true EnableSwipeGesture=true AutoCycle=true TData="object">
+<MudCarousel Class="mud-width-full" Style="aspect-ratio: 4375 / 1200;" ShowArrows=true ShowBullets=true EnableSwipeGesture=true AutoCycle=true TData="object">
 
     @foreach (string banner in new string[] { "favorite_brands", "delivery", "seasonal1", "seasonal2" })
     {
         <MudCarouselItem Transition=@Transition.Slide Color="@Color.Primary">
-            <MudImage Src=@($"/assets/banners/{banner}.png") Style="width:100%; height:auto; aspect-ratio: 4375 / 1100;" ObjectFit="ObjectFit.Cover" />
+            <MudImage Src=@($"/assets/banners/{banner}.png") Style="width:100%; height:auto; aspect-ratio: 4375 / 1200;" ObjectFit="ObjectFit.Cover" />
         </MudCarouselItem>
     }
 </MudCarousel>
 
-<BrandGallery />
+<CategoryPreview CategoryType="Обувь" Take="8" />
 
-<CategoryPreview CategoryType="Обувь" />
+<BrandGallery />
 
 <CategoryPreview CategoryType="Одежда" />
 

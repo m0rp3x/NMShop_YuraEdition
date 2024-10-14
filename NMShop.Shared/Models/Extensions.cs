@@ -27,7 +27,7 @@ namespace NMShop.Shared.Models
             return string.Join("&", queryParams.Select(kv => $"{kv.Key}={HttpUtility.UrlEncode(kv.Value)}"));
         }
 
-        static string _placeHolder = "assets/placeholder.jpg";
+        static string _placeHolder = "assets/biba.jpg";
 
         public static string ToSrcString(this byte[]? imageBytes)
         {

@@ -31,7 +31,8 @@
     protected override async Task OnParametersSetAsync()
     {
         Console.WriteLine(Code);
-        refInfo = (await DataProvider.GetReferenceInfo(Code)).FirstOrDefault() ?? _errorHolder;
+        var bebra = await DataProvider.GetReferenceInfo(Code);
+        refInfo = bebra.First();
     }
 
 }
