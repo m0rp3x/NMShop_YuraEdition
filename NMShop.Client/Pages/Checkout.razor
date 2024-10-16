@@ -1,81 +1,87 @@
 ﻿@using NMShop.Client.Services
 @using NMShop.Client.Components
+
+@inject CartService CartService
 @page "/checkout"
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="pa-4 mt-4">
-    <MudGrid>
-        <MudItem xs="6" style="position: relative;">
-            <MudText Typo="Typo.h5" Class="mb-3">ЛИЧНЫЕ ДАННЫЕ</MudText>
-            <MudTextField Label="Имя, фамилия" @bind-Value="Form_FIO" Variant="Variant.Filled" Class="mb-3" />
-            <MudTextField Label="Телефон" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled" Class="mb-3" />
-            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="Variant.Filled" Class="mb-3" />
-        </MudItem>
+<div>
 
-        <MudItem xs="6" style="max-height: 60vh; position: absolute; right: 10%; width: 30%; overflow-y: auto;">
-            <Trash />
-            <MudGrid Class="mt-4">
-                <MudItem xs="12">
-                    <MudText Typo="Typo.h6" Class="mb-1">ЕСЛИ У ВАС ЕСТЬ ПРОМОКОД, ВВЕДИТЕ ЕГО СЮДА</MudText>
-                    <div class="d-flex">
-                        <MudTextField @bind-Value="Promo" Placeholder="Введите промокод" Class="me-3" />
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
-                    </div>
-                </MudItem>
-                
+    <MudText Class="mx-auto" Style="width: fit-content;" Typo="Typo.h5">ОФОРМЛЕНИЕ ЗАКАЗА</MudText>
 
-                <MudItem xs="12" Class="text-right mt-3">
-                    <MudText Typo="Typo.h6">ОБЩАЯ СТОИМОСТЬ:</MudText>
-                    <MudText Typo="Typo.h5" Class="font-weight-bold">ИТОГО</MudText>
-                    <MudText Typo="Typo.h4" Class="font-weight-bold">140 380 ₽</MudText>
-                </MudItem>
+    <div class="d-flex mx-auto pt-7" style="width: fit-content; gap: 25px;">
 
-                <MudItem xs="12" Class="text-center mt-3">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width: 100%">ОФОРМИТЬ ЗАКАЗ</MudButton>
-                </MudItem>
+        <div class="pa-5 d-flex flex-column" style="gap: 13px;">
 
-                <MudItem xs="12" Class="text-center mt-2">
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">
-                        Оформляя заказ, Вы подтверждаете согласие с <MudLink Href="#">Пользовательским соглашением</MudLink>, <MudLink Href="#">Политикой конфиденциальности</MudLink> и <MudLink Href="#">Договором оферты</MudLink>.
-                    </MudText>
-                </MudItem>
-            </MudGrid>
-        </MudItem>
-    </MudGrid>
-    
-    <MudItem xs="12">
-        <MudText Typo="Typo.h5" Class="mb-3">СПОСОБ ДОСТАВКИ</MudText>
-        <MudRadioGroup @bind-Value="SelectedDeliveryMethod" Class="mb-3">
-            <MudRadio T="string"  Label="Доставка курьером" >Доставка курьером</MudRadio>
-            <MudRadio T="string"  Label="Самовывоз" >Самовывоз</MudRadio>
-            <MudRadio T="string"  Label="Доставка почтой" >Доставка почтой</MudRadio>
-        </MudRadioGroup>
-    </MudItem>
-    
-    <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.h5" >ЛИЧНЫЕ ДАННЫЕ</MudText>
+            <MudTextField Label="Имя, фамилия" @bind-Value="Form_FIO" Variant="Variant.Filled"  />
+            <MudTextField Label="Телефон" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled"  />
+            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="Variant.Filled"  />
 
-        <MudText Typo="Typo.h5" Class="mb-3">АДРЕС ДОСТАВКИ</MudText>
-        <MudTextField Label="Адрес" @bind-Value="Form_Address" Variant="Variant.Filled" Class="mb-3" />
-        <MudTextField Label="Регион" @bind-Value="Form_Region" Variant="Variant.Filled" Class="mb-3" />
-        <MudTextField Label="Индекс" @bind-Value="Form_Index" Variant="Variant.Filled" Class="mb-3" />
-    
-        <MudCheckBox T="bool" Label="Я получатель" @bind-Value="IsRecipient" />
+            <MudText Typo="Typo.h5" >СПОСОБ ДОСТАВКИ</MudText>
+            <MudRadioGroup @bind-Value="SelectedDeliveryMethod" >
+                <MudRadio T="string" Label="Доставка курьером">Доставка курьером</MudRadio>
+                <MudRadio T="string" Label="Самовывоз">Самовывоз</MudRadio>
+                <MudRadio T="string" Label="Доставка почтой">Доставка почтой</MudRadio>
+            </MudRadioGroup>
 
-        @if (!IsRecipient)
-        {
-        <MudTextField Label="ФИО Получателя" @bind-Value="Form_FIO" Variant="Variant.Filled" Class="mb-3" />
-        <MudTextField Label="Телефон Получателя" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled" Class="mb-3" />
-        }
-    </MudItem>
+            <MudText Typo="Typo.h5" >АДРЕС ДОСТАВКИ</MudText>
+            <MudTextField Label="Город" @bind-Value="Form_Address" Variant="Variant.Filled"  />
+            <MudTextField Label="Адрес" @bind-Value="Form_Address" Variant="Variant.Filled"  />
+            <MudTextField Label="Регион" @bind-Value="Form_Region" Variant="Variant.Filled"  />
+            <MudTextField Label="Индекс" @bind-Value="Form_Index" Variant="Variant.Filled"  />
 
-    <MudItem xs="12">
-        <MudText Typo="Typo.h5" Class="mb-3">СПОСОБ ОПЛАТЫ</MudText>
-        <MudRadioGroup @bind-Value="SelectedPaymentMethod" Class="mb-3">
-            <MudRadio T="string"  Label="Оплата картой" >Оплата картой</MudRadio>
-            <MudRadio T="string"  Label="Сбербанк Онлайн" >Сбербанк Онлайн</MudRadio>
-            <MudRadio T="string"  Label="Наличные" >Наличные</MudRadio>
-        </MudRadioGroup>
-    </MudItem>
-</MudContainer>
+            <MudCheckBox T="bool" Label="Я получатель" @bind-Value="IsRecipient" />
+
+            @if (!IsRecipient)
+            {
+                <MudTextField Label="ФИО Получателя" @bind-Value="Form_FIO" Variant="Variant.Filled"  />
+                <MudTextField Label="Телефон Получателя" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled"  />
+            }
+
+            <MudText Typo="Typo.h5" >СПОСОБ ОПЛАТЫ</MudText>
+            <MudRadioGroup @bind-Value="SelectedPaymentMethod" >
+                <MudRadio T="string" Label="Оплата картой">Оплата картой</MudRadio>
+                <MudRadio T="string" Label="Сбербанк Онлайн">Сбербанк Онлайн</MudRadio>
+                <MudRadio T="string" Label="Наличные">Наличные</MudRadio>
+            </MudRadioGroup>
+
+        </div>
+
+        <div class="pa-5 d-flex flex-column" style="gap: 13px; background-color: #F8F8F8; border-radius: 5px;">
+
+            <MudText Typo="Typo.h6">ЕСЛИ У ВАС ЕСТЬ ПРОМОКОД, ВВЕДИТЕ ЕГО СЮДА</MudText>
+
+            <div class="d-flex" style="gap: 15px;">
+                <MudTextField @bind-Value="Promo" Placeholder="Введите промокод" />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
+            </div>
+
+            <div class="d-flex justify-space-between">
+                <MudText Typo="Typo.h6">ОБЩАЯ СТОИМОСТЬ:</MudText>
+                <MudText Typo="Typo.h5" Class="font-weight-bold">@CartService.GetTotalCartPrice().ToPreFormatedString() ₽</MudText>
+            </div>
+
+            <div class="d-flex justify-space-between">
+                <MudText Typo="Typo.h6" Class="font-weight-bold">ИТОГО:</MudText>
+                <MudText Typo="Typo.h5" Class="font-weight-bold">@CartService.GetTotalCartPrice().ToPreFormatedString() ₽</MudText>
+            </div>
+
+            <MudButton @onmouseover="() => {_isFinalButtonHovered = true;}"
+                       @onmouseout="() => {_isFinalButtonHovered = false;}"
+                Variant="Variant.Filled" 
+                Color="Color.Primary" 
+                Class="py-3"
+                Style=@FinalButtonStyle>ОФОРМИТЬ ЗАКАЗ</MudButton>
+
+            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                Оформляя заказ, Вы подтверждаете согласие с <MudLink Href="#">Пользовательским соглашением</MudLink>,<br /><MudLink Href="#">Политикой конфиденциальности</MudLink> и <MudLink Href="#">Договором оферты</MudLink>.
+            </MudText>
+
+        </div>
+    </div>
+
+</div>
+
 
 
 
@@ -84,10 +90,17 @@ public string? Form_FIO { get; set; }
 public string? Promo { get; set; }
 public string? Form_PhoneNumber { get; set; }
 public string? Form_Email { get; set; }
+public string? Form_City { get; set; }
 public string? Form_Address { get; set; }
 public string? Form_Region { get; set; }
 public string? Form_Index { get; set; }
 public bool IsRecipient { get; set; } = true;
 public string? SelectedDeliveryMethod { get; set; }
-public string? SelectedPaymentMethod { get; set; }
+    public string? SelectedPaymentMethod { get; set; }
+
+    private bool _isFinalButtonHovered = false;
+
+    private string FinalButtonStyle =>
+    "width: 100%; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1.5; "
+    + (_isFinalButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 }

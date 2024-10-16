@@ -42,7 +42,7 @@
                                     <MudIconButton OnClick="() => CartService.UpdateQuantity(item.Product, item.PriceInfo, item.Quantity + 1)" Icon="@Icons.Material.Filled.Add" />
                                 </div>
 
-                                <MudIconButton OnClick="() => CartService.RemoveProduct(item.Product, item.PriceInfo)" Icon="@Icons.Material.Filled.DeleteOutline" />
+                                <MudIconButton Style="aspect-ratio: 1/1;" Class="mx-auto" OnClick="() => CartService.RemoveProduct(item.Product, item.PriceInfo)" Icon="@Icons.Material.Filled.DeleteOutline" />
                             </div>
                         </div>
                     }
@@ -91,7 +91,11 @@
         CartService.OnChange -= StateHasChanged;
     }
 
-    void GoToCheckOut() => Navigation.NavigateTo("/checkout");
+    void GoToCheckOut()
+    {
+        Navigation.NavigateTo("/checkout");
+        CartService.ToggleCart();
+    }
 }
 
 

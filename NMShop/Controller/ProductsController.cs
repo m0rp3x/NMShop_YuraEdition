@@ -20,27 +20,27 @@ namespace NMShop.Controller
             _mapper = mapper;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ProductDto>> GetProductById(int id)
-        {
-            var product = await _context.Products
-                .Include(p => p.Brand)
-                .Include(p => p.Color)
-                .Include(p => p.Gender)
-                .Include(p => p.ProductType)
-                    .ThenInclude(pt => pt.ParentType)
-                .Include(p => p.SellingCategory)
-                .Include(p => p.ProductImages)
-                .Include(p => p.StockInfos)
-                .FirstOrDefaultAsync(p => p.Id == id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<ProductDto>> GetProductById(int id)
+        //{
+        //    var product = await _context.Products
+        //        .Include(p => p.Brand)
+        //        .Include(p => p.Color)
+        //        .Include(p => p.Gender)
+        //        .Include(p => p.ProductType)
+        //            .ThenInclude(pt => pt.ParentType)
+        //        .Include(p => p.SellingCategory)
+        //        .Include(p => p.ProductImages)
+        //        .Include(p => p.StockInfos)
+        //        .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(_mapper.Map<ProductDto>(product));
-        }
+        //    return Ok(_mapper.Map<ProductDto>(product));
+        //}
 
         [HttpGet("product-by-article")]
         public async Task<ActionResult<ProductDto>> GetProductByArticle([FromQuery] string article)

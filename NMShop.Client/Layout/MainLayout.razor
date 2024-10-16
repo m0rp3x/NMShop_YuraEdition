@@ -127,17 +127,19 @@
 
     private readonly PaletteLight _lightPalette = new()
     {
+        Primary = "#000000",
         Black = "#110e2d",
         AppbarText = "#424242",
         AppbarBackground = "rgba(255,255,255,1)",
         DrawerBackground = "#ffffff",
         GrayLight = "#e8e8e8",
         GrayLighter = "#f9f9f9",
+        LinesInputs = "#000000"
     };
 
     private readonly PaletteDark _darkPalette = new()
     {
-        Primary = "#7e6fff",
+        Primary = "#000000",
         Surface = "#1e1e2d",
         Background = "#1a1a27",
         BackgroundGray = "#151521",
@@ -162,6 +164,8 @@
         TableLines = "#33323e",
         Divider = "#292838",
         OverlayLight = "#1e1e2d80",
+        LinesInputs = "#000000",
+        
     };
 
     public string DarkLightModeButtonIcon => _isDarkMode switch
