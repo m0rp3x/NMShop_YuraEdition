@@ -1,4 +1,5 @@
 ﻿@using NMShop.Client.Services;
+@using NMShop.Client.Components;
 
 @implements IDisposable
 
@@ -18,35 +19,7 @@
                     <MudIconButton OnClick="CartService.ToggleCart" Icon="@Icons.Material.Filled.Close" Size="Size.Large" />
                 </div>
 
-                <div>
-                    @foreach (var item in CartService.Items)
-                    {
-                        <div class="d-flex py-3" style="border-bottom: 1px solid #000000;">
-
-                            <img src="@item.Product.Images.GetMainImageSrc()" style="aspect-ratio: 1 / 0.8; width: 150px; object-position: center; object-fit: cover;" />
-
-                            <div class="cartUnit pl-2">
-
-                                <MudText Typo="Typo.h6">@item.Product.Name</MudText>
-
-                                <MudText Typo="Typo.h6" Style="color: #BDBDBD;">@(item.Product.SizeDisplayType == "string" ? (ClothingSize)(int)item.PriceInfo.Size : item.PriceInfo.Size)</MudText>
-
-                                <MudText Typo="Typo.h6">@item.SubTotal.ToPreFormatedString() ₽</MudText>
-
-                                <div class="d-flex align-center" style="gap: 5px; grid-column: auto / span 2;">
-
-                                    <MudIconButton OnClick="() => CartService.UpdateQuantity(item.Product, item.PriceInfo, item.Quantity - 1)" Icon="@Icons.Material.Filled.Remove" />
-
-                                    <MudText Typo="Typo.h5">@item.Quantity</MudText>
-
-                                    <MudIconButton OnClick="() => CartService.UpdateQuantity(item.Product, item.PriceInfo, item.Quantity + 1)" Icon="@Icons.Material.Filled.Add" />
-                                </div>
-
-                                <MudIconButton Style="aspect-ratio: 1/1;" Class="mx-auto" OnClick="() => CartService.RemoveProduct(item.Product, item.PriceInfo)" Icon="@Icons.Material.Filled.DeleteOutline" />
-                            </div>
-                        </div>
-                    }
-                </div>
+                <CartItemsGrid/>
             </div>
 
             @if(CartService.Items.Count() > 0)
@@ -93,6 +66,7 @@
 
     void GoToCheckOut()
     {
+        _isCheckoutButtonHovered = false;
         Navigation.NavigateTo("/checkout");
         CartService.ToggleCart();
     }

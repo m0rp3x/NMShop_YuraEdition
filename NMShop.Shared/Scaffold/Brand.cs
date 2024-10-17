@@ -16,6 +16,9 @@ public partial class Brand
     public string Name { get; set; } = null!;
 
     [InverseProperty("Brand")]
+    public virtual ICollection<BrandGallery> BrandGalleries { get; set; } = new List<BrandGallery>();
+
+    [InverseProperty("Brand")]
     [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 
