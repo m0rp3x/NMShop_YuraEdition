@@ -166,5 +166,30 @@ namespace NMShop.Client.Services
             SetCache(cacheKey, data);
             return data;
         }
+        
+        public async Task<int?> GetBrandIdByNameAsync(string brandName)
+        {
+            if (string.IsNullOrEmpty(brandName))
+            {
+                throw new ArgumentException("Brand name cannot be null or empty.");
+            }
+
+            var url = $"https://localhost:7279/api/productattributes/brand-id-by-name?brandName={HttpUtility.UrlEncode(brandName)}";
+    
+            var response = await _http.GetAsync(url);
+    
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<int?>();
+            }
+            else
+            {
+                // Логирование ошибки для отладки
+                Console.WriteLine($"Ошибка: {response.StatusCode}, {response.ReasonPhrase}");
+                return null;
+            }
+        }
+
+
     }
 }

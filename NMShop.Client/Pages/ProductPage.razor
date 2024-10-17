@@ -2,11 +2,14 @@
 @using NMShop.Shared.Models
 @using NMShop.Client.Services
 @using NMShop.Client.Components
+@using ProductImage = NMShop.Shared.Models.ProductImage
+
+@using NMShop.Shared.Scaffold
 
 @inject ClientDataProvider DataProvider
 @inject NavigationManager Navigation
 @inject CartService CartService
-
+@inject IJSRuntime JS
 @page "/catalog/{productParentType}/{article}"
 
 <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
@@ -134,7 +137,7 @@
                             <MudSpacer />
 
                             <MudText Typo="Typo.h5">@product.Article</MudText>
-                            <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
+                            <MudIconButton  OnClick="CopyToClipboard" Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
                         </div>
 
                         <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
@@ -142,8 +145,11 @@
 
                             <MudSpacer />
 
-                            <MudText Typo="Typo.h5">@product.Brand</MudText>
-                            <MudIconButton Class="ml-3" Icon="@Icons.Material.Filled.ArrowForwardIos" />
+                            <MudButton Variant="Variant.Text" @onclick="() => RedirectToBrandPage(product.Brand)" Class="ml-3">
+                                <MudText Typo="Typo.h5">@product.Brand</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowForwardIos" />
+                            </MudButton>
+
                         </div>
 
                     </MudItem>
@@ -175,8 +181,8 @@
                 <MudButton Variant="Variant.Outlined" Color="Color.Dark" Class="w-100">ПОИСК</MudButton>
             </MudItem>
             <MudItem>
-                <MudButton Variant="Variant.Outlined" Color="Color.Dark" EndIcon="@Icons.Material.Filled.ArrowForward" Class="w-100">
-                    ВЕРНУТЬСЯ В КАТЕГОРИЮ
+                <MudButton Variant="Variant.Outlined" Href="@GetCatalogUrl()" Color="Color.Dark" EndIcon="@Icons.Material.Filled.ArrowForward" Class="w-100">
+                    Вернутся в категорию
                 </MudButton>
             </MudItem>
         </MudGrid>
@@ -189,14 +195,51 @@
 @code {
     [Parameter] public string productParentType { get; set; }
     [Parameter] public string article { get; set; }
+    [Parameter] public string brandID { get; set; }
 
     private ProductDto product = new();
     private int? parentTypeId;
+    private int? brandId;
 
     private bool _isAddToCartButtonHovered = false;
 
     private PriceInfo? seletedSize;
 
+    
+    private string GetCatalogUrl()
+    {
+        return "/catalog/" + new ProductFilter() { CategoryId = parentTypeId }.ToQueryString();
+    }
+
+    private bool _isRedirecting = false;
+
+    private async Task RedirectToBrandPage(string brandName)
+    {
+        if (_isRedirecting) return;
+        _isRedirecting = true;
+
+        try
+        {
+            var brandId = await DataProvider.GetBrandIdByNameAsync(brandName);
+
+            if (brandId.HasValue)
+            {
+                var url = "/catalog/" + new ProductFilter() { BrandIds = new List<int> { brandId.Value } }.ToQueryString();
+                Navigation.NavigateTo(url);
+            }
+            else
+            {
+                Navigation.NavigateTo("/notFound");
+            }
+        }
+        finally
+        {
+            _isRedirecting = false;
+        }
+    }
+
+
+    
     private InfoButton selectedInfo = InfoButtons[0];
 
     private IEnumerable<ReferenceInfo> refInfoList = new ReferenceInfo[0];
@@ -221,6 +264,11 @@
 
         }
         else Navigation.NavigateTo("/notFound");
+    }
+    
+    private async Task CopyToClipboard()
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", product.Article);
     }
 
     class InfoButton

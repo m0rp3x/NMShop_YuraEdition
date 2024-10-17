@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Web;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NMShop.Shared.Scaffold;
-
 namespace NMShop.Controller
 {
     [ApiController]
     [Route("api/[controller]")]
     public class ProductAttributesController : ControllerBase
     {
+        private readonly HttpClient _http;
         private readonly NMShopContext _context;
 
-        public ProductAttributesController(NMShopContext context)
+        public ProductAttributesController(NMShopContext context, HttpClient http)
         {
             _context = context;
+            _http = http;
         }
 
         [HttpGet("brands")]
@@ -122,5 +124,30 @@ namespace NMShop.Controller
 
             return Ok(category);
         }
+        [HttpGet("brand-id-by-name")]
+        public async Task<ActionResult<int?>> GetBrandIdByName([FromQuery] string brandName)
+        {
+            if (string.IsNullOrEmpty(brandName))
+            {
+                return BadRequest("Brand name cannot be null or empty.");
+            }
+
+            var brandId = await _context.Brands
+                .Where(b => EF.Functions.ILike(b.Name, brandName))
+                .Select(b => b.Id)
+                .FirstOrDefaultAsync();
+
+            if (brandId == 0)
+            {
+                return NotFound("Brand not found.");
+            }
+
+            return Ok(brandId);
+        }
+
+
+
+
+
     }
 }
