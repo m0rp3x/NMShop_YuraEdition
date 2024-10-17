@@ -67,18 +67,20 @@ CREATE TABLE IF NOT EXISTS "StockInfo" (
 	PRIMARY KEY ("Id")
 );
 
-CREATE TABLE IF NOT EXISTS "Orders" (
-	"Id" serial NOT NULL UNIQUE,
-	"ClientFullName" varchar(250) NOT NULL,
-	"ClientPhone" varchar(11) NOT NULL,
-	"DeliveryAdress" varchar(500) NOT NULL,
-	"DeliveryType_Id" integer NOT NULL,
-	"PaymentType_Id" integer NOT NULL,
-	"OrderStatus_Id" integer NOT NULL,
-	"DeliveryRecipientFullName" varchar(250) NOT NULL,
-	"DeliveryRecipientPhone" varchar(11) NOT NULL,
-	"Comment" varchar(1000) NOT NULL,
-	PRIMARY KEY ("Id")
+CREATE TABLE IF NOT EXISTS "ContactMethods" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(100) NOT NULL,
+    "ValidationMask" varchar(255),
+    PRIMARY KEY ("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "PromoCodes" (
+    "Id" serial NOT NULL UNIQUE,
+    "Code" varchar(50) NOT NULL,
+    "MaxUsages" integer NOT NULL,
+    "DiscountPercent" integer NOT NULL,
+    "ExpirationDate" date,
+    PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "DeliveryTypes" (
@@ -99,12 +101,76 @@ CREATE TABLE IF NOT EXISTS "OrderStatuses" (
 	PRIMARY KEY ("Id")
 );
 
+CREATE TABLE IF NOT EXISTS "Orders" (
+    "Id" serial NOT NULL UNIQUE,
+    "ClientFullName" varchar(250) NOT NULL,
+    "DeliveryAdress" varchar(500) NOT NULL,
+    "DeliveryType_Id" integer NOT NULL,
+    "PaymentType_Id" integer NOT NULL,
+    "OrderStatus_Id" integer NOT NULL,
+    "DeliveryRecipientFullName" varchar(250) NOT NULL,
+    "DeliveryRecipientPhone" varchar(11) NOT NULL,
+    "Comment" varchar(1000) NOT NULL,
+    "ContactMethod_Id" integer NOT NULL,
+    "ContactValue" varchar(255) NOT NULL,
+    "PromoCode_Id" integer,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("DeliveryType_Id") REFERENCES "DeliveryTypes"("Id"),
+    FOREIGN KEY ("PaymentType_Id") REFERENCES "PaymentTypes"("Id"),
+    FOREIGN KEY ("OrderStatus_Id") REFERENCES "OrderStatuses"("Id"),
+    FOREIGN KEY ("ContactMethod_Id") REFERENCES "ContactMethods"("Id"),
+    FOREIGN KEY ("PromoCode_Id") REFERENCES "PromoCodes"("Id")
+);
+
 CREATE TABLE IF NOT EXISTS "OrderParts" (
 	"Id" serial NOT NULL UNIQUE,
 	"Order_Id" integer NOT NULL,
 	"Product_Id" integer NOT NULL,
 	"Amount" integer NOT NULL,
 	PRIMARY KEY ("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "NavigationItems" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(100) NOT NULL,
+    "Link" varchar(255) NOT NULL,
+    "ParentItem_Id" integer,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("ParentItem_Id") REFERENCES "NavigationItems"("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "TextSizes" (
+    "Id" serial NOT NULL UNIQUE,
+    "Value" varchar(50) NOT NULL,
+    PRIMARY KEY ("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "ReferenceTopics" (
+    "Id" serial NOT NULL UNIQUE,
+    "Code" varchar(50) NOT NULL,
+    "Name" varchar(100) NOT NULL,
+    "ParentTopic_Id" integer,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("ParentTopic_Id") REFERENCES "ReferenceTopics"("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "ReferenceContent" (
+    "Id" serial NOT NULL UNIQUE,
+    "Topic_Id" integer NOT NULL,
+    "TextSize_Id" integer NOT NULL,
+    "Content" varchar(1000) NOT NULL,
+    "IsBold" boolean NOT NULL,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("Topic_Id") REFERENCES "ReferenceTopics"("Id"),
+    FOREIGN KEY ("TextSize_Id") REFERENCES "TextSizes"("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "BrandGallery" (
+    "Id" serial NOT NULL UNIQUE,
+    "Brand_Id" integer NOT NULL,
+    "Image" bytea NOT NULL,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("Brand_Id") REFERENCES "Brands"("Id")
 );
 
 ALTER TABLE "ProductImages" ADD CONSTRAINT "fk_ProductImages_Product_Id" FOREIGN KEY ("Product_Id") REFERENCES "Product"("Id");
@@ -120,6 +186,113 @@ ALTER TABLE "Orders" ADD CONSTRAINT "fk_Orders_PaymentType_Id" FOREIGN KEY ("Pay
 ALTER TABLE "Orders" ADD CONSTRAINT "fk_Orders_OrderStatus_Id" FOREIGN KEY ("OrderStatus_Id") REFERENCES "OrderStatuses"("Id");
 ALTER TABLE "OrderParts" ADD CONSTRAINT "fk_OrderParts_Order_Id" FOREIGN KEY ("Order_Id") REFERENCES "Orders"("Id");
 ALTER TABLE "OrderParts" ADD CONSTRAINT "fk_OrderParts_Product_Id" FOREIGN KEY ("Product_Id") REFERENCES "Product"("Id");
+
+
+-- Add constraint to prevent deep inheritance chains in ProductTypes
+CREATE OR REPLACE FUNCTION check_parent_depth()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW."ParentType_Id" IS NOT NULL THEN
+        -- Проверяем, что у родительского типа нет собственного родителя
+        IF EXISTS (
+            SELECT 1 FROM "ProductTypes"
+            WHERE "Id" = NEW."ParentType_Id" AND "ParentType_Id" IS NOT NULL
+        ) THEN
+            RAISE EXCEPTION 'Родительский тип не должен иметь собственного родителя.';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER chk_ProductTypes_ParentDepth
+BEFORE INSERT OR UPDATE ON "ProductTypes"
+FOR EACH ROW
+EXECUTE FUNCTION check_parent_depth();
+
+-- Добавляем проверку на количество использований промокода и его истечение при создании заказа
+CREATE OR REPLACE FUNCTION check_promo_code_validity()
+RETURNS TRIGGER AS $$
+DECLARE
+    promo_usage_count integer;
+BEGIN
+    IF NEW."PromoCode_Id" IS NOT NULL THEN
+        SELECT COUNT(*) INTO promo_usage_count FROM "Orders" WHERE "PromoCode_Id" = NEW."PromoCode_Id";
+        IF promo_usage_count >= (SELECT "MaxUsages" FROM "PromoCodes" WHERE "Id" = NEW."PromoCode_Id") THEN
+            RAISE EXCEPTION 'Промокод достиг максимального количества использований.';
+        END IF;
+        IF (SELECT "ExpirationDate" FROM "PromoCodes" WHERE "Id" = NEW."PromoCode_Id") < CURRENT_DATE THEN
+            RAISE EXCEPTION 'Срок действия промокода истек.';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_promo_code_validity
+BEFORE INSERT OR UPDATE ON "Orders"
+FOR EACH ROW
+EXECUTE FUNCTION check_promo_code_validity();
+
+-- Добавляем проверку на максимальное наследование навигационного пункта
+CREATE OR REPLACE FUNCTION check_navigation_depth()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW."ParentItem_Id" IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1 FROM "NavigationItems"
+            WHERE "Id" = NEW."ParentItem_Id" AND "ParentItem_Id" IS NOT NULL
+        ) THEN
+            RAISE EXCEPTION 'Навигационный пункт не должен иметь собственного родителя.';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER chk_NavigationItems_ParentDepth
+BEFORE INSERT OR UPDATE ON "NavigationItems"
+FOR EACH ROW
+EXECUTE FUNCTION check_navigation_depth();
+
+-- Добавляем проверку на максимальное наследование топика
+CREATE OR REPLACE FUNCTION check_topic_depth()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW."ParentTopic_Id" IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1 FROM "ReferenceTopics"
+            WHERE "Id" = NEW."ParentTopic_Id" AND "ParentTopic_Id" IS NOT NULL
+        ) THEN
+            RAISE EXCEPTION 'Топик справочной информации не должен иметь собственного родителя.';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER chk_ReferenceTopics_ParentDepth
+BEFORE INSERT OR UPDATE ON "ReferenceTopics"
+FOR EACH ROW
+EXECUTE FUNCTION check_topic_depth();
+
+CREATE OR REPLACE FUNCTION check_brand_gallery_limit()
+RETURNS TRIGGER AS $$
+DECLARE
+    brand_gallery_count integer;
+BEGIN
+    SELECT COUNT(*) INTO brand_gallery_count FROM "BrandGallery" WHERE "Brand_Id" = NEW."Brand_Id";
+    IF brand_gallery_count >= 3 THEN
+        RAISE EXCEPTION 'Нельзя добавить больше 3 записей в галерею брендов.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_brand_gallery_limit
+BEFORE INSERT OR UPDATE ON "BrandGallery"
+FOR EACH ROW
+EXECUTE FUNCTION check_brand_gallery_limit();
 
 -- Insert test data into reference tables
 INSERT INTO "Brands" ("Name") VALUES
@@ -204,28 +377,6 @@ INSERT INTO "PaymentTypes" ("Name") VALUES ('Кредитная карта'), ('
 
 INSERT INTO "OrderStatuses" ("Name") VALUES ('В ожидании'), ('Завершён'), ('Отменён');
 
--- Add constraint to prevent deep inheritance chains in ProductTypes
-CREATE OR REPLACE FUNCTION check_parent_depth()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW."ParentType_Id" IS NOT NULL THEN
-        -- Проверяем, что у родительского типа нет собственного родителя
-        IF EXISTS (
-            SELECT 1 FROM "ProductTypes"
-            WHERE "Id" = NEW."ParentType_Id" AND "ParentType_Id" IS NOT NULL
-        ) THEN
-            RAISE EXCEPTION 'Родительский тип не должен иметь собственного родителя.';
-        END IF;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER chk_ProductTypes_ParentDepth
-BEFORE INSERT OR UPDATE ON "ProductTypes"
-FOR EACH ROW
-EXECUTE FUNCTION check_parent_depth();
-
 -- Insert test data into Product table for each parent category
 INSERT INTO "Product" ("Name", "Brand_Id", "Article", "Description", "Gender_Id", "ProductType_Id", "SellingCategory_Id", "DateAdded", "Color_Id") VALUES
   -- Одежда
@@ -261,6 +412,36 @@ INSERT INTO "Product" ("Name", "Brand_Id", "Article", "Description", "Gender_Id"
   ('Ботинки Dr. Martens', 38, 'BT003', 'Кожаные ботинки', 1, 16, 4, '2024-11-06', 1),
   ('Слайды Puma', 3, 'SL003', 'Удобные слайды для дома', 2, 17, 4, '2024-11-07', 2),
   ('Кеды Nike Air', 1, 'SN004', 'Спортивные кеды', 1, 15, 4, '2024-11-08', 3);
+
+INSERT INTO "ContactMethods" ("Name", "ValidationMask") VALUES ('Телефон', '\d{10,11}'), ('Email', '[^@\s]+@[^@\s]+\.[^@\s]+');
+
+INSERT INTO "PromoCodes" ("Code", "MaxUsages", "DiscountPercent", "ExpirationDate") VALUES
+  ('NEWYEAR2025', 100, 20, '2025-01-01'),
+  ('SUMMER25', 50, 25, '2024-12-31'),
+  ('WELCOME10', 500, 10, NULL);
+
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id") VALUES
+  ('Главная', '/home', NULL),
+  ('Магазин', '/shop', NULL),
+  ('Одежда', '/shop/clothing', 2),
+  ('Обувь', '/shop/footwear', 2);
+
+INSERT INTO "TextSizes" ("Value") VALUES ('Маленький'), ('Средний'), ('Большой');
+
+INSERT INTO "ReferenceTopics" ("Code", "Name", "ParentTopic_Id") VALUES
+  ('shipping', 'Доставка', NULL),
+  ('returns', 'Возврат', NULL),
+  ('shipping_times', 'Время доставки', 1),
+  ('return_policy', 'Политика возврата', 2);
+
+INSERT INTO "ReferenceContent" ("Topic_Id", "TextSize_Id", "Content", "IsBold") VALUES
+  (3, 2, 'Доставка занимает от 3 до 5 рабочих дней.', TRUE),
+  (4, 1, 'Возврат возможен в течение 14 дней после получения заказа.', FALSE);
+
+INSERT INTO "BrandGallery" ("Brand_Id", "Image") VALUES
+  (1, E''::bytea),
+  (1, E''::bytea),
+  (1, E''::bytea);
 
 -- Добавляем блок для вставки данных в StockInfo
 DO $$
@@ -330,8 +511,6 @@ BEGIN
 END
 $$;
 
--- Ваши предыдущие операции создания схемы, таблиц и вставки данных
-
 -- Добавляем по три изображения для каждого товара
 DO $$
 DECLARE
@@ -354,6 +533,8 @@ BEGIN
 END
 $$;
 
+
+
 CREATE TABLE tg_admins
 (
     Id          SERIAL PRIMARY KEY,
@@ -361,9 +542,6 @@ CREATE TABLE tg_admins
     TelegramId  VARCHAR(12) NOT NULL,
     CONSTRAINT tg_admins_username_uindex UNIQUE (Username)
 );
-
-ALTER TABLE tg_admins
-    OWNER TO "NMShop_dollsawour";
 
 
 

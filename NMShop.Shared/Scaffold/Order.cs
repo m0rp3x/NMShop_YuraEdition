@@ -8,29 +8,19 @@ namespace NMShop.Shared.Scaffold;
 public partial class Order
 {
     [Key]
-    [DisplayName("Идентификатор")]
-
+    [DisplayName("Идентификатор заказа")]
     public int Id { get; set; }
 
     [StringLength(250)]
-    [DisplayName("ФИО Клиента")]
-
-
+    [DisplayName("ФИО клиента")]
     public string ClientFullName { get; set; } = null!;
-
-    [StringLength(11)]
-    [DisplayName("Телефон Клиента")]
-
-    public string ClientPhone { get; set; } = null!;
 
     [StringLength(500)]
     [DisplayName("Адрес доставки")]
-
     public string DeliveryAdress { get; set; } = null!;
 
     [Column("DeliveryType_Id")]
     [DisplayName("Тип доставки")]
-
     public int DeliveryTypeId { get; set; }
 
     [Column("PaymentType_Id")]
@@ -43,18 +33,32 @@ public partial class Order
 
     [StringLength(250)]
     [DisplayName("ФИО получателя")]
-
     public string DeliveryRecipientFullName { get; set; } = null!;
 
     [StringLength(11)]
     [DisplayName("Телефон получателя")]
-
     public string DeliveryRecipientPhone { get; set; } = null!;
 
     [StringLength(1000)]
-    [DisplayName("Коментарий к заказу")]
-
+    [DisplayName("Комментарий к заказу")]
     public string Comment { get; set; } = null!;
+
+    [Column("ContactMethod_Id")]
+    [DisplayName("Способ связи")]
+    public int ContactMethodId { get; set; }
+
+    [StringLength(255)]
+    [DisplayName("Контактная информация")]
+    public string ContactValue { get; set; } = null!;
+
+    [Column("PromoCode_Id")]
+    [DisplayName("Промокод")]
+    public int? PromoCodeId { get; set; }
+
+    [ForeignKey("ContactMethodId")]
+    [InverseProperty("Orders")]
+    [Display(AutoGenerateField = false)]
+    public virtual ContactMethod ContactMethod { get; set; } = null!;
 
     [ForeignKey("DeliveryTypeId")]
     [InverseProperty("Orders")]
@@ -62,6 +66,7 @@ public partial class Order
     public virtual DeliveryType DeliveryType { get; set; } = null!;
 
     [InverseProperty("Order")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<OrderPart> OrderParts { get; set; } = new List<OrderPart>();
 
     [ForeignKey("OrderStatusId")]
@@ -74,9 +79,8 @@ public partial class Order
     [Display(AutoGenerateField = false)]
     public virtual PaymentType PaymentType { get; set; } = null!;
 
-    public override string ToString()
-    {
-        return $"Заказ #{Id}"; // Отображать ID бренда
-    }
-
+    [ForeignKey("PromoCodeId")]
+    [InverseProperty("Orders")]
+    [Display(AutoGenerateField = false)]
+    public virtual PromoCode? PromoCode { get; set; }
 }

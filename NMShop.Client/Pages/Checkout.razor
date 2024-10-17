@@ -14,10 +14,15 @@
 
             <MudText Typo="Typo.h5" >ЛИЧНЫЕ ДАННЫЕ</MudText>
             <MudTextField Label="Имя, фамилия" @bind-Value="Form_FIO" Variant="Variant.Filled"  />
-            <MudTextField Label="Телефон" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled"  />
+            <MudSelect @bind-Value="Form_Contact" Label="Способ звязи">
+                @foreach (var margin in Enum.GetValues(typeof(Margin)).Cast<Margin>())
+                {
+                    <MudSelectItem Value="margin">@margin</MudSelectItem>
+                }
+            </MudSelect>
             <MudTextField Label="Email" @bind-Value="Form_Email" Variant="Variant.Filled"  />
 
-            <MudText Typo="Typo.h5" >СПОСОБ ДОСТАВКИ</MudText>
+            <MudText Typo="Typo.h5">СПОСОБ ДОСТАВКИ</MudText>
             <MudRadioGroup @bind-Value="SelectedDeliveryMethod" >
                 <MudRadio T="string" Label="Доставка курьером">Доставка курьером</MudRadio>
                 <MudRadio T="string" Label="Самовывоз">Самовывоз</MudRadio>
@@ -35,7 +40,7 @@
             @if (!IsRecipient)
             {
                 <MudTextField Label="ФИО Получателя" @bind-Value="Form_FIO" Variant="Variant.Filled"  />
-                <MudTextField Label="Телефон Получателя" @bind-Value="Form_PhoneNumber" Variant="Variant.Filled"  />
+                <MudTextField Label="Телефон Получателя" @bind-Value="Form_Contact" Variant="Variant.Filled"  />
             }
 
             <MudText Typo="Typo.h5" >СПОСОБ ОПЛАТЫ</MudText>
@@ -48,6 +53,8 @@
         </div>
 
         <div class="pa-5 d-flex flex-column" style="gap: 13px; background-color: #F8F8F8; border-radius: 5px;">
+
+            <CartItemsGrid/>
 
             <MudText Typo="Typo.h6">ЕСЛИ У ВАС ЕСТЬ ПРОМОКОД, ВВЕДИТЕ ЕГО СЮДА</MudText>
 
@@ -88,7 +95,7 @@
 @code {
 public string? Form_FIO { get; set; }
 public string? Promo { get; set; }
-public string? Form_PhoneNumber { get; set; }
+public string? Form_Contact { get; set; }
 public string? Form_Email { get; set; }
 public string? Form_City { get; set; }
 public string? Form_Address { get; set; }
