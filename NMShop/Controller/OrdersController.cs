@@ -107,5 +107,26 @@ namespace NMShop.Controllers
         {
             return _context.Orders.Any(e => e.Id == id);
         }
+
+        [HttpGet("contact-methods")]
+        public async Task<ActionResult<IEnumerable<ContactMethod>>> GetContactMethods()
+        {
+            var contactMethods = await _context.ContactMethods.ToListAsync();
+            return Ok(contactMethods);
+        }
+
+        [HttpGet("delivery-types")]
+        public async Task<ActionResult<IEnumerable<DeliveryType>>> GetDeliveryTypes()
+        {
+            var deliveryTypes = await _context.DeliveryTypes.ToListAsync();
+            return Ok(deliveryTypes);
+        }
+
+        [HttpGet("payment-types")]
+        public async Task<ActionResult<IEnumerable<PaymentType>>> GetPaymentTypes()
+        {
+            var paymentTypes = await _context.PaymentTypes.ToListAsync();
+            return Ok(paymentTypes);
+        }
     }
 }

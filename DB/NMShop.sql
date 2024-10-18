@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS "ContactMethods" (
     "Id" serial NOT NULL UNIQUE,
     "Name" varchar(100) NOT NULL,
     "ValidationMask" varchar(255),
+    "ValidationErrorText" varchar(255),
     PRIMARY KEY ("Id")
 );
 
@@ -413,7 +414,12 @@ INSERT INTO "Product" ("Name", "Brand_Id", "Article", "Description", "Gender_Id"
   ('Слайды Puma', 3, 'SL003', 'Удобные слайды для дома', 2, 17, 4, '2024-11-07', 2),
   ('Кеды Nike Air', 1, 'SN004', 'Спортивные кеды', 1, 15, 4, '2024-11-08', 3);
 
-INSERT INTO "ContactMethods" ("Name", "ValidationMask") VALUES ('Телефон', '\d{10,11}'), ('Email', '[^@\s]+@[^@\s]+\.[^@\s]+');
+INSERT INTO "ContactMethods" ("Name", "ValidationMask", "ValidationErrorText")
+VALUES
+    ('Телефон', '^\d{10,11}$', 'Телефон должен содержать от 10 до 11 цифр.'),
+    ('Telegram', '^@[A-Za-z0-9_]{5,32}$', 'Telegram имя пользователя должно начинаться с @ и содержать от 5 до 32 символов.'),
+    ('WhatsApp', '^\d{10,11}$', 'WhatsApp номер должен содержать от 10 до 11 цифр.'),
+    ('VK', '^https?:\/\/(www\.)?vk\.com\/[A-Za-z0-9_]+$', 'Введите корректную ссылку на профиль VK.');
 
 INSERT INTO "PromoCodes" ("Code", "MaxUsages", "DiscountPercent", "ExpirationDate") VALUES
   ('NEWYEAR2025', 100, 20, '2025-01-01'),
