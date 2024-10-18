@@ -198,5 +198,23 @@ namespace NMShop.Client.Services
             SetCache(cacheKey, data);
             return data;
         }
+
+        public async Task<int?> GetBrandIdByNameAsync(string brandName)
+        {
+            var cacheKey = $"brandId_{brandName}";
+            var cachedData = GetFromCache<int?>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            if (string.IsNullOrEmpty(brandName))
+            {
+                throw new ArgumentException("Brand name cannot be null or empty.");
+            }
+
+            var url = $"https://localhost:7279/api/productattributes/brand-id-by-name?brandName={HttpUtility.UrlEncode(brandName)}";
+            var data = await _http.GetFromJsonAsync<int?>(url);
+            SetCache(cacheKey, data);
+            return data;
+        }
+
     }
 }
