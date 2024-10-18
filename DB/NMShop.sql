@@ -414,6 +414,9 @@ INSERT INTO "Product" ("Name", "Brand_Id", "Article", "Description", "Gender_Id"
   ('Слайды Puma', 3, 'SL003', 'Удобные слайды для дома', 2, 17, 4, '2024-11-07', 2),
   ('Кеды Nike Air', 1, 'SN004', 'Спортивные кеды', 1, 15, 4, '2024-11-08', 3);
 
+
+
+
 INSERT INTO "ContactMethods" ("Name", "ValidationMask", "ValidationErrorText")
 VALUES
     ('Телефон', '^\d{10,11}$', 'Телефон должен содержать от 10 до 11 цифр.'),
@@ -516,6 +519,26 @@ BEGIN
     END LOOP;
 END
 $$;
+
+INSERT INTO "NMShop"."Orders" (
+    "ClientFullName",
+    "DeliveryAdress",
+    "DeliveryType_Id",
+    "PaymentType_Id",
+    "OrderStatus_Id",
+    "DeliveryRecipientFullName",
+    "DeliveryRecipientPhone",
+    "Comment",
+    "ContactMethod_Id",
+    "ContactValue",
+    "PromoCode_Id"
+)
+VALUES
+    ('Иван Иванов', 'г. Москва, ул. Ленина, д. 1', 1, 1, 1, 'Иван Иванов', '89991234567', 'Нет комментариев', 1, 'TrueSamyra', NULL),
+    ('Анна Смирнова', 'г. Санкт-Петербург, ул. Садовая, д. 2', 2, 2, 2, 'Анна Смирнова', '89991112233', 'Доставить вечером', 2, 'TrueSamyra', NULL),
+    ('Сергей Петров', 'г. Новосибирск, пр. Ленина, д. 10', 2, 2, 2, 'Сергей Петров', '89998887766', 'Позвонить заранее', 2, 'TrueSamyra', NULL);
+
+
 
 -- Добавляем по три изображения для каждого товара
 DO $$
