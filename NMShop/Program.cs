@@ -32,7 +32,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDbContext<NMShopContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("LocalConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("SpermaConnection"));
 
 });
 
