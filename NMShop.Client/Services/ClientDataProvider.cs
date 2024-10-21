@@ -216,5 +216,32 @@ namespace NMShop.Client.Services
             return data;
         }
 
+        public async Task<int> GetPromoCodeDiscountAsync(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                throw new ArgumentException("Promo code cannot be null or empty.");
+            }
+
+            var url = $"https://localhost:7279/api/orders/promo-code/{HttpUtility.UrlEncode(code)}";
+            return await _http.GetFromJsonAsync<int>(url);
+        }
+
+        public async Task SubmitOrderAsync(Order order)
+        {
+            if (order == null)
+            {
+                throw new ArgumentNullException(nameof(order), "Order cannot be null.");
+            }
+
+            var url = "https://localhost:7279/api/orders/submit-order";
+            var response = await _http.PostAsJsonAsync(url, order);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Error submitting order: {response.StatusCode}, {response.ReasonPhrase}");
+            }
+        }
+
     }
 }

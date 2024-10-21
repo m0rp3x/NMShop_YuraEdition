@@ -1,24 +1,31 @@
 ﻿using NMShop.Shared.Models;
 using Microsoft.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
+using NMShop.Shared.Scaffold;
 
 namespace NMShop.Client.Services
 {
     public class CartService
     {
         private readonly IJSRuntime _jsRuntime;
+        private readonly ClientDataProvider _dataProvider;
         public event Action OnChange;
         private List<CartItem> _items = new List<CartItem>();
         private bool _isCartOpen = false;
+        private PromoCode? _appliedPromoCode;
+        private string? _promoCodeError;
 
-        public CartService(IJSRuntime jsRuntime)
+        public CartService(IJSRuntime jsRuntime, ClientDataProvider dataProvider)
         {
             _jsRuntime = jsRuntime;
+            _dataProvider = dataProvider;
             InitializeCartAsync();
         }
 
         public IReadOnlyList<CartItem> Items => _items.AsReadOnly();
         public bool IsCartOpen => _isCartOpen;
+        public PromoCode? AppliedPromoCode => _appliedPromoCode;
+        public string? PromoCodeError => _promoCodeError;
 
         public async Task InitializeCartAsync()
         {
@@ -73,7 +80,65 @@ namespace NMShop.Client.Services
             NotifyStateChanged();
         }
 
-        public decimal GetTotalCartPrice() => _items.Sum(item => item.SubTotal);
+        public decimal GetTotalCartPrice()
+        {
+            decimal total = _items.Sum(item => item.SubTotal);
+            if (_appliedPromoCode != null)
+            {
+                total -= total * _appliedPromoCode.DiscountPercent / 100;
+            }
+            return total;
+        }
+
+        public async Task ApplyPromoCodeAsync(string code)
+        {
+            _promoCodeError = null;
+            _appliedPromoCode = null;
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                _promoCodeError = "Промокод не может быть пустым.";
+                NotifyStateChanged();
+                return;
+            }
+
+            var discount = await _dataProvider.GetPromoCodeDiscountAsync(code);
+
+            if (discount == -1)
+            {
+                _promoCodeError = "Промокод не найден.";
+            }
+            else if (discount == 0)
+            {
+                _promoCodeError = "Промокод истёк или достиг максимального количества использований.";
+            }
+            else
+            {
+                _appliedPromoCode = new PromoCode { Code = code, DiscountPercent = discount };
+            }
+
+            NotifyStateChanged();
+        }
+
+        public async Task SubmitOrderAsync(Order order)
+        {
+            if (_appliedPromoCode != null)
+            {
+                order.PromoCode = _appliedPromoCode;
+            }
+
+            await _dataProvider.SubmitOrderAsync(order);
+            await ClearCartAsync();
+            NotifyStateChanged();
+        }
+
+        private async Task ClearCartAsync()
+        {
+            _items.Clear();
+            _appliedPromoCode = null;
+            _promoCodeError = null;
+            await SaveCartToLocalStorageAsync();
+        }
 
         private async Task SaveCartToLocalStorageAsync()
         {

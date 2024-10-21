@@ -128,5 +128,67 @@ namespace NMShop.Controllers
             var paymentTypes = await _context.PaymentTypes.ToListAsync();
             return Ok(paymentTypes);
         }
+
+        [HttpGet("promo-code/{code}")]
+        public async Task<ActionResult<int>> GetPromoCodeDiscount(string code)
+        {
+            var promoCode = await _context.PromoCodes.FirstOrDefaultAsync(pc => pc.Code == code);
+
+            if (promoCode == null)
+            {
+                return Ok(-1);
+            }
+
+            if (promoCode.ExpirationDate.HasValue && promoCode.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
+            {
+                return Ok(0);
+            }
+
+            var usageCount = await _context.Orders.CountAsync(o => o.PromoCodeId == promoCode.Id);
+            if (usageCount >= promoCode.MaxUsages)
+            {
+                return Ok(0);
+            }
+
+            return Ok(promoCode.DiscountPercent);
+        }
+
+        [HttpPost("submit-order")]
+        public async Task<IActionResult> SubmitOrder([FromBody] Order order)
+        {
+            if (order == null)
+            {
+                return BadRequest("Order cannot be null.");
+            }
+
+            var promoCode = order.PromoCode?.Code;
+            if (!string.IsNullOrEmpty(promoCode))
+            {
+                var promoCheck = await GetPromoCodeDiscount(promoCode);
+                var discount = promoCheck.Value;
+
+                if (discount == -1)
+                {
+                    return BadRequest("Promo code not found.");
+                }
+                else if (discount == 0)
+                {
+                    return BadRequest("Promo code expired or maximum usage reached.");
+                }
+
+                // Check if promo code usage limit has been reached
+                var promoUsageCount = await _context.Orders.CountAsync(o => o.PromoCodeId == order.PromoCodeId);
+                if (promoUsageCount >= order.PromoCode.MaxUsages)
+                {
+                    return BadRequest("Promo code usage limit has been reached.");
+                }
+            }
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            return Ok(order);
+        }
+
     }
 }

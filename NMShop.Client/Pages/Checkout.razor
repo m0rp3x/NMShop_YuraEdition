@@ -15,46 +15,52 @@
 
         <div class="pa-5 d-flex flex-column" style="gap: 13px;">
 
-            <MudText Typo="Typo.h5" >ЛИЧНЫЕ ДАННЫЕ</MudText>
-            <MudTextField Label="Имя, фамилия" @bind-Value="Form_FIO" Variant="Variant.Filled" />
-            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="Variant.Filled" />
-            <MudSelect @bind-Value="selectedContactMethod" Label="Способ звязи">
+            <MudText Typo="Typo.h6" >ЛИЧНЫЕ ДАННЫЕ</MudText>
+            <MudTextField Required="true" RequiredError="Обязательное поле" Label="Имя, фамилия" @bind-Value="Form.FIO" Variant="Variant.Filled" />
+            <MudTextField Required="true" RequiredError="Обязательное поле" Label="Email" @bind-Value="Form.Email" Variant="Variant.Filled" />
+            <MudSelect @bind-Value="Form.selectedContactMethod" Label="Способ звязи">
                 @foreach (var cm in contactMethods)
                 {
                     <MudSelectItem Value="cm">@cm.Name</MudSelectItem>
                 }
             </MudSelect>
-            @if (selectedContactMethod != null && !string.IsNullOrEmpty(selectedContactMethod.ValidationMask))
+            @if (Form.selectedContactMethod != null && !string.IsNullOrEmpty(Form.selectedContactMethod.ValidationMask))
             {
-                <MudTextField Label="Контакт" @bind-Value="Form_Contact" Variant="Variant.Filled"
-                              Immediate="true" Error="!Regex.IsMatch(Form_Contact ?? string.Empty, selectedContactMethod.ValidationMask)"
-                              ErrorText="@selectedContactMethod.ValidationErrorText" />
+                <MudTextField Label="Контакт" @bind-Value="Form.Contact" Variant="Variant.Filled"
+                              Immediate="true" Error="!Regex.IsMatch(Form.Contact ?? string.Empty, Form.selectedContactMethod.ValidationMask)"
+                              ErrorText="@Form.selectedContactMethod.ValidationErrorText" />
             }
 
-            <MudText Typo="Typo.h5">СПОСОБ ДОСТАВКИ</MudText>
-            <MudRadioGroup @bind-Value="selectedDeliveryMethod" >
-                @foreach (var dm in deliveryMethods)
-                {
-                    <MudRadio Value="dm">@dm.Name</MudRadio>
-                }
-            </MudRadioGroup>
+            <div class="d-flex" style="gap: 13px;">
+                <div style="gap: 13px;">
+                    <MudText Typo="Typo.h6">СПОСОБ ДОСТАВКИ</MudText>
+                    <MudRadioGroup Required="true" RequiredError="Обязательное поле" @bind-Value="Form.selectedDeliveryMethod">
+                        @foreach (var dm in deliveryMethods)
+                        {
+                            <MudRadio Value="dm">@dm.Name</MudRadio>
+                        }
+                    </MudRadioGroup>
+                </div>
 
-            <MudText Typo="Typo.h5" >АДРЕС ДОСТАВКИ</MudText>
-            <MudTextField Label="Город" @bind-Value="Form_Address" Variant="Variant.Filled"  />
-            <MudTextField Label="Адрес" @bind-Value="Form_Address" Variant="Variant.Filled"  />
-            <MudTextField Label="Регион" @bind-Value="Form_Region" Variant="Variant.Filled"  />
-            <MudTextField Label="Индекс" @bind-Value="Form_Index" Variant="Variant.Filled"  />
+                <div style="gap: 25px;">
+                    <MudText Typo="Typo.h6">АДРЕС ДОСТАВКИ</MudText>
+                    <MudTextField Required="true" RequiredError="Обязательное поле" Label="Город" @bind-Value="Form.Address" Variant="Variant.Filled" />
+                    <MudTextField Required="true" RequiredError="Обязательное поле" Label="Адрес" @bind-Value="Form.Address" Variant="Variant.Filled" />
+                    <MudTextField Required="true" RequiredError="Обязательное поле" Label="Регион" @bind-Value="Form.Region" Variant="Variant.Filled" />
+                    <MudTextField Label="Индекс" @bind-Value="Form.Index" Variant="Variant.Filled" />
+                </div>
+            </div>
 
-            <MudCheckBox T="bool" Label="Я получатель" @bind-Value="IsRecipient" />
+            <MudCheckBox T="bool" Label="Я получатель" @bind-Value="Form.IsClientRecipient" />
 
-            @if (!IsRecipient)
+            @if (!Form.IsClientRecipient)
             {
-                <MudTextField Label="ФИО Получателя" @bind-Value="Form_FIO" Variant="Variant.Filled"  />
-                <MudTextField Label="Телефон Получателя" @bind-Value="Form_Contact" Variant="Variant.Filled"  />
+                <MudTextField Required="!Form.IsClientRecipient" RequiredError="Обязательное поле" Label="ФИО Получателя" @bind-Value="Form.Recipient_FIO" Variant="Variant.Filled" />
+                <MudTextField Required="!Form.IsClientRecipient" RequiredError="Обязательное поле" Label="Телефон Получателя" @bind-Value="Form.Recipient_Phone" Variant="Variant.Filled" />
             }
 
-            <MudText Typo="Typo.h5">СПОСОБ ОПЛАТЫ</MudText>
-            <MudRadioGroup @bind-Value="selectedPaymentMethod">
+            <MudText Typo="Typo.h6">СПОСОБ ОПЛАТЫ</MudText>
+            <MudRadioGroup Required="true" RequiredError="Обязательное поле" @bind-Value="Form.selectedPaymentMethod">
                 @foreach (var pm in paymentMethods)
                 {
                     <MudRadio Value="pm">@pm.Name</MudRadio>
@@ -70,8 +76,8 @@
             <MudText Typo="Typo.h6">ЕСЛИ У ВАС ЕСТЬ ПРОМОКОД, ВВЕДИТЕ ЕГО СЮДА</MudText>
 
             <div class="d-flex" style="gap: 15px;">
-                <MudTextField @bind-Value="Promo" Placeholder="Введите промокод" />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
+                <MudTextField Error="@(!string.IsNullOrEmpty(CartService.PromoCodeError))" ErrorText="CartService.PromoCodeError" @bind-Value="Form.Promo" Placeholder="Введите промокод" />
+                <MudButton OnClick="async() => CartService.ApplyPromoCodeAsync(Form.Promo)" Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
             </div>
 
             <div class="d-flex justify-space-between">
@@ -104,19 +110,7 @@
 
 
 @code {
-    public string? Form_FIO { get; set; }
-    public string? Promo { get; set; }
-    public string? Form_Contact { get; set; }
-    public string? Form_Email { get; set; }
-    public string? Form_City { get; set; }
-    public string? Form_Address { get; set; }
-    public string? Form_Region { get; set; }
-    public string? Form_Index { get; set; }
-    public bool IsRecipient { get; set; } = true;
-
-    private ContactMethod? selectedContactMethod;
-    private DeliveryType? selectedDeliveryMethod;
-    private PaymentType? selectedPaymentMethod;
+    private CheckoutForm Form = new();
 
     private bool _isFinalButtonHovered = false;
 
@@ -128,7 +122,9 @@
     private IEnumerable<DeliveryType> deliveryMethods = new List<DeliveryType>();
     private IEnumerable<PaymentType> paymentMethods = new List<PaymentType>();
 
-    private RegexMask GetCurrentRegexMask => new RegexMask($"^{selectedContactMethod.ValidationMask}$");
+    private RegexMask GetCurrentRegexMask => new RegexMask($"^{Form.selectedContactMethod.ValidationMask}$");
+
+    private string PromoCodeErrorText = String.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -136,5 +132,24 @@
         deliveryMethods = await DataProvider.GetDeliveryTypesAsync();
         paymentMethods = await DataProvider.GetPaymentTypesAsync();
 
+    }
+
+    public class CheckoutForm
+    {
+        public string? FIO { get; set; }
+        public string? Promo { get; set; }
+        public string? Contact { get; set; }
+        public string? Email { get; set; }
+        public string? City { get; set; }
+        public string? Address { get; set; }
+        public string? Region { get; set; }
+        public string? Index { get; set; }
+        public string? Recipient_FIO { get; set; }
+        public string? Recipient_Phone { get; set; }
+        public bool IsClientRecipient { get; set; } = true;
+
+        public ContactMethod? selectedContactMethod;
+        public DeliveryType? selectedDeliveryMethod;
+        public PaymentType? selectedPaymentMethod;
     }
 }
