@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NMShop.Shared.Scaffold;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NMShop.Shared.Models;
 
 namespace NMShop.Controllers
 {
@@ -19,17 +20,44 @@ namespace NMShop.Controllers
 
         // GET: api/orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
         {
             var orders = await _context.Orders
                 .Include(o => o.DeliveryType)
                 .Include(o => o.PaymentType)
                 .Include(o => o.OrderStatus)
-                .Include(o => o.OrderParts)
+                .Select(o => new OrderDto
+                {
+                    Id = o.Id,
+                    ClientFullName = o.ClientFullName,
+                    DeliveryAdress = o.DeliveryAdress,
+                    DeliveryTypeName = o.DeliveryType.Name,
+                    PaymentTypeName = o.PaymentType.Name,
+                    OrderStatusName = o.OrderStatus.Name,
+                    ContactValue = o.ContactValue
+                })
                 .ToListAsync();
 
             return Ok(orders);
         }
+        
+        // Пример контроллера на стороне API
+        [HttpGet("by-contact")]
+        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByContact(string contactValue)
+        {
+            var orders = await _context.Orders
+                .Where(o => o.ContactValue == contactValue)
+                .ToListAsync();
+
+            if (orders == null || orders.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(orders);
+        }
+
+
 
         // GET: api/orders/{id}
         [HttpGet("{id}")]
@@ -40,6 +68,7 @@ namespace NMShop.Controllers
                 .Include(o => o.PaymentType)
                 .Include(o => o.OrderStatus)
                 .Include(o => o.OrderParts)
+                .Include(o => o.ContactValue)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)

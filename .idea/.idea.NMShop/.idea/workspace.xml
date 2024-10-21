@@ -10,7 +10,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="" />
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Models/OrderDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -172,6 +176,7 @@
       <workItem from="1728922817893" duration="8762000" />
       <workItem from="1729187030886" duration="5366000" />
       <workItem from="1729193680298" duration="1813000" />
+      <workItem from="1729279846885" duration="5276000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
