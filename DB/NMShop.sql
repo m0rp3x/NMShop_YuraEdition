@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS "Orders" (
     "DeliveryAdress" varchar(500) NOT NULL,
     "DeliveryType_Id" integer NOT NULL,
     "PaymentType_Id" integer NOT NULL,
+    "EstimatedDeliveryDateRange" varchar(50) NOT NULL,
     "OrderStatus_Id" integer NOT NULL,
     "DeliveryRecipientFullName" varchar(250) NOT NULL,
     "DeliveryRecipientPhone" varchar(11) NOT NULL,
@@ -529,12 +530,52 @@ INSERT INTO "NMShop"."Orders" (
     "Comment",
     "ContactMethod_Id",
     "ContactValue",
-    "PromoCode_Id"
+    "PromoCode_Id",
+    "EstimatedDeliveryDateRange"
 )
 VALUES
-    ('Иван Иванов', 'г. Москва, ул. Ленина, д. 1', 1, 1, 1, 'Иван Иванов', '89991234567', 'Нет комментариев', 1, 'TrueSamyra', NULL),
-    ('Анна Смирнова', 'г. Санкт-Петербург, ул. Садовая, д. 2', 2, 2, 2, 'Анна Смирнова', '89991112233', 'Доставить вечером', 2, 'TrueSamyra', NULL),
-    ('Сергей Петров', 'г. Новосибирск, пр. Ленина, д. 10', 2, 2, 2, 'Сергей Петров', '89998887766', 'Позвонить заранее', 2, 'TrueSamyra', NULL);
+    (
+        'Иван Иванов',
+        'г. Москва, ул. Ленина, д. 1',
+        1,
+        1,
+        1,
+        'Иван Иванов',
+        '89991234567',
+        'Нет комментариев',
+        1,
+        'TrueSamyra',
+        NULL,
+        '15.10.24 - 16.10.24'
+    ),
+    (
+        'Анна Смирнова',
+        'г. Санкт-Петербург, ул. Садовая, д. 2',
+        2,
+        2,
+        2,
+        'Анна Смирнова',
+        '89991112233',
+        'Доставить вечером',
+        2,
+        'Sharp_Attilov',
+        NULL,
+        '17.10.24 - 18.10.24'
+    ),
+    (
+        'Сергей Петров',
+        'г. Новосибирск, пр. Ленина, д. 10',
+        2,
+        2,
+        2,
+        'Сергей Петров',
+        '89998887766',
+        'Позвонить заранее',
+        2,
+        'Sharp_Attilov',
+        NULL,
+        '19.10.24 - 20.10.24'
+    );
 
 
 
