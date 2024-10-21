@@ -1,7 +1,10 @@
 ﻿@using NMShop.Client.Services
 @using NMShop.Client.Components
+@using NMShop.Shared.Scaffold
+@using System.Text.RegularExpressions
 
 @inject CartService CartService
+@inject ClientDataProvider DataProvider
 @page "/checkout"
 
 <div>
@@ -13,20 +16,27 @@
         <div class="pa-5 d-flex flex-column" style="gap: 13px;">
 
             <MudText Typo="Typo.h5" >ЛИЧНЫЕ ДАННЫЕ</MudText>
-            <MudTextField Label="Имя, фамилия" @bind-Value="Form_FIO" Variant="Variant.Filled"  />
-            <MudSelect @bind-Value="Form_Contact" Label="Способ звязи">
-                @foreach (var margin in Enum.GetValues(typeof(Margin)).Cast<Margin>())
+            <MudTextField Label="Имя, фамилия" @bind-Value="Form_FIO" Variant="Variant.Filled" />
+            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="Variant.Filled" />
+            <MudSelect @bind-Value="selectedContactMethod" Label="Способ звязи">
+                @foreach (var cm in contactMethods)
                 {
-                    <MudSelectItem Value="margin">@margin</MudSelectItem>
+                    <MudSelectItem Value="cm">@cm.Name</MudSelectItem>
                 }
             </MudSelect>
-            <MudTextField Label="Email" @bind-Value="Form_Email" Variant="Variant.Filled"  />
+            @if (selectedContactMethod != null && !string.IsNullOrEmpty(selectedContactMethod.ValidationMask))
+            {
+                <MudTextField Label="Контакт" @bind-Value="Form_Contact" Variant="Variant.Filled"
+                              Immediate="true" Error="!Regex.IsMatch(Form_Contact ?? string.Empty, selectedContactMethod.ValidationMask)"
+                              ErrorText="@selectedContactMethod.ValidationErrorText" />
+            }
 
             <MudText Typo="Typo.h5">СПОСОБ ДОСТАВКИ</MudText>
-            <MudRadioGroup @bind-Value="SelectedDeliveryMethod" >
-                <MudRadio T="string" Label="Доставка курьером">Доставка курьером</MudRadio>
-                <MudRadio T="string" Label="Самовывоз">Самовывоз</MudRadio>
-                <MudRadio T="string" Label="Доставка почтой">Доставка почтой</MudRadio>
+            <MudRadioGroup @bind-Value="selectedDeliveryMethod" >
+                @foreach (var dm in deliveryMethods)
+                {
+                    <MudRadio Value="dm">@dm.Name</MudRadio>
+                }
             </MudRadioGroup>
 
             <MudText Typo="Typo.h5" >АДРЕС ДОСТАВКИ</MudText>
@@ -43,11 +53,12 @@
                 <MudTextField Label="Телефон Получателя" @bind-Value="Form_Contact" Variant="Variant.Filled"  />
             }
 
-            <MudText Typo="Typo.h5" >СПОСОБ ОПЛАТЫ</MudText>
-            <MudRadioGroup @bind-Value="SelectedPaymentMethod" >
-                <MudRadio T="string" Label="Оплата картой">Оплата картой</MudRadio>
-                <MudRadio T="string" Label="Сбербанк Онлайн">Сбербанк Онлайн</MudRadio>
-                <MudRadio T="string" Label="Наличные">Наличные</MudRadio>
+            <MudText Typo="Typo.h5">СПОСОБ ОПЛАТЫ</MudText>
+            <MudRadioGroup @bind-Value="selectedPaymentMethod">
+                @foreach (var pm in paymentMethods)
+                {
+                    <MudRadio Value="pm">@pm.Name</MudRadio>
+                }
             </MudRadioGroup>
 
         </div>
@@ -93,21 +104,37 @@
 
 
 @code {
-public string? Form_FIO { get; set; }
-public string? Promo { get; set; }
-public string? Form_Contact { get; set; }
-public string? Form_Email { get; set; }
-public string? Form_City { get; set; }
-public string? Form_Address { get; set; }
-public string? Form_Region { get; set; }
-public string? Form_Index { get; set; }
-public bool IsRecipient { get; set; } = true;
-public string? SelectedDeliveryMethod { get; set; }
-    public string? SelectedPaymentMethod { get; set; }
+    public string? Form_FIO { get; set; }
+    public string? Promo { get; set; }
+    public string? Form_Contact { get; set; }
+    public string? Form_Email { get; set; }
+    public string? Form_City { get; set; }
+    public string? Form_Address { get; set; }
+    public string? Form_Region { get; set; }
+    public string? Form_Index { get; set; }
+    public bool IsRecipient { get; set; } = true;
+
+    private ContactMethod? selectedContactMethod;
+    private DeliveryType? selectedDeliveryMethod;
+    private PaymentType? selectedPaymentMethod;
 
     private bool _isFinalButtonHovered = false;
 
     private string FinalButtonStyle =>
     "width: 100%; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1.5; "
     + (_isFinalButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+
+    private IEnumerable<ContactMethod> contactMethods = new List<ContactMethod>();
+    private IEnumerable<DeliveryType> deliveryMethods = new List<DeliveryType>();
+    private IEnumerable<PaymentType> paymentMethods = new List<PaymentType>();
+
+    private RegexMask GetCurrentRegexMask => new RegexMask($"^{selectedContactMethod.ValidationMask}$");
+
+    protected override async Task OnInitializedAsync()
+    {
+        contactMethods = await DataProvider.GetContactMethodsAsync();
+        deliveryMethods = await DataProvider.GetDeliveryTypesAsync();
+        paymentMethods = await DataProvider.GetPaymentTypesAsync();
+
+    }
 }

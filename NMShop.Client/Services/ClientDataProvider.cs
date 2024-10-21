@@ -166,30 +166,55 @@ namespace NMShop.Client.Services
             SetCache(cacheKey, data);
             return data;
         }
-        
+
+        public async Task<IEnumerable<ContactMethod>> GetContactMethodsAsync()
+        {
+            var cacheKey = "contactMethods";
+            var cachedData = GetFromCache<IEnumerable<ContactMethod>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<ContactMethod>>("https://localhost:7279/api/orders/contact-methods");
+            SetCache(cacheKey, data);
+            return data;
+        }
+        public async Task<IEnumerable<DeliveryType>> GetDeliveryTypesAsync()
+        {
+            var cacheKey = "deliveryTypes";
+            var cachedData = GetFromCache<IEnumerable<DeliveryType>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<DeliveryType>>("https://localhost:7279/api/orders/delivery-types");
+            SetCache(cacheKey, data);
+            return data;
+        }
+
+        public async Task<IEnumerable<PaymentType>> GetPaymentTypesAsync()
+        {
+            var cacheKey = "paymentTypes";
+            var cachedData = GetFromCache<IEnumerable<PaymentType>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<PaymentType>>("https://localhost:7279/api/orders/payment-types");
+            SetCache(cacheKey, data);
+            return data;
+        }
+
         public async Task<int?> GetBrandIdByNameAsync(string brandName)
         {
+            var cacheKey = $"brandId_{brandName}";
+            var cachedData = GetFromCache<int?>(cacheKey);
+            if (cachedData != null) return cachedData;
+
             if (string.IsNullOrEmpty(brandName))
             {
                 throw new ArgumentException("Brand name cannot be null or empty.");
             }
 
             var url = $"https://localhost:7279/api/productattributes/brand-id-by-name?brandName={HttpUtility.UrlEncode(brandName)}";
-    
-            var response = await _http.GetAsync(url);
-    
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadFromJsonAsync<int?>();
-            }
-            else
-            {
-                // Логирование ошибки для отладки
-                Console.WriteLine($"Ошибка: {response.StatusCode}, {response.ReasonPhrase}");
-                return null;
-            }
+            var data = await _http.GetFromJsonAsync<int?>(url);
+            SetCache(cacheKey, data);
+            return data;
         }
-
 
     }
 }

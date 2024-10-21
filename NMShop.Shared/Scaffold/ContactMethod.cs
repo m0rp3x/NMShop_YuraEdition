@@ -22,12 +22,16 @@ public partial class ContactMethod
     [DisplayName("Маска валидации")]
     public string? ValidationMask { get; set; }
 
+    [StringLength(255)]
+    [DisplayName("Текст ошибки валидации")]
+    public string? ValidationErrorText { get; set; }
+
     [InverseProperty("ContactMethod")]
     [Display(AutoGenerateField = false)]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public override string ToString()
     {
-        return $"Метод связи: {Name}, Маска валидации: {(string.IsNullOrEmpty(ValidationMask) ? "отсутствует" : ValidationMask)}";
+        return $"Метод связи: {Name}, Маска валидации: {(string.IsNullOrEmpty(ValidationMask) ? "отсутствует" : ValidationMask)}, Текст ошибки: {(string.IsNullOrEmpty(ValidationErrorText) ? "отсутствует" : ValidationErrorText)}";
     }
 }
