@@ -10,10 +10,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Models/OrderDTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Catalog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="ордеры">
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Order.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Order.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,10 +37,8 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Pages/Catalog.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://diff.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://diff.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -177,6 +173,7 @@
       <workItem from="1729187030886" duration="5366000" />
       <workItem from="1729193680298" duration="1813000" />
       <workItem from="1729279846885" duration="5276000" />
+      <workItem from="1729531892500" duration="3077000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -346,7 +343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729195300450</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="ордеры">
+      <option name="closed" value="true" />
+      <created>1729531979222</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1729531979222</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,7 +393,8 @@
     <MESSAGE value="Размеры" />
     <MESSAGE value="страница оформления заказа" />
     <MESSAGE value="спрогал кнопки для продукт паге" />
-    <option name="LAST_COMMIT_MESSAGE" value="спрогал кнопки для продукт паге" />
+    <MESSAGE value="ордеры" />
+    <option name="LAST_COMMIT_MESSAGE" value="ордеры" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
