@@ -26,7 +26,11 @@ public partial class Order
     [Column("PaymentType_Id")]
     [DisplayName("Тип оплаты")]
     public int PaymentTypeId { get; set; }
-
+    
+    [StringLength(50)]
+    [DisplayName("Ориентировочная дата доставки")]
+    public string EstimatedDeliveryDateRange { get; set; } = null!;
+    
     [Column("OrderStatus_Id")]
     [DisplayName("Статус заказа")]
     public int OrderStatusId { get; set; }
