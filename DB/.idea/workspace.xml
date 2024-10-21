@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2992ba10-ac5c-4fd5-ab58-61a4d501a0e4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4/storage_v2/_src_/database/postgres.edMnLQ/schema/NMShop.VWF-iQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4/storage_v2/_src_/database/postgres.edMnLQ/schema/NMShop.VWF-iQ.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.sql" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.sql" afterDir="false" />
     </list>

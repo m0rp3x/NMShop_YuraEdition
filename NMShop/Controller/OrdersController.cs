@@ -4,6 +4,7 @@ using NMShop.Shared.Scaffold;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NMShop.Shared.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace NMShop.Controllers
 {
@@ -157,5 +158,103 @@ namespace NMShop.Controllers
             var paymentTypes = await _context.PaymentTypes.ToListAsync();
             return Ok(paymentTypes);
         }
+
+        [HttpGet("promo-code/{code}")]
+        public async Task<ActionResult<int>> GetPromoCodeDiscount(string code)
+        {
+            var promoCode = await _context.PromoCodes.FirstOrDefaultAsync(pc => pc.Code == code);
+
+            if (promoCode == null)
+            {
+                return Ok(-1);
+            }
+
+            if (promoCode.ExpirationDate.HasValue && promoCode.ExpirationDate < DateOnly.FromDateTime(DateTime.Now))
+            {
+                return Ok(0);
+            }
+
+            var usageCount = await _context.Orders.CountAsync(o => o.PromoCodeId == promoCode.Id);
+            if (usageCount >= promoCode.MaxUsages)
+            {
+                return Ok(0);
+            }
+
+            return Ok(promoCode.DiscountPercent);
+        }
+
+        [HttpPost("submit-order")]
+        public async Task<IActionResult> SubmitOrder([FromBody] Order order)
+        {
+            if (order == null)
+            {
+                return BadRequest("Заказ не может быть пустым.");
+            }
+
+            // Проверка обязательных полей и указание, какое поле отсутствует
+            if (string.IsNullOrWhiteSpace(order.ClientFullName))
+            {
+                return BadRequest("Поле 'ФИО клиента' является обязательным.");
+            }
+
+            if (string.IsNullOrWhiteSpace(order.DeliveryAdress))
+            {
+                return BadRequest("Поле 'Адрес доставки' является обязательным.");
+            }
+
+            if (string.IsNullOrWhiteSpace(order.ContactValue))
+            {
+                return BadRequest("Поле 'Контактная информация' является обязательным.");
+            }
+
+            if (order.DeliveryTypeId == 0)
+            {
+                return BadRequest("Поле 'Способ доставки' является обязательным.");
+            }
+
+            if (order.PaymentTypeId == 0)
+            {
+                return BadRequest("Поле 'Способ оплаты' является обязательным.");
+            }
+
+            // Проверка валидности метода доставки
+            var deliveryType = await _context.DeliveryTypes.FindAsync(order.DeliveryTypeId);
+            if (deliveryType == null)
+            {
+                return BadRequest("Неверный способ доставки.");
+            }
+
+            // Проверка валидности метода оплаты
+            var paymentType = await _context.PaymentTypes.FindAsync(order.PaymentTypeId);
+            if (paymentType == null)
+            {
+                return BadRequest("Неверный способ оплаты.");
+            }
+
+            // Проверка и валидация промокода
+            var promoCode = order.PromoCode?.Code;
+            if (!string.IsNullOrEmpty(promoCode))
+            {
+                var promoCheck = await GetPromoCodeDiscount(promoCode);
+                var discount = promoCheck.Value;
+
+                if (discount == -1)
+                {
+                    return BadRequest("Промокод не найден.");
+                }
+                else if (discount == 0)
+                {
+                    return BadRequest("Промокод истек или достигнут лимит его использования.");
+                }
+            }
+
+            // Добавление заказа в базу данных
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            return Ok(order);
+        }
+
+
     }
 }

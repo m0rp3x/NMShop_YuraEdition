@@ -1,24 +1,32 @@
 ﻿using NMShop.Shared.Models;
 using Microsoft.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
+using NMShop.Shared.Scaffold;
+using static NMShop.Client.Pages.Checkout;
 
 namespace NMShop.Client.Services
 {
     public class CartService
     {
         private readonly IJSRuntime _jsRuntime;
+        private readonly ClientDataProvider _dataProvider;
         public event Action OnChange;
         private List<CartItem> _items = new List<CartItem>();
         private bool _isCartOpen = false;
+        private PromoCode? _appliedPromoCode;
+        private string? _promoCodeError;
 
-        public CartService(IJSRuntime jsRuntime)
+        public CartService(IJSRuntime jsRuntime, ClientDataProvider dataProvider)
         {
             _jsRuntime = jsRuntime;
+            _dataProvider = dataProvider;
             InitializeCartAsync();
         }
 
         public IReadOnlyList<CartItem> Items => _items.AsReadOnly();
         public bool IsCartOpen => _isCartOpen;
+        public PromoCode? AppliedPromoCode => _appliedPromoCode;
+        public string? PromoCodeError => _promoCodeError;
 
         public async Task InitializeCartAsync()
         {
@@ -72,8 +80,85 @@ namespace NMShop.Client.Services
             _isCartOpen = !_isCartOpen;
             NotifyStateChanged();
         }
+        public decimal GetTotalCartPriceWithoutDiscount()
+        {
+            return _items.Sum(item => item.SubTotal);
+        }
 
-        public decimal GetTotalCartPrice() => _items.Sum(item => item.SubTotal);
+        public decimal GetTotalDiscount()
+        {
+            if (_appliedPromoCode != null)
+            {
+                var totalWithoutDiscount = GetTotalCartPriceWithoutDiscount();
+                return totalWithoutDiscount * _appliedPromoCode.DiscountPercent / 100;
+            }
+            return 0;
+        }
+
+        public decimal GetTotalCartPrice()
+        {
+            decimal total = GetTotalCartPriceWithoutDiscount();
+            if (_appliedPromoCode != null)
+            {
+                total -= total * _appliedPromoCode.DiscountPercent / 100;
+            }
+            return total;
+        }
+
+
+        public async Task ApplyPromoCodeAsync(string code)
+        {
+            _promoCodeError = null;
+            _appliedPromoCode = null;
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                _promoCodeError = "Промокод не может быть пустым.";
+                NotifyStateChanged();
+                return;
+            }
+
+            var discount = await _dataProvider.GetPromoCodeDiscountAsync(code);
+
+            if (discount == -1)
+            {
+                _promoCodeError = "Промокод не найден.";
+            }
+            else if (discount == 0)
+            {
+                _promoCodeError = "Промокод истёк или достиг максимального количества использований.";
+            }
+            else
+            {
+                _appliedPromoCode = new PromoCode { Code = code, DiscountPercent = discount };
+            }
+
+            NotifyStateChanged();
+        }
+
+        public async Task<(bool isSuccess, string message)> SubmitOrderAsync(CheckoutForm checkoutForm)
+        {
+            var order = await BuildOrderAsync(checkoutForm);
+
+            var (isSuccess, message) = await _dataProvider.SubmitOrderAsync(order);
+
+            if (isSuccess)
+            {
+                await ClearCartAsync();
+                NotifyStateChanged();
+            }
+
+            return (isSuccess, message);
+        }
+
+
+        private async Task ClearCartAsync()
+        {
+            _items.Clear();
+            _appliedPromoCode = null;
+            _promoCodeError = null;
+            await SaveCartToLocalStorageAsync();
+        }
 
         private async Task SaveCartToLocalStorageAsync()
         {
@@ -82,6 +167,38 @@ namespace NMShop.Client.Services
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();
+
+        public async Task<Order> BuildOrderAsync(CheckoutForm checkoutForm)
+        {
+            var order = new Order
+            {
+                ClientFullName = checkoutForm.FIO,
+                DeliveryAdress = checkoutForm.Address,
+                DeliveryRecipientFullName = checkoutForm.Recipient_FIO,
+                DeliveryRecipientPhone = checkoutForm.Recipient_Phone,
+                DeliveryTypeId = checkoutForm.selectedDeliveryMethod.Id,
+                PaymentTypeId = checkoutForm.selectedPaymentMethod.Id,
+                ContactMethodId = checkoutForm.selectedContactMethod.Id,
+                ContactValue = checkoutForm.Contact,
+                PromoCode = _appliedPromoCode,
+                OrderParts = _items.Select(item => new OrderPart
+                {
+                    ProductId = item.Product.Id,
+                    Amount = item.Quantity
+                }).ToList()
+            };
+
+            return await Task.FromResult(order);
+        }
+
+        public async Task SubmitOrderAsync(CheckoutForm checkoutForm)
+        {
+            var order = await BuildOrderAsync(checkoutForm);
+            await _dataProvider.SubmitOrderAsync(order);
+            await ClearCartAsync();
+            NotifyStateChanged();
+        }
+
     }
 
     public class CartItem

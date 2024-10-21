@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "Product" (
 	"Id" serial NOT NULL UNIQUE,
 	"Name" varchar(150) NOT NULL,
 	"Brand_Id" integer NOT NULL,
-	"Article" varchar(150) NOT NULL,
+	"Article" varchar(150) NOT NULL UNIQUE,
 	"Description" varchar(1000) NOT NULL,
 	"Gender_Id" integer NOT NULL,
 	"ProductType_Id" integer NOT NULL,
@@ -26,25 +26,25 @@ CREATE TABLE IF NOT EXISTS "Product" (
 
 CREATE TABLE IF NOT EXISTS "Brands" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "Genders" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL,
+	"Name" varchar(50) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "SellingCategories" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL,
+	"Name" varchar(50) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "ProductTypes" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL,
+	"Name" varchar(50) NOT NULL UNIQUE,
 	"ParentType_Id" integer,
     "SizeDisplayType" varchar(10),
 	PRIMARY KEY ("Id")
@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS "ProductTypes" (
 
 CREATE TABLE IF NOT EXISTS "ProductColors" (
 	"Id" serial NOT NULL UNIQUE,
-	"Value" varchar(6) NOT NULL,
-	"Name" varchar(30) NOT NULL,
+	"Value" varchar(6) NOT NULL UNIQUE,
+	"Name" varchar(30) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS "StockInfo" (
 
 CREATE TABLE IF NOT EXISTS "ContactMethods" (
     "Id" serial NOT NULL UNIQUE,
-    "Name" varchar(100) NOT NULL,
+    "Name" varchar(100) NOT NULL UNIQUE,
     "ValidationMask" varchar(255),
     "ValidationErrorText" varchar(255),
     PRIMARY KEY ("Id")
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS "ContactMethods" (
 
 CREATE TABLE IF NOT EXISTS "PromoCodes" (
     "Id" serial NOT NULL UNIQUE,
-    "Code" varchar(50) NOT NULL,
+    "Code" varchar(50) NOT NULL UNIQUE,
     "MaxUsages" integer NOT NULL,
     "DiscountPercent" integer NOT NULL,
     "ExpirationDate" date,
@@ -86,19 +86,19 @@ CREATE TABLE IF NOT EXISTS "PromoCodes" (
 
 CREATE TABLE IF NOT EXISTS "DeliveryTypes" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "PaymentTypes" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "OrderStatuses" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS "Orders" (
     "DeliveryAdress" varchar(500) NOT NULL,
     "DeliveryType_Id" integer NOT NULL,
     "PaymentType_Id" integer NOT NULL,
+    "EstimatedDeliveryDateRange" varchar(50) NOT NULL,
     "OrderStatus_Id" integer NOT NULL,
     "DeliveryRecipientFullName" varchar(250) NOT NULL,
     "DeliveryRecipientPhone" varchar(11) NOT NULL,
@@ -142,7 +143,7 @@ CREATE TABLE IF NOT EXISTS "NavigationItems" (
 
 CREATE TABLE IF NOT EXISTS "TextSizes" (
     "Id" serial NOT NULL UNIQUE,
-    "Value" varchar(50) NOT NULL,
+    "Value" varchar(50) NOT NULL UNIQUE,
     PRIMARY KEY ("Id")
 );
 
@@ -317,8 +318,6 @@ INSERT INTO "Brands" ("Name") VALUES
   ('Medicom Toy'),
   ('Mozi'),
   ('New Balance'),
-  ('Nike'),
-  ('NIKITA EFREMOV'),
   ('Nothomme'),
   ('Palace'),
   ('Rick Owens'),
@@ -531,12 +530,52 @@ INSERT INTO "NMShop"."Orders" (
     "Comment",
     "ContactMethod_Id",
     "ContactValue",
-    "PromoCode_Id"
+    "PromoCode_Id",
+    "EstimatedDeliveryDateRange"
 )
 VALUES
-    ('Иван Иванов', 'г. Москва, ул. Ленина, д. 1', 1, 1, 1, 'Иван Иванов', '89991234567', 'Нет комментариев', 1, 'TrueSamyra', NULL),
-    ('Анна Смирнова', 'г. Санкт-Петербург, ул. Садовая, д. 2', 2, 2, 2, 'Анна Смирнова', '89991112233', 'Доставить вечером', 2, 'TrueSamyra', NULL),
-    ('Сергей Петров', 'г. Новосибирск, пр. Ленина, д. 10', 2, 2, 2, 'Сергей Петров', '89998887766', 'Позвонить заранее', 2, 'TrueSamyra', NULL);
+    (
+        'Иван Иванов',
+        'г. Москва, ул. Ленина, д. 1',
+        1,
+        1,
+        1,
+        'Иван Иванов',
+        '89991234567',
+        'Нет комментариев',
+        1,
+        'TrueSamyra',
+        NULL,
+        '15.10.24 - 16.10.24'
+    ),
+    (
+        'Анна Смирнова',
+        'г. Санкт-Петербург, ул. Садовая, д. 2',
+        2,
+        2,
+        2,
+        'Анна Смирнова',
+        '89991112233',
+        'Доставить вечером',
+        2,
+        'Sharp_Attilov',
+        NULL,
+        '17.10.24 - 18.10.24'
+    ),
+    (
+        'Сергей Петров',
+        'г. Новосибирск, пр. Ленина, д. 10',
+        2,
+        2,
+        2,
+        'Сергей Петров',
+        '89998887766',
+        'Позвонить заранее',
+        2,
+        'Sharp_Attilov',
+        NULL,
+        '19.10.24 - 20.10.24'
+    );
 
 
 
