@@ -151,7 +151,6 @@ namespace NMShop.Client.Services
             return (isSuccess, message);
         }
 
-
         private async Task ClearCartAsync()
         {
             _items.Clear();
@@ -189,14 +188,6 @@ namespace NMShop.Client.Services
             };
 
             return await Task.FromResult(order);
-        }
-
-        public async Task SubmitOrderAsync(CheckoutForm checkoutForm)
-        {
-            var order = await BuildOrderAsync(checkoutForm);
-            await _dataProvider.SubmitOrderAsync(order);
-            await ClearCartAsync();
-            NotifyStateChanged();
         }
 
     }
