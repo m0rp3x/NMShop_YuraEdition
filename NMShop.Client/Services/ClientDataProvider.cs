@@ -227,21 +227,32 @@ namespace NMShop.Client.Services
             return await _http.GetFromJsonAsync<int>(url);
         }
 
-        public async Task SubmitOrderAsync(Order order)
+
+        public async Task<(bool isSuccess, string message)> SubmitOrderAsync(Order order)
         {
             if (order == null)
             {
-                throw new ArgumentNullException(nameof(order), "Order cannot be null.");
+                return (false, "Заказ не может быть пустым.");
             }
 
-            var url = "https://localhost:7279/api/orders/submit-order";
-            var response = await _http.PostAsJsonAsync(url, order);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                throw new HttpRequestException($"Error submitting order: {response.StatusCode}, {response.ReasonPhrase}");
+                var response = await _http.PostAsJsonAsync("https://localhost:7279/api/orders/submit-order", order);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return (false, $"Ошибка при отправке заказа: {response.StatusCode}, {response.ReasonPhrase}");
+                }
+
+                return (true, "Заказ успешно отправлен.");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Произошла ошибка: {ex.Message}");
             }
         }
+
+
 
     }
 }

@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "Product" (
 	"Id" serial NOT NULL UNIQUE,
 	"Name" varchar(150) NOT NULL,
 	"Brand_Id" integer NOT NULL,
-	"Article" varchar(150) NOT NULL,
+	"Article" varchar(150) NOT NULL UNIQUE,
 	"Description" varchar(1000) NOT NULL,
 	"Gender_Id" integer NOT NULL,
 	"ProductType_Id" integer NOT NULL,
@@ -26,25 +26,25 @@ CREATE TABLE IF NOT EXISTS "Product" (
 
 CREATE TABLE IF NOT EXISTS "Brands" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "Genders" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL,
+	"Name" varchar(50) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "SellingCategories" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL,
+	"Name" varchar(50) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "ProductTypes" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL,
+	"Name" varchar(50) NOT NULL UNIQUE,
 	"ParentType_Id" integer,
     "SizeDisplayType" varchar(10),
 	PRIMARY KEY ("Id")
@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS "ProductTypes" (
 
 CREATE TABLE IF NOT EXISTS "ProductColors" (
 	"Id" serial NOT NULL UNIQUE,
-	"Value" varchar(6) NOT NULL,
-	"Name" varchar(30) NOT NULL,
+	"Value" varchar(6) NOT NULL UNIQUE,
+	"Name" varchar(30) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS "StockInfo" (
 
 CREATE TABLE IF NOT EXISTS "ContactMethods" (
     "Id" serial NOT NULL UNIQUE,
-    "Name" varchar(100) NOT NULL,
+    "Name" varchar(100) NOT NULL UNIQUE,
     "ValidationMask" varchar(255),
     "ValidationErrorText" varchar(255),
     PRIMARY KEY ("Id")
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS "ContactMethods" (
 
 CREATE TABLE IF NOT EXISTS "PromoCodes" (
     "Id" serial NOT NULL UNIQUE,
-    "Code" varchar(50) NOT NULL,
+    "Code" varchar(50) NOT NULL UNIQUE,
     "MaxUsages" integer NOT NULL,
     "DiscountPercent" integer NOT NULL,
     "ExpirationDate" date,
@@ -86,19 +86,19 @@ CREATE TABLE IF NOT EXISTS "PromoCodes" (
 
 CREATE TABLE IF NOT EXISTS "DeliveryTypes" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "PaymentTypes" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "OrderStatuses" (
 	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL,
+	"Name" varchar(100) NOT NULL UNIQUE,
 	PRIMARY KEY ("Id")
 );
 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS "NavigationItems" (
 
 CREATE TABLE IF NOT EXISTS "TextSizes" (
     "Id" serial NOT NULL UNIQUE,
-    "Value" varchar(50) NOT NULL,
+    "Value" varchar(50) NOT NULL UNIQUE,
     PRIMARY KEY ("Id")
 );
 
@@ -317,8 +317,6 @@ INSERT INTO "Brands" ("Name") VALUES
   ('Medicom Toy'),
   ('Mozi'),
   ('New Balance'),
-  ('Nike'),
-  ('NIKITA EFREMOV'),
   ('Nothomme'),
   ('Palace'),
   ('Rick Owens'),

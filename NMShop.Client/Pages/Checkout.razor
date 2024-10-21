@@ -76,13 +76,18 @@
             <MudText Typo="Typo.h6">ЕСЛИ У ВАС ЕСТЬ ПРОМОКОД, ВВЕДИТЕ ЕГО СЮДА</MudText>
 
             <div class="d-flex" style="gap: 15px;">
-                <MudTextField Error="@(!string.IsNullOrEmpty(CartService.PromoCodeError))" ErrorText="CartService.PromoCodeError" @bind-Value="Form.Promo" Placeholder="Введите промокод" />
-                <MudButton OnClick="async() => CartService.ApplyPromoCodeAsync(Form.Promo)" Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
+                <MudTextField Error="@(!string.IsNullOrEmpty(CartService.PromoCodeError))" ErrorText="CartService.PromoCodeError" @bind-Value="promo" Placeholder="Введите промокод" />
+                <MudButton OnClick="async() => CartService.ApplyPromoCodeAsync(promo)" Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
             </div>
 
             <div class="d-flex justify-space-between">
                 <MudText Typo="Typo.h6">ОБЩАЯ СТОИМОСТЬ:</MudText>
-                <MudText Typo="Typo.h5" Class="font-weight-bold">@CartService.GetTotalCartPrice().ToPreFormatedString() ₽</MudText>
+                <MudText Typo="Typo.h5" Class="font-weight-bold">@CartService.GetTotalCartPriceWithoutDiscount().ToPreFormatedString() ₽</MudText>
+            </div>
+
+            <div class="d-flex justify-space-between">
+                <MudText Typo="Typo.h6">СКИДКА @CartService.AppliedPromoCode.DiscountPercent %:</MudText>
+                <MudText Typo="Typo.h5" Class="font-weight-bold">@CartService.GetTotalDiscount().ToPreFormatedString() ₽</MudText>
             </div>
 
             <div class="d-flex justify-space-between">
@@ -111,6 +116,7 @@
 
 @code {
     private CheckoutForm Form = new();
+    private string promo = string.Empty;
 
     private bool _isFinalButtonHovered = false;
 
@@ -131,13 +137,12 @@
         contactMethods = await DataProvider.GetContactMethodsAsync();
         deliveryMethods = await DataProvider.GetDeliveryTypesAsync();
         paymentMethods = await DataProvider.GetPaymentTypesAsync();
-
+        promo = CartService.AppliedPromoCode.Code;
     }
 
     public class CheckoutForm
     {
         public string? FIO { get; set; }
-        public string? Promo { get; set; }
         public string? Contact { get; set; }
         public string? Email { get; set; }
         public string? City { get; set; }

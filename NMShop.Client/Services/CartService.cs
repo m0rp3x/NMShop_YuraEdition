@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
 using NMShop.Shared.Scaffold;
+using static NMShop.Client.Pages.Checkout;
 
 namespace NMShop.Client.Services
 {
@@ -79,16 +80,31 @@ namespace NMShop.Client.Services
             _isCartOpen = !_isCartOpen;
             NotifyStateChanged();
         }
+        public decimal GetTotalCartPriceWithoutDiscount()
+        {
+            return _items.Sum(item => item.SubTotal);
+        }
+
+        public decimal GetTotalDiscount()
+        {
+            if (_appliedPromoCode != null)
+            {
+                var totalWithoutDiscount = GetTotalCartPriceWithoutDiscount();
+                return totalWithoutDiscount * _appliedPromoCode.DiscountPercent / 100;
+            }
+            return 0;
+        }
 
         public decimal GetTotalCartPrice()
         {
-            decimal total = _items.Sum(item => item.SubTotal);
+            decimal total = GetTotalCartPriceWithoutDiscount();
             if (_appliedPromoCode != null)
             {
                 total -= total * _appliedPromoCode.DiscountPercent / 100;
             }
             return total;
         }
+
 
         public async Task ApplyPromoCodeAsync(string code)
         {
@@ -120,17 +136,21 @@ namespace NMShop.Client.Services
             NotifyStateChanged();
         }
 
-        public async Task SubmitOrderAsync(Order order)
+        public async Task<(bool isSuccess, string message)> SubmitOrderAsync(CheckoutForm checkoutForm)
         {
-            if (_appliedPromoCode != null)
+            var order = await BuildOrderAsync(checkoutForm);
+
+            var (isSuccess, message) = await _dataProvider.SubmitOrderAsync(order);
+
+            if (isSuccess)
             {
-                order.PromoCode = _appliedPromoCode;
+                await ClearCartAsync();
+                NotifyStateChanged();
             }
 
-            await _dataProvider.SubmitOrderAsync(order);
-            await ClearCartAsync();
-            NotifyStateChanged();
+            return (isSuccess, message);
         }
+
 
         private async Task ClearCartAsync()
         {
@@ -147,6 +167,38 @@ namespace NMShop.Client.Services
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();
+
+        public async Task<Order> BuildOrderAsync(CheckoutForm checkoutForm)
+        {
+            var order = new Order
+            {
+                ClientFullName = checkoutForm.FIO,
+                DeliveryAdress = checkoutForm.Address,
+                DeliveryRecipientFullName = checkoutForm.Recipient_FIO,
+                DeliveryRecipientPhone = checkoutForm.Recipient_Phone,
+                DeliveryTypeId = checkoutForm.selectedDeliveryMethod.Id,
+                PaymentTypeId = checkoutForm.selectedPaymentMethod.Id,
+                ContactMethodId = checkoutForm.selectedContactMethod.Id,
+                ContactValue = checkoutForm.Contact,
+                PromoCode = _appliedPromoCode,
+                OrderParts = _items.Select(item => new OrderPart
+                {
+                    ProductId = item.Product.Id,
+                    Amount = item.Quantity
+                }).ToList()
+            };
+
+            return await Task.FromResult(order);
+        }
+
+        public async Task SubmitOrderAsync(CheckoutForm checkoutForm)
+        {
+            var order = await BuildOrderAsync(checkoutForm);
+            await _dataProvider.SubmitOrderAsync(order);
+            await ClearCartAsync();
+            NotifyStateChanged();
+        }
+
     }
 
     public class CartItem
