@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Microsoft.Extensions.DependencyInjection;
 using NMShop.Shared.Scaffold;
 using static NMShop.Client.Pages.Checkout;
+using System.Text.Json;
 
 namespace NMShop.Client.Services
 {
@@ -15,6 +16,7 @@ namespace NMShop.Client.Services
         private bool _isCartOpen = false;
         private PromoCode? _appliedPromoCode;
         private string? _promoCodeError;
+        private CheckoutForm? _checkoutForm; // Поле для формы
 
         public CartService(IJSRuntime jsRuntime, ClientDataProvider dataProvider)
         {
@@ -27,15 +29,41 @@ namespace NMShop.Client.Services
         public bool IsCartOpen => _isCartOpen;
         public PromoCode? AppliedPromoCode => _appliedPromoCode;
         public string? PromoCodeError => _promoCodeError;
+        public CheckoutForm? CheckoutForm => _checkoutForm; // Предоставление формы
 
+        // Метод для инициализации корзины и формы из localStorage
         public async Task InitializeCartAsync()
         {
             var savedCart = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "cartItems");
             if (!string.IsNullOrEmpty(savedCart))
             {
-                _items = System.Text.Json.JsonSerializer.Deserialize<List<CartItem>>(savedCart) ?? new List<CartItem>();
-                NotifyStateChanged();
+                _items = JsonSerializer.Deserialize<List<CartItem>>(savedCart) ?? new List<CartItem>();
             }
+
+            var savedCheckoutForm = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "checkoutForm");
+            if (!string.IsNullOrEmpty(savedCheckoutForm))
+            {
+                _checkoutForm = JsonSerializer.Deserialize<CheckoutForm>(savedCheckoutForm) ?? new CheckoutForm();
+            }
+
+            NotifyStateChanged();
+        }
+
+        // Метод для сохранения формы в localStorage
+        public async Task SaveCheckoutFormAsync(CheckoutForm form)
+        {
+            _checkoutForm = form;
+            var serializedForm = JsonSerializer.Serialize(_checkoutForm);
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "checkoutForm", serializedForm);
+        }
+
+        // Метод для очистки формы и корзины
+        private async Task ClearCartAsync()
+        {
+            _items.Clear();
+            _appliedPromoCode = null;
+            _promoCodeError = null;
+            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "cartItems");
         }
 
         public async void AddProduct(ProductDto product, PriceInfo priceInfo, int quantity = 1)
@@ -80,6 +108,7 @@ namespace NMShop.Client.Services
             _isCartOpen = !_isCartOpen;
             NotifyStateChanged();
         }
+
         public decimal GetTotalCartPriceWithoutDiscount()
         {
             return _items.Sum(item => item.SubTotal);
@@ -105,7 +134,6 @@ namespace NMShop.Client.Services
             return total;
         }
 
-
         public async Task ApplyPromoCodeAsync(string code)
         {
             _promoCodeError = null;
@@ -120,7 +148,7 @@ namespace NMShop.Client.Services
 
             var discount = await _dataProvider.GetPromoCodeDiscountAsync(code);
 
-            if (discount == -1)
+            if (discount < 0)
             {
                 _promoCodeError = "Промокод не найден.";
             }
@@ -136,6 +164,7 @@ namespace NMShop.Client.Services
             NotifyStateChanged();
         }
 
+        // Метод для отправки заказа
         public async Task<(bool isSuccess, string message)> SubmitOrderAsync(CheckoutForm checkoutForm)
         {
             var order = await BuildOrderAsync(checkoutForm);
@@ -151,45 +180,37 @@ namespace NMShop.Client.Services
             return (isSuccess, message);
         }
 
-        private async Task ClearCartAsync()
-        {
-            _items.Clear();
-            _appliedPromoCode = null;
-            _promoCodeError = null;
-            await SaveCartToLocalStorageAsync();
-        }
-
         private async Task SaveCartToLocalStorageAsync()
         {
-            var serializedCart = System.Text.Json.JsonSerializer.Serialize(_items);
+            var serializedCart = JsonSerializer.Serialize(_items);
             await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "cartItems", serializedCart);
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();
 
-        public async Task<Order> BuildOrderAsync(CheckoutForm checkoutForm)
+        // Метод для построения объекта заказа на основе формы
+        public async Task<OrderCreateDto> BuildOrderAsync(CheckoutForm checkoutForm)
         {
-            var order = new Order
+            var order = new OrderCreateDto
             {
                 ClientFullName = checkoutForm.FIO,
                 DeliveryAdress = checkoutForm.Address,
-                DeliveryRecipientFullName = checkoutForm.Recipient_FIO,
-                DeliveryRecipientPhone = checkoutForm.Recipient_Phone,
                 DeliveryTypeId = checkoutForm.selectedDeliveryMethod.Id,
                 PaymentTypeId = checkoutForm.selectedPaymentMethod.Id,
                 ContactMethodId = checkoutForm.selectedContactMethod.Id,
                 ContactValue = checkoutForm.Contact,
-                PromoCode = _appliedPromoCode,
-                OrderParts = _items.Select(item => new OrderPart
+                DeliveryRecipientFullName = checkoutForm.IsClientRecipient ? checkoutForm.FIO : checkoutForm.Recipient_FIO,
+                DeliveryRecipientPhone = checkoutForm.IsClientRecipient ? checkoutForm.Contact : checkoutForm.Recipient_Phone,
+                OrderParts = _items.Select(item => new OrderPartDto
                 {
                     ProductId = item.Product.Id,
-                    Amount = item.Quantity
-                }).ToList()
+                    Amount = item.Quantity,
+                }).ToList(),
+                PromoCode = AppliedPromoCode?.Code
             };
 
-            return await Task.FromResult(order);
+            return order;
         }
-
     }
 
     public class CartItem

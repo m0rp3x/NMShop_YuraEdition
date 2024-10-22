@@ -418,6 +418,7 @@
             }
         }
         Filter = newFilter;
+        Navigation.NavigateTo($"/catalog/{Filter.ToQueryString()}", forceLoad: false);
         StateHasChanged();
     }
 

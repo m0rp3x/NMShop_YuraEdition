@@ -207,9 +207,9 @@ namespace NMShop.Client.Services
 
             if (string.IsNullOrEmpty(brandName))
             {
-                throw new ArgumentException("Brand name cannot be null or empty.");
+                Console.Error.WriteLine("Brand name cannot be null or empty.");
             }
-
+            
             var url = $"https://localhost:7279/api/productattributes/brand-id-by-name?brandName={HttpUtility.UrlEncode(brandName)}";
             var data = await _http.GetFromJsonAsync<int?>(url);
             SetCache(cacheKey, data);
@@ -220,7 +220,7 @@ namespace NMShop.Client.Services
         {
             if (string.IsNullOrEmpty(code))
             {
-                throw new ArgumentException("Promo code cannot be null or empty.");
+                Console.Error.WriteLine("Promo code cannot be null or empty.");
             }
 
             var url = $"https://localhost:7279/api/orders/promo-code/{HttpUtility.UrlEncode(code)}";
@@ -228,7 +228,7 @@ namespace NMShop.Client.Services
         }
 
 
-        public async Task<(bool isSuccess, string message)> SubmitOrderAsync(Order order)
+        public async Task<(bool isSuccess, string message)> SubmitOrderAsync(OrderCreateDto order)
         {
             if (order == null)
             {
@@ -241,16 +241,18 @@ namespace NMShop.Client.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    return (false, $"Ошибка при отправке заказа: {response.StatusCode}, {response.ReasonPhrase}");
+                    var content = await response.Content.ReadAsStringAsync();
+                    return (false, $"{response.StatusCode}, {content}");
                 }
 
                 return (true, "Заказ успешно отправлен.");
             }
             catch (Exception ex)
             {
-                return (false, $"Произошла ошибка: {ex.Message}");
+                return (false, $"Ошибка: {ex.Message}");
             }
         }
+
 
 
 

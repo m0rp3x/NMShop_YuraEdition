@@ -22,5 +22,26 @@ public class AppMappingProfile : Profile
                 DiscountPrice = si.DiscountPrice,
                 Stock = si.AmountInStock
             }).ToList()));
+
+        CreateMap<OrderCreateDto, Order>()
+            .ForMember(dest => dest.ClientFullName, opt => opt.MapFrom(src => src.ClientFullName))
+            .ForMember(dest => dest.DeliveryAdress, opt => opt.MapFrom(src => src.DeliveryAdress))
+            .ForMember(dest => dest.DeliveryTypeId, opt => opt.MapFrom(src => src.DeliveryTypeId))
+            .ForMember(dest => dest.PaymentTypeId, opt => opt.MapFrom(src => src.PaymentTypeId))
+            .ForMember(dest => dest.ContactMethodId, opt => opt.MapFrom(src => src.ContactMethodId))
+            .ForMember(dest => dest.ContactValue, opt => opt.MapFrom(src => src.ContactValue))
+            .ForMember(dest => dest.DeliveryRecipientFullName, opt => opt.MapFrom(src => src.DeliveryRecipientFullName))
+            .ForMember(dest => dest.DeliveryRecipientPhone, opt => opt.MapFrom(src => src.DeliveryRecipientPhone))
+            .ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment))
+            .ForMember(dest => dest.OrderStatusId, opt => opt.MapFrom(src => src.OrderStatusId))
+            .ForMember(dest => dest.EstimatedDeliveryDateRange, opt => opt.MapFrom(src => src.EstimatedDeliveryDateRange))
+            .ForMember(dest => dest.OrderParts, opt => opt.MapFrom(src => src.OrderParts))
+            .ForMember(dest => dest.PromoCode, opt => opt.Ignore()); // Игнорируем виртуальное поле
+
+
+        CreateMap<OrderPartDto, OrderPart>()
+            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
     }
 }

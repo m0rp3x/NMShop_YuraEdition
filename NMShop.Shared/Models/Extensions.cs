@@ -58,7 +58,8 @@ namespace NMShop.Shared.Models
         {
             if (product.PriceInfos == null || !product.PriceInfos.Any())
             {
-                throw new InvalidOperationException("Нет доступных цен для продукта.");
+                Console.Error.WriteLine($"Не найдено записей цены товара {product.Name}, артикул {product.Article}");
+                return (0, null);
             }
 
             // Минимальная цена
@@ -78,7 +79,7 @@ namespace NMShop.Shared.Models
             {
                 return result;
             }
-            throw new ArgumentException($"Unable to convert '{value}' to {typeof(TEnum).Name}");
+            throw new ArgumentNullException($"Unable to convert '{value}' to {typeof(TEnum).Name}");
         }
     }
 

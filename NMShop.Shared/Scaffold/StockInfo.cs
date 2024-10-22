@@ -9,6 +9,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class StockInfo
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор")]
 
     public int Id { get; set; }

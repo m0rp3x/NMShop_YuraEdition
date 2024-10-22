@@ -8,6 +8,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class ProductType
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор")]
 
     public int Id { get; set; }
@@ -41,7 +42,7 @@ public partial class ProductType
 
     public override string ToString()
     {
-        return Name + (ParentType is null ? "" : $", родительский - {ParentType.Name}");  // Отображать ID бренда
+        return Name + (ParentType is null ? " - НЕ СТАВИТЬ ТОВАРАМ" : $", родительский - {ParentType.Name}");  // Отображать ID бренда
     }
 
 }

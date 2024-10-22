@@ -11,6 +11,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class NavigationItem
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор пункта навигации")]
     public int Id { get; set; }
 

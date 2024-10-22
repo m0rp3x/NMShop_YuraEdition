@@ -11,6 +11,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class PromoCode
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор промокода")]
     public int Id { get; set; }
 

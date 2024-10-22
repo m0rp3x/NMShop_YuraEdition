@@ -11,6 +11,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class ReferenceContent
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор контента")]
     public int Id { get; set; }
 

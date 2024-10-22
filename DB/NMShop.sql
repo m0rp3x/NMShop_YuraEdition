@@ -1,6 +1,7 @@
 DROP SCHEMA IF EXISTS "NMShop" CASCADE;
 CREATE SCHEMA "NMShop";
 SET search_path = "NMShop";
+ALTER USER m0rp3x SET search_path = "NMShop";
 
 CREATE TABLE IF NOT EXISTS "ProductImages" (
 	"Id" serial NOT NULL UNIQUE,
@@ -108,11 +109,11 @@ CREATE TABLE IF NOT EXISTS "Orders" (
     "DeliveryAdress" varchar(500) NOT NULL,
     "DeliveryType_Id" integer NOT NULL,
     "PaymentType_Id" integer NOT NULL,
-    "EstimatedDeliveryDateRange" varchar(50) NOT NULL,
+    "EstimatedDeliveryDateRange" varchar(50) DEFAULT 'Уточняем',
     "OrderStatus_Id" integer NOT NULL,
     "DeliveryRecipientFullName" varchar(250) NOT NULL,
     "DeliveryRecipientPhone" varchar(11) NOT NULL,
-    "Comment" varchar(1000) NOT NULL,
+    "Comment" varchar(1000),
     "ContactMethod_Id" integer NOT NULL,
     "ContactValue" varchar(255) NOT NULL,
     "PromoCode_Id" integer,
@@ -219,11 +220,18 @@ DECLARE
     promo_usage_count integer;
 BEGIN
     IF NEW."PromoCode_Id" IS NOT NULL THEN
-        SELECT COUNT(*) INTO promo_usage_count FROM "Orders" WHERE "PromoCode_Id" = NEW."PromoCode_Id";
-        IF promo_usage_count >= (SELECT "MaxUsages" FROM "PromoCodes" WHERE "Id" = NEW."PromoCode_Id") THEN
+        -- Указываем схему NMShop явно при обращении к таблице Orders
+        SELECT COUNT(*) INTO promo_usage_count
+        FROM "Orders"
+        WHERE "PromoCode_Id" = NEW."PromoCode_Id";
+
+        -- Проверяем максимальное количество использований
+        IF promo_usage_count >= (SELECT "MaxUsages" FROM "NMShop"."PromoCodes" WHERE "Id" = NEW."PromoCode_Id") THEN
             RAISE EXCEPTION 'Промокод достиг максимального количества использований.';
         END IF;
-        IF (SELECT "ExpirationDate" FROM "PromoCodes" WHERE "Id" = NEW."PromoCode_Id") < CURRENT_DATE THEN
+
+        -- Проверяем срок действия промокода
+        IF (SELECT "ExpirationDate" FROM "NMShop"."PromoCodes" WHERE "Id" = NEW."PromoCode_Id") < CURRENT_DATE THEN
             RAISE EXCEPTION 'Срок действия промокода истек.';
         END IF;
     END IF;
@@ -232,9 +240,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_check_promo_code_validity
-BEFORE INSERT OR UPDATE ON "Orders"
+BEFORE INSERT OR UPDATE ON "NMShop"."Orders"
 FOR EACH ROW
 EXECUTE FUNCTION check_promo_code_validity();
+
+
 
 -- Добавляем проверку на максимальное наследование навигационного пункта
 CREATE OR REPLACE FUNCTION check_navigation_depth()
@@ -375,7 +385,7 @@ INSERT INTO "DeliveryTypes" ("Name") VALUES ('Курьер'), ('Самовыво
 
 INSERT INTO "PaymentTypes" ("Name") VALUES ('Кредитная карта'), ('Наличные');
 
-INSERT INTO "OrderStatuses" ("Name") VALUES ('В ожидании'), ('Завершён'), ('Отменён');
+INSERT INTO "OrderStatuses" ("Name") VALUES ('Создан'), ('В ожидании'), ('Завершён'), ('Отменён');
 
 -- Insert test data into Product table for each parent category
 INSERT INTO "Product" ("Name", "Brand_Id", "Article", "Description", "Gender_Id", "ProductType_Id", "SellingCategory_Id", "DateAdded", "Color_Id") VALUES
@@ -424,6 +434,7 @@ VALUES
     ('VK', '^https?:\/\/(www\.)?vk\.com\/[A-Za-z0-9_]+$', 'Введите корректную ссылку на профиль VK.');
 
 INSERT INTO "PromoCodes" ("Code", "MaxUsages", "DiscountPercent", "ExpirationDate") VALUES
+  ('TESTEXPIRED', 100, 30, '2023-01-01'),
   ('NEWYEAR2025', 100, 20, '2025-01-01'),
   ('SUMMER25', 50, 25, '2024-12-31'),
   ('WELCOME10', 500, 10, NULL);

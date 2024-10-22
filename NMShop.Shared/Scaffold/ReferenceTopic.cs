@@ -11,6 +11,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class ReferenceTopic
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор топика")]
     public int Id { get; set; }
 

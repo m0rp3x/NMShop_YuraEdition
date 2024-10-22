@@ -8,6 +8,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class ProductColor
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор")]
 
     public int Id { get; set; }

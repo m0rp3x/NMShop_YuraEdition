@@ -8,6 +8,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class Order
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор заказа")]
     public int Id { get; set; }
 
@@ -27,15 +28,13 @@ public partial class Order
     [DisplayName("Тип оплаты")]
     public int PaymentTypeId { get; set; }
     
-    
-    
     [Column("OrderStatus_Id")]
     [DisplayName("Статус заказа")]
     public int OrderStatusId { get; set; }
     
     [StringLength(50)]
     [DisplayName("Ориентировочная дата доставки")]
-    public string EstimatedDeliveryDateRange { get; set; } = null!;
+    public string? EstimatedDeliveryDateRange { get; set; } = null!;
     
     [StringLength(250)]
     [DisplayName("ФИО получателя")]
@@ -47,7 +46,7 @@ public partial class Order
 
     [StringLength(1000)]
     [DisplayName("Комментарий к заказу")]
-    public string Comment { get; set; } = null!;
+    public string? Comment { get; set; } = null!;
 
     [Column("ContactMethod_Id")]
     [DisplayName("Способ связи")]

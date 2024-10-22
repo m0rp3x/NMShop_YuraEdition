@@ -11,6 +11,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class BrandGallery
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор записи галереи бренда")]
     public int Id { get; set; }
 

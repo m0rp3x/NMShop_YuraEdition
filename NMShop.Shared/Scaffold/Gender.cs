@@ -8,6 +8,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class Gender
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор")]
 
     public int Id { get; set; }

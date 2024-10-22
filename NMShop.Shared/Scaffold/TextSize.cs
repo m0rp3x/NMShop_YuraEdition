@@ -11,6 +11,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class TextSize
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор размера текста")]
     public int Id { get; set; }
 

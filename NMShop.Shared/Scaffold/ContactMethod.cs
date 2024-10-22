@@ -11,6 +11,7 @@ namespace NMShop.Shared.Scaffold;
 public partial class ContactMethod
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [DisplayName("Идентификатор метода связи")]
     public int Id { get; set; }
 

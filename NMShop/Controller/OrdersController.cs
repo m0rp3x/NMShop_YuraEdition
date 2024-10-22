@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NMShop.Shared.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using AutoMapper;
+using System.Text.Json;
 
 namespace NMShop.Controllers
 {
@@ -13,10 +15,12 @@ namespace NMShop.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly NMShopContext _context;
+        private readonly IMapper _mapper;
 
-        public OrdersController(NMShopContext context)
+        public OrdersController(NMShopContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/orders
@@ -162,7 +166,7 @@ namespace NMShop.Controllers
         [HttpGet("promo-code/{code}")]
         public async Task<ActionResult<int>> GetPromoCodeDiscount(string code)
         {
-            var promoCode = await _context.PromoCodes.FirstOrDefaultAsync(pc => pc.Code == code);
+            var promoCode = await _context.PromoCodes.FirstOrDefaultAsync(pc => EF.Functions.ILike(pc.Code, code));
 
             if (promoCode == null)
             {
@@ -184,76 +188,89 @@ namespace NMShop.Controllers
         }
 
         [HttpPost("submit-order")]
-        public async Task<IActionResult> SubmitOrder([FromBody] Order order)
+        public async Task<IActionResult> SubmitOrder([FromBody] OrderCreateDto orderDto)
         {
-            if (order == null)
+            if (orderDto == null)
             {
-                return BadRequest("Заказ не может быть пустым.");
+                return BadRequest(new { message = "Заказ не может быть пустым." });
             }
 
-            // Проверка обязательных полей и указание, какое поле отсутствует
-            if (string.IsNullOrWhiteSpace(order.ClientFullName))
+            if (string.IsNullOrWhiteSpace(orderDto.ClientFullName))
             {
-                return BadRequest("Поле 'ФИО клиента' является обязательным.");
+                return BadRequest(new { message = "Поле 'ФИО клиента' является обязательным." });
             }
 
-            if (string.IsNullOrWhiteSpace(order.DeliveryAdress))
+            if (string.IsNullOrWhiteSpace(orderDto.DeliveryAdress))
             {
-                return BadRequest("Поле 'Адрес доставки' является обязательным.");
+                return BadRequest(new { message = "Поле 'Адрес доставки' является обязательным." });
             }
 
-            if (string.IsNullOrWhiteSpace(order.ContactValue))
+            if (string.IsNullOrWhiteSpace(orderDto.ContactValue))
             {
-                return BadRequest("Поле 'Контактная информация' является обязательным.");
+                return BadRequest(new { message = "Поле 'Контактная информация' является обязательным." });
             }
 
-            if (order.DeliveryTypeId == 0)
+            if (orderDto.DeliveryTypeId == 0)
             {
-                return BadRequest("Поле 'Способ доставки' является обязательным.");
+                return BadRequest(new { message = "Поле 'Способ доставки' является обязательным." });
             }
 
-            if (order.PaymentTypeId == 0)
+            if (orderDto.PaymentTypeId == 0)
             {
-                return BadRequest("Поле 'Способ оплаты' является обязательным.");
+                return BadRequest(new { message = "Поле 'Способ оплаты' является обязательным." });
             }
 
-            // Проверка валидности метода доставки
-            var deliveryType = await _context.DeliveryTypes.FindAsync(order.DeliveryTypeId);
-            if (deliveryType == null)
+            if (orderDto.OrderParts == null || !orderDto.OrderParts.Any())
             {
-                return BadRequest("Неверный способ доставки.");
+                return BadRequest(new { message = "Заказ должен содержать хотя бы один товар." });
             }
 
-            // Проверка валидности метода оплаты
-            var paymentType = await _context.PaymentTypes.FindAsync(order.PaymentTypeId);
-            if (paymentType == null)
+            foreach (var part in orderDto.OrderParts)
             {
-                return BadRequest("Неверный способ оплаты.");
+                if (part.ProductId == 0)
+                {
+                    return BadRequest(new { message = "Поле 'Product' является обязательным для всех товаров." });
+                }
             }
 
-            // Проверка и валидация промокода
-            var promoCode = order.PromoCode?.Code;
-            if (!string.IsNullOrEmpty(promoCode))
-            {
-                var promoCheck = await GetPromoCodeDiscount(promoCode);
-                var discount = promoCheck.Value;
+            int discountPercent = 0;
 
-                if (discount == -1)
+            if (!string.IsNullOrWhiteSpace(orderDto.PromoCode))
+            {
+                var discountCheck = await GetPromoCodeDiscount(orderDto.PromoCode);
+
+                // Проверяем тип результата и извлекаем скидку
+                if (discountCheck.Result is OkObjectResult result && result.Value is int discountValue)
+                {
+                    discountPercent = discountValue;
+                }
+
+                if (discountPercent < 0)
                 {
                     return BadRequest("Промокод не найден.");
                 }
-                else if (discount == 0)
+                else if (discountPercent == 0)
                 {
-                    return BadRequest("Промокод истек или достигнут лимит его использования.");
+                    return BadRequest("Промокод истёк или достиг максимального количества использований.");
                 }
             }
 
-            // Добавление заказа в базу данных
+            var order = _mapper.Map<Order>(orderDto);
+
+            if (discountPercent > 0)
+            {
+                order.PromoCodeId = (await _context.PromoCodes.FirstOrDefaultAsync(pc => EF.Functions.ILike(pc.Code, orderDto.PromoCode)))?.Id;
+            }
+
+            order.OrderStatusId = 1;
+
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return Ok(order);
+            return Ok("Заказ успешно оформлен"); 
         }
+
+
 
 
     }
