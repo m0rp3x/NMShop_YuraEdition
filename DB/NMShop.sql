@@ -439,12 +439,6 @@ INSERT INTO "PromoCodes" ("Code", "MaxUsages", "DiscountPercent", "ExpirationDat
   ('SUMMER25', 50, 25, '2024-12-31'),
   ('WELCOME10', 500, 10, NULL);
 
-INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id") VALUES
-  ('Главная', '/home', NULL),
-  ('Магазин', '/shop', NULL),
-  ('Одежда', '/shop/clothing', 2),
-  ('Обувь', '/shop/footwear', 2);
-
 INSERT INTO "TextSizes" ("Value") VALUES ('Маленький'), ('Средний'), ('Большой');
 
 INSERT INTO "ReferenceTopics" ("Code", "Name", "ParentTopic_Id") VALUES
@@ -461,6 +455,81 @@ INSERT INTO "BrandGallery" ("Brand_Id", "Image") VALUES
   (1, E''::bytea),
   (1, E''::bytea),
   (1, E''::bytea);
+
+-- Главные категории
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id")
+VALUES
+    ('Обувь', 'Shoes', NULL),
+    ('Одежда', 'Clothing', NULL),
+    ('Аксессуары', 'Accessories', NULL),
+    ('Коллекции', 'Collections', NULL),
+    ('Бренды', 'Brands', NULL),
+    ('Информация', 'Info', NULL);
+
+-- Субкатегории "Обувь"
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id")
+VALUES
+    ('Смотреть всё', 'shoes-all', 1),
+    ('Кеды и кроссовки', 'shoes-sneakers', 1),
+    ('Ботинки и угги', 'shoes-boots', 1),
+    ('Слайды', 'shoes-slides', 1),
+    ('Детское', 'shoes-kids', 1);
+
+-- Субкатегории "Одежда"
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id")
+VALUES
+    ('Смотреть всё', 'clothing-all', 2),
+    ('Ботинки и угги', 'clothing-boots', 2),
+    ('Куртки и пуховики', 'clothing-jackets', 2),
+    ('Футболки и лонгсливы', 'clothing-tshirts', 2),
+    ('Штаны и джинсы', 'clothing-pants', 2),
+    ('Шорты', 'clothing-shorts', 2),
+    ('Худи и свитшоты', 'clothing-hoodies', 2),
+    ('Белье', 'clothing-underwear', 2);
+
+-- Субкатегории "Аксессуары"
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id")
+VALUES
+    ('Смотреть всё', 'accessories-all', 3),
+    ('Кошельки', 'accessories-wallets', 3),
+    ('Очки', 'accessories-glasses', 3),
+    ('Головные уборы', 'accessories-hats', 3),
+    ('Рюкзаки и сумки', 'accessories-bags', 3),
+    ('Другие аксессуары', 'accessories-other', 3);
+
+-- Субкатегории "Коллекции"
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id")
+VALUES
+    ('Смотреть всё', 'collections-all', 4),
+    ('Bearbricks', 'collections-bearbricks', 4),
+    ('Kaws', 'collections-kaws', 4),
+    ('Фигурки', 'collections-figures', 4),
+    ('Предметы интерьера', 'collections-furniture', 4),
+    ('Другой арт', 'collections-other-art', 4);
+
+-- Субкатегории "Бренды"
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id")
+VALUES
+    ('GOYARD', 'brands-goyard', 5),
+    ('YEEZY', 'brands-yeezy', 5),
+    ('TRAVIS SCOTT', 'brands-travis-scott', 5),
+    ('SUPREME', 'brands-supreme', 5),
+    ('STONE ISLAND', 'brands-stone-island', 5),
+    ('NIKE', 'brands-nike', 5),
+    ('MEDICOM TOY', 'brands-medicom-toy', 5),
+    ('LOUIS VUITTON', 'brands-louis-vuitton', 5),
+    ('ADIDAS', 'brands-adidas', 5),
+    ('CHROME HEARTS', 'brands-chrome-hearts', 5);
+
+-- Субкатегории "Информация"
+INSERT INTO "NavigationItems" ("Name", "Link", "ParentItem_Id")
+VALUES
+    ('Контакты', 'info-contacts', 6),
+    ('Доставка', 'info-delivery', 6),
+    ('Оплата', 'info-payment', 6),
+    ('Возврат', 'info-returns', 6),
+    ('FAQ', 'info-faq', 6),
+    ('О нас', 'info-about', 6);
 
 -- Добавляем блок для вставки данных в StockInfo
 DO $$

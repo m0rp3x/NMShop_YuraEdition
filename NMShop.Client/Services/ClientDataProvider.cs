@@ -32,7 +32,32 @@ namespace NMShop.Client.Services
 
         private void SetCache<T>(string key, T value)
         {
-            _cache[key] = (DateTime.Now, value);
+            if(value != null)
+            {
+                _cache[key] = (DateTime.Now, value);
+            }
+        }
+
+        public async Task<IEnumerable<NavigationUnit>> GetNavigationUnitsAsync()
+        {
+            var cacheKey = "navigationUnits";
+            var cachedData = GetFromCache<IEnumerable<NavigationUnit>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<NavigationUnit>>("https://localhost:7279/api/navigation/GetAllNavigationUnits");
+            SetCache(cacheKey, data);
+            return data;
+        }
+
+        public async Task<IEnumerable<BrandGallery>> GetBrandGalleriesAsync()
+        {
+            var cacheKey = "brandGalleries";
+            var cachedData = GetFromCache<IEnumerable<BrandGallery>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<BrandGallery>>("https://localhost:7279/api/navigation/GetAllBrandGalleries");
+            SetCache(cacheKey, data);
+            return data;
         }
 
         public async Task<IEnumerable<Brand>> GetBrandsAsync()
@@ -165,6 +190,14 @@ namespace NMShop.Client.Services
             var data = await _http.GetFromJsonAsync<int?>(url);
             SetCache(cacheKey, data);
             return data;
+        }
+
+        public async Task<int> GetFilteredProductsCount(ProductFilter filter)
+        {
+            var url = "https://localhost:7279/api/products/filter-count";
+            var response = await _http.PostAsJsonAsync(url, filter);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<int>();
         }
 
         public async Task<IEnumerable<ContactMethod>> GetContactMethodsAsync()

@@ -3,13 +3,13 @@
 @using NMShop.Client.Services
 @using NMShop.Client.Components
 @using ProductImage = NMShop.Shared.Models.ProductImage
-
 @using NMShop.Shared.Scaffold
 
 @inject ClientDataProvider DataProvider
 @inject NavigationManager Navigation
 @inject CartService CartService
 @inject IJSRuntime JS
+
 @page "/catalog/{productParentType}/{article}"
 
 <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">

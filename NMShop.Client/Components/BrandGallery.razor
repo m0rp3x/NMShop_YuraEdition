@@ -1,104 +1,79 @@
-﻿<MudGrid Class=" mt-10" Spacing="0">
-    <MudItem xs="4">
-        <div class="image-container">
-            <img src="/assets/brandGalleryImages/zachary-keimig-wT_vI.jpg" alt="Zalupa1" />
-            <div class="overlay">
-                <div class="brand-info">
-                    <h1 class="no-select">Air Jordan</h1>
-                    <br/>
-                    <MudButton  Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
+﻿@using NMShop.Client.Services
+@using NMShop.Shared.Scaffold
+
+@inject ClientDataProvider DataProvider;
+@inject NavigationManager Navigation;
+
+<MudGrid Class="mt-10" Spacing="0">
+    @for (int i = 0; i < 3; i++)
+    {
+        var LocalCopy = i;
+        if (i < brandGalleries.Count)
+        {
+            var bg = brandGalleries[i];
+            <MudItem xs="4">
+                <div class="image-container">
+                    <img src=@(bg.Image != null && bg.Image.Length > 0 ? bg.Image.ToSrcString() : GetDefaultImage(LocalCopy)) alt="brandImage" />
+                    <div class="overlay">
+                        <div class="brand-info">
+                            <h1 class="no-select">@bg.Brand.Name</h1>
+                            <br />
+                            <MudButton OnClick="() => GoToBrandById(bg.BrandId)" Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </MudItem>
-    <MudItem xs="4">
-        <div class="image-container">
-            <img src="/assets/brandGalleryImages/zachary-keimig-o_U0k.jpg" alt="Zalupa2" />
-            <div class="overlay">
-                <div class="brand-info">
-                    <h1 class="no-select" >Adidas</h1>
-                    <br/>
-                    <MudButton  Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
+            </MudItem>
+        }
+        else
+        {
+            // Плейсхолдер для отсутствующих записей
+            <MudItem xs="4">
+                <div class="image-container">
+                    <img src=@GetDefaultImage(LocalCopy) alt="brandImage@(LocalCopy + 1)" />
+                    <div class="overlay">
+                        <div class="brand-info">
+                            <h1 class="no-select">Placeholder Brand</h1>
+                            <br />
+                            <MudButton Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </MudItem>
-    <MudItem xs="4">
-        <div class="image-container">
-            <img src="/assets/brandGalleryImages/zell-3JCykI6YHRE-uns.jpg" alt="Zalupa3" />
-            <div class="overlay">
-                <div class="brand-info">
-                    <h1 class="no-select">Puma</h1>
-                    <br/>
-                    <MudButton  Color="Color.Tertiary" Variant="Variant.Filled">В Категорию</MudButton>
-                </div>
-            </div>
-        </div>
-    </MudItem>
+            </MudItem>
+        }
+    }
 </MudGrid>
 
-<style>
-    .image-grid {
-        width: 100%;
-        max-width: 100vw;
-        overflow: hidden;
+@code {
+    private List<NMShop.Shared.Scaffold.BrandGallery> brandGalleries = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var galleries = await DataProvider.GetBrandGalleriesAsync();
+            brandGalleries = galleries.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Ошибка при загрузке галереи брендов: {ex.Message}");
+        }
     }
 
-    .image-container {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
+    private void GoToBrandById(int id)
+    {
+        Navigation.NavigateTo("/catalog/" + new ProductFilter() { BrandIds = new() { id } }.ToQueryString());
     }
 
-    .image-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: 0.5s ease;
-        filter: brightness(100%);
+    private readonly List<string> defaultImages = new()
+    {
+        "/assets/brandGalleryImages/brandImage1.jpg",
+        "/assets/brandGalleryImages/brandImage2.jpg",
+        "/assets/brandGalleryImages/brandImage3.jpg"
+    };
+
+    private string GetDefaultImage(int index = 0)
+    {
+        return index < defaultImages.Count ? defaultImages[index] : defaultImages.FirstOrDefault() ?? string.Empty;
     }
 
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        background: rgba(0, 0, 0, 0.6); /* Полупрозрачный фон для выделения текста */
-        opacity: 0;
-        transition: opacity 0.5s ease;
-    }
-
-    .image-container:hover .overlay {
-        opacity: 1; /* Появление текста и кнопки при наведении */
-    }
-
-    .brand-info {
-        text-align: center;
-        color: white;
-    }
-
-    .brand-info h1 {
-        margin: 0;
-        font-size: 2.5rem; /* Увеличенный размер текста */
-    }
-
-    .large-button {
-        font-size: 1.25rem; /* Увеличенный размер текста кнопки */
-        padding: 0.75rem 2rem; /* Увеличенные отступы у кнопки */
-    }
-
-    .image-container:hover img {
-        filter: brightness(50%);
-    }
-
-    .no-select {
-        user-select: none; /* Запрещает выделение текста */
-    }
-</style>
+}

@@ -5,36 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2992ba10-ac5c-4fd5-ab58-61a4d501a0e4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.sql" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/Checkout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/Checkout.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Services/CartService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Services/CartService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../NMShop.Client/Services/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Services/ClientDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Brand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Brand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/BrandGallery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/BrandGallery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ContactMethod.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ContactMethod.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/DeliveryType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/DeliveryType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Gender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Gender.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/NavigationItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/NavigationItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Order.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Order.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderPart.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PaymentType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PaymentType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Product.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductColor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductColor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductImage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PromoCode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PromoCode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceContent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceContent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceTopic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceTopic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/SellingCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/SellingCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/StockInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/StockInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/TextSize.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/TextSize.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Controller/OrdersController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop/Controller/ProductsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Controller/ProductsController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,26 +27,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenDatabaseViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Sharp/source/repos/NMShop/DB",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Language Defaults"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenDatabaseViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Sharp/source/repos/NMShop/DB&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Language Defaults&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlserver",
-      "mysql",
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlserver&quot;,
+      &quot;mysql&quot;,
+      &quot;postgresql&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/": [
-      "PostgreSQL"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/&quot;: [
+      &quot;PostgreSQL&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
 </project>

@@ -2,6 +2,7 @@
 
 @inject NavigationManager Navigation
 @inject CartService CartService
+@inject ClientDataProvider DataProvider
 
 <MudAppBar Elevation="0" Style=@($"z-index: {(int)ZEnum.AppBar}") >
 
@@ -13,11 +14,10 @@
 
         <!-- Навигационные кнопки по центру -->
         <div style="display: flex; justify-content: center; gap: 20px;">
-            <MudButton Style="font-size: 18px; font-weight: 600;" @onmouseover="() => ShowMenu(ClothingCategory)">Одежда</MudButton>
-            <MudButton Style="font-size: 18px; font-weight: 600;" @onmouseover="() => ShowMenu(ShoesCategory)">Обувь</MudButton>
-            <MudButton Style="font-size: 18px; font-weight: 600;" @onmouseover="() => ShowMenu(AccessoriesCategory)">Аксессуары</MudButton>
-            <MudButton Style="font-size: 18px; font-weight: 600;" @onmouseover="() => ShowMenu(BrandsCategory)">Бренды</MudButton>
-            <MudButton Style="font-size: 18px; font-weight: 600;" @onmouseover="() => ShowMenu(InfoCategory)">Информация</MudButton>
+            @foreach(var nu in _navUnits)
+            {
+                <MudButton Href="@nu.Category.Link" Style="font-size: 18px; font-weight: 600;" @onmouseover="() => ShowMenu(nu)">@nu.Category.Name</MudButton>
+            }
         </div>
 
         <!-- Иконки справа -->
@@ -38,21 +38,21 @@
 
                 <!-- Первый столбец с названием категории -->
                 <div style="font-size: 24px; font-weight: 700; text-align: left;">
-                    @_currentCategory.Name
+                    @_currentCategory.Category.Name
                 </div>
 
                 <!-- Столбцы с подкатегориями -->
                 @for (int i = 0; i < _menuSubCategoriesBatchAmount; i++)
                 {
                     var LocalCopy = i;
-                    int SubCategoriesCount = _currentCategory.SubCategories.Count();
+                    int SubCategoriesCount = _currentCategory.Items.Count();
 
                     <div style="color: #BDBDBD; font-size: 15px; font-weight: 700; text-align: left;">
                         @if (SubCategoriesCount - LocalCopy * _menuSubCategoriesBatchCount > 0)
                         {
-                            foreach ((string Name, string Path) in _currentCategory.SubCategories.Skip(LocalCopy * _menuSubCategoriesBatchCount).Take(_menuSubCategoriesBatchCount))
+                            foreach (var ni in _currentCategory.Items.Skip(LocalCopy * _menuSubCategoriesBatchCount).Take(_menuSubCategoriesBatchCount))
                             {
-                                <MudButton Href="@(_currentCategory.Path + Path)" Style="display: block; margin: 5px 0;">@Name</MudButton>
+                                <MudButton Href="@ni.Link" Style="display: block; margin: 5px 0;">@ni.Name</MudButton>
                             }
                         }
                     </div>
@@ -64,21 +64,27 @@
 </MudAppBar>
 
 @code {
-    private Category _currentCategory;
+    private NavigationUnit _currentCategory;
+    private IEnumerable<NavigationUnit> _navUnits = new NavigationUnit[0];
     private bool _menuHidden = true;
     private static int _menuSubCategoriesBatchCount = 4;
     private static int _menuSubCategoriesBatchAmount = 5;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _navUnits = await DataProvider.GetNavigationUnitsAsync();
+    }
 
     private void NavigateTest()
     {
         Navigation.NavigateTo("/catalog/");
     }
 
-    private void ShowMenu(Category cat)
+    private void ShowMenu(NavigationUnit nu)
     {
-        if (cat.SubCategories.Count() > 0)
+        if (nu.Items.Count() > 0)
         {
-            _currentCategory = cat;
+            _currentCategory = nu;
             _menuHidden = false;
         }
     }
@@ -87,108 +93,5 @@
     {
         _menuHidden = true;
     }
-
-    public class Category
-    {
-        public string Name = "Unitialized";
-        public List<(string, string)> SubCategories = new();
-        public string Path = "Unitialized";
-    }
-
-    // Обувь
-    Category ShoesCategory = new()
-    {
-        Name = "Обувь",
-        SubCategories = new()
-        {
-            ("Смотреть всё", "shoes-all"),
-            ("Кеды и кроссовки", "shoes-sneakers"),
-            ("Ботинки и угги", "shoes-boots"),
-            ("Слайды", "shoes-slides"),
-            ("Детское", "shoes-kids")
-        },
-        Path = "Shoes"
-    };
-
-    // Одежда
-    Category ClothingCategory = new()
-        {
-            Name = "Одежда",
-            SubCategories = new()
-    {
-        ("Смотреть всё", "clothing-all"),
-        ("Ботинки и угги", "clothing-boots"),
-        ("Куртки и пуховики", "clothing-jackets"),
-        ("Футболки и лонгсливы", "clothing-tshirts"),
-        ("Штаны и джинсы", "clothing-pants"),
-        ("Шорты", "clothing-shorts"),
-        ("Худи и свитшоты", "clothing-hoodies"),
-        ("Белье", "clothing-underwear")
-    }
-        };
-
-    // Аксессуары
-    Category AccessoriesCategory = new()
-        {
-            Name = "Аксессуары",
-            SubCategories = new()
-    {
-        ("Смотреть всё", "accessories-all"),
-        ("Кошельки", "accessories-wallets"),
-        ("Очки", "accessories-glasses"),
-        ("Головные уборы", "accessories-hats"),
-        ("Рюкзаки и сумки", "accessories-bags"),
-        ("Другие аксессуары", "accessories-other")
-    }
-        };
-
-    // Коллекции
-    Category CollectionsCategory = new()
-        {
-            Name = "Коллекции",
-            SubCategories = new()
-    {
-        ("Смотреть всё", "collections-all"),
-        ("Bearbricks", "collections-bearbricks"),
-        ("Kaws", "collections-kaws"),
-        ("Фигурки", "collections-figures"),
-        ("Предметы интерьера", "collections-furniture"),
-        ("Другой арт", "collections-other-art")
-    }
-        };
-
-    // Бренды
-    Category BrandsCategory = new()
-        {
-            Name = "Бренды",
-            SubCategories = new()
-    {
-        ("GOYARD", "brands-goyard"),
-        ("YEEZY", "brands-yeezy"),
-        ("TRAVIS SCOTT", "brands-travis-scott"),
-        ("SUPREME", "brands-supreme"),
-        ("STONE ISLAND", "brands-stone-island"),
-        ("NIKE", "brands-nike"),
-        ("MEDICOM TOY", "brands-medicom-toy"),
-        ("LOUIS VUITTON", "brands-louis-vuitton"),
-        ("ADIDAS", "brands-adidas"),
-        ("CHROME HEARTS", "brands-chrome-hearts")
-    }
-        };
-
-    // Информация
-    Category InfoCategory = new()
-        {
-            Name = "Информация",
-            SubCategories = new()
-    {
-        ("Контакты", "info-contacts"),
-        ("Доставка", "info-delivery"),
-        ("Оплата", "info-payment"),
-        ("Возврат", "info-returns"),
-        ("FAQ", "info-faq"),
-        ("О нас", "info-about")
-    }
-        };
 
 }

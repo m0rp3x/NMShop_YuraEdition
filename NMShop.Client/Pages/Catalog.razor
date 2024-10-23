@@ -3,6 +3,8 @@
 @using NMShop.Client.Layout;
 @using NMShop.Shared.Models;
 
+@implements IDisposable;
+
 @inject HttpClient Http;
 @inject NavigationManager Navigation;
 @inject ClientDataProvider DataProvider;
@@ -179,7 +181,7 @@
                 </div>
             </div>
 
-            <ProductGrid Filter="Filter" OnProductCountChanged="OnProductCountChanged" />
+            <ProductGrid Filter="Filter" UsePagination="true" OnProductCountChanged="OnProductCountChanged" />
         </div>
 
     </MudDrawerContainer>
@@ -266,11 +268,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (!string.IsNullOrEmpty(filter))
-        {
-            Filter = ParseFilter(filter);
-        }
-
         Brands = (await DataProvider.GetBrandsAsync())
         .Select(b =>
         {
@@ -312,13 +309,27 @@
                 return colorsModel;
             }).ToList();
 
+
+        UpdateFilterFromUrl();
         if (Filter.CategoryId.HasValue)
         {
             CategorySizeDisplayType = await DataProvider.GetCategorySizeDisplayTypeAsync(Filter.CategoryId.Value);
         }
-        // Инициализация выбранных значений из фильтра
         await InitializeSelectedFilterOptions();
+
+        Navigation.LocationChanged += OnLocationChanged;
     }
+
+    private void OnLocationChanged(object sender, LocationChangedEventArgs args)
+    {
+        UpdateFilterFromUrl();
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+
 
     private async Task InitializeSelectedFilterOptions()
     {
@@ -474,6 +485,14 @@
     private void OnProductCountChanged(int count)
     {
         _productCount = count;
+    }
+
+    private void UpdateFilterFromUrl()
+    {
+        if (!string.IsNullOrEmpty(filter))
+        {
+            Filter = ParseFilter(filter);
+        }
     }
 
     private ProductFilter ParseFilter(string filterString)
