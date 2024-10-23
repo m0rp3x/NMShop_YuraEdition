@@ -144,6 +144,7 @@
                          @onclick="() => {_isDrawerOpened = !_isDrawerOpened;}"
                          style=@FilterButtonStyle>
                     @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
+                    <MudIcon Class="ml-1" Icon="@Icons.Material.Outlined.FilterAlt"/>
                 </MudText>
 
                 <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);border-radius: 20px;">

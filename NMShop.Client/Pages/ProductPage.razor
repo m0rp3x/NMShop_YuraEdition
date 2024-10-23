@@ -108,17 +108,17 @@
 
         <div class="d-flex mb-7">
 
-            @foreach(var infoButton in InfoButtons)
+            @foreach(var ib in InfoButtons)
             {
-                <MudButton OnClick="() => {selectedInfo = infoButton; Console.WriteLine(selectedInfo.Code);}" Style=@("border-radius: 0; border-bottom: 1px solid " + (selectedInfo == infoButton ? "black;" : "#E6E6E6;"))>
-                    <MudText Typo="Typo.h5" Style="font-weight: 500;">@infoButton.Label</MudText>
+                <MudButton OnClick="() => OnInfoButtonClick(ib)" Style=@("border-radius: 0; border-bottom: 1px solid " + (selectedInfo == ib ? "black;" : "#E6E6E6;"))>
+                    <MudText Typo="Typo.h5" Style="font-weight: 500;">@ib.Label</MudText>
                 </MudButton>
             }
 
         </div>
 
         <div class="mb-7">
-            @if (selectedInfo.Code == "details")
+            @if (selectedInfo.Code == null)
             {
 
                 <MudGrid Spacing="10" Justify="Justify.SpaceBetween">
@@ -137,7 +137,7 @@
                             <MudSpacer />
 
                             <MudText Typo="Typo.h5">@product.Article</MudText>
-                            <MudIconButton  OnClick="CopyToClipboard" Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
+                            <MudIconButton  OnClick="CopyArticleToClipboard" Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
                         </div>
 
                         <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
@@ -145,7 +145,7 @@
 
                             <MudSpacer />
 
-                            <MudButton Variant="Variant.Text" @onclick="() => RedirectToBrandPage(product.Brand)" Class="ml-3">
+                            <MudButton Variant="Variant.Text" @onclick="() => RedirectToBrandPageByName(product.Brand)" Class="ml-3">
                                 <MudText Typo="Typo.h5">@product.Brand</MudText>
                                 <MudIcon Icon="@Icons.Material.Filled.ArrowForwardIos" />
                             </MudButton>
@@ -181,7 +181,7 @@
                 <MudButton Variant="Variant.Outlined" Color="Color.Dark" Class="w-100">ПОИСК</MudButton>
             </MudItem>
             <MudItem>
-                <MudButton Variant="Variant.Outlined" Href="@GetCatalogUrl()" Color="Color.Dark" EndIcon="@Icons.Material.Filled.ArrowForward" Class="w-100">
+                <MudButton Variant="Variant.Outlined" Href="@GetCategoryUrl()" Color="Color.Dark" EndIcon="@Icons.Material.Filled.ArrowForward" Class="w-100">
                     Вернутся в категорию
                 </MudButton>
             </MudItem>
@@ -205,48 +205,13 @@
 
     private PriceInfo? seletedSize;
 
-    
-    private string GetCatalogUrl()
-    {
-        return "/catalog/" + new ProductFilter() { CategoryId = parentTypeId }.ToQueryString();
-    }
+    private IEnumerable<ReferenceTopic> refInfoList = new List<ReferenceTopic>();
+
+    private InfoButton selectedInfo = new();
+
+    static List<InfoButton> InfoButtons = new();
 
     private bool _isRedirecting = false;
-
-    private async Task RedirectToBrandPage(string brandName)
-    {
-        if (_isRedirecting) return;
-        _isRedirecting = true;
-
-        try
-        {
-            var brandId = await DataProvider.GetBrandIdByNameAsync(brandName);
-
-            if (brandId.HasValue)
-            {
-                var url = "/catalog/" + new ProductFilter() { BrandIds = new List<int> { brandId.Value } }.ToQueryString();
-                Navigation.NavigateTo(url);
-            }
-            else
-            {
-                Navigation.NavigateTo("/notFound");
-            }
-        }
-        finally
-        {
-            _isRedirecting = false;
-        }
-    }
-
-
-    
-    private InfoButton selectedInfo = InfoButtons[0];
-
-    private IEnumerable<ReferenceInfo> refInfoList = new ReferenceInfo[0];
-
-    private string AddToCartButtonStyle =>
-        "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
-        + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
     protected override async Task OnInitializedAsync()
     {
@@ -254,36 +219,59 @@
         {
             product = await DataProvider.GetProductByArticleAsync(article);
             parentTypeId = await DataProvider.GetCategoryIdByNameAsync(productParentType);
-
             var lowestPriceInfo = product.PriceInfos.OrderBy(pi => pi.DiscountPrice ?? pi.Price).FirstOrDefault();
-
             if (lowestPriceInfo != null)
             {
                 seletedSize = lowestPriceInfo;
             }
+            refInfoList = await DataProvider.GetChildTopicsByParentCodeAsync("product_page_reference_info");
 
+            InfoButtons = new List<InfoButton>
+            {
+                new() { Label = "Детали", Code = null }
+            }.Concat(refInfoList.Select(rt => new InfoButton { Label = rt.Name, Code = rt.Code })).ToList();
         }
         else Navigation.NavigateTo("/notFound");
     }
-    
-    private async Task CopyToClipboard()
+
+    private string GetCategoryUrl()
+    {
+        return "/catalog/" + new ProductFilter() { CategoryId = parentTypeId }.ToQueryString();
+    }
+
+    private async Task RedirectToBrandPageByName(string brandName)
+    {
+        var brandId = await DataProvider.GetBrandIdByNameAsync(brandName);
+
+        if (brandId.HasValue)
+        {
+            var url = "/catalog/" + new ProductFilter() { BrandIds = new List<int> { brandId.Value } }.ToQueryString();
+            Navigation.NavigateTo(url);
+        }
+        else
+        {
+            Navigation.NavigateTo("/notFound");
+        }
+    }
+
+    private string AddToCartButtonStyle =>
+        "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
+        + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+
+    private async Task OnInfoButtonClick(InfoButton infoButton)
+    {
+        selectedInfo = infoButton;
+    }
+
+    private async Task CopyArticleToClipboard()
     {
         await JS.InvokeVoidAsync("navigator.clipboard.writeText", product.Article);
     }
 
     class InfoButton
     {
-        public string Label = "Uinitialized";
-        public string Code = "Uinitialized";
+        public string Label = "Детали";
+        public string? Code = null;
     }
-
-    static List<InfoButton> InfoButtons = new()
-    {
-        new() { Label = "Детали", Code = "details" },
-        new() { Label = "Способы доставки", Code = "delivery_methods" },
-        new() { Label = "Способы оплат", Code = "payment_methods" },
-        new() { Label = "FAQ", Code = "faq" },
-
-    };
 
 }

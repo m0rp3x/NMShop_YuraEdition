@@ -441,15 +441,9 @@ INSERT INTO "PromoCodes" ("Code", "MaxUsages", "DiscountPercent", "ExpirationDat
 
 INSERT INTO "TextSizes" ("Value") VALUES ('Маленький'), ('Средний'), ('Большой');
 
-INSERT INTO "ReferenceTopics" ("Code", "Name", "ParentTopic_Id") VALUES
-  ('shipping', 'Доставка', NULL),
-  ('returns', 'Возврат', NULL),
-  ('shipping_times', 'Время доставки', 1),
-  ('return_policy', 'Политика возврата', 2);
 
-INSERT INTO "ReferenceContent" ("Topic_Id", "TextSize_Id", "Content", "IsBold") VALUES
-  (3, 2, 'Доставка занимает от 3 до 5 рабочих дней.', TRUE),
-  (4, 1, 'Возврат возможен в течение 14 дней после получения заказа.', FALSE);
+
+
 
 INSERT INTO "BrandGallery" ("Brand_Id", "Image") VALUES
   (1, E''::bytea),
@@ -657,6 +651,77 @@ VALUES
         '19.10.24 - 20.10.24'
     );
 
+-- Вставка данных в таблицу TextSizes
+INSERT INTO "TextSizes" ("Value")
+VALUES
+    ('h1'),
+    ('h2'),
+    ('h3'),
+    ('h4'),
+    ('h5'),
+    ('h6'),
+    ('subtitle1'),
+    ('subtitle2'),
+    ('body1'),
+    ('body2'),
+    ('input'),
+    ('button'),
+    ('caption'),
+    ('overline');
+
+-- Вставка родительского топика ProductPageReferenceInfo
+INSERT INTO "ReferenceTopics" ("Code", "Name")
+VALUES
+    ('product_page_reference_info', 'Product Page Reference Info')
+RETURNING "Id";
+
+-- Получение идентификатора родительского топика ProductPageReferenceInfo
+WITH parent_topic AS (
+    SELECT "Id" FROM "ReferenceTopics" WHERE "Code" = 'product_page_reference_info'
+)
+
+-- Вставка данных в таблицу ReferenceTopics с указанием родительского топика
+INSERT INTO "ReferenceTopics" ("Code", "Name", "ParentTopic_Id")
+VALUES
+    ('product_delivery_methods', 'Способы доставки', (SELECT "Id" FROM parent_topic)),
+    ('product_payment_methods', 'Способы оплаты', (SELECT "Id" FROM parent_topic)),
+    ('product_faq', 'FAQ', (SELECT "Id" FROM parent_topic))
+RETURNING "Id";
+
+-- Присвоение идентификаторов для ReferenceTopics
+WITH reference_topics AS (
+    SELECT "Id", "Code" FROM "ReferenceTopics"
+)
+
+-- Вставка данных в таблицу ReferenceContent
+INSERT INTO "ReferenceContent" ("Topic_Id", "TextSize_Id", "Content", "IsBold")
+VALUES
+    -- product_delivery_methods
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h4'), 'Мы работаем над тем, чтобы наши клиенты были самыми счастливыми, поэтому стараемся доставлять заказы максимально быстро и комфортно для Вас.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h5'), 'Сейчас доступны следующие варианты доставки:', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- доставка в любой магазин NIKITA EFREMOV.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- доставка домой или в офис курьерской службой.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), 'Доставка осуществляется для заказов, включающих не более 5-ти позиций.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- Доставка курьерской службой производится в рамках сроков обозначенных после оформления заказа.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- Доставка в любой регион России и стран СНГ осуществляется курьерской службой.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h5'), 'Также Вы можете оформить индивидуальный заказ понравившегося Вам товара по 100% предоплате.', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- Срок доставки: 7-14 рабочих дней.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_delivery_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- После оформления заявки на индивидуальный заказ, персональный менеджер свяжется с Вами.', false),
+
+    -- product_payment_methods
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_payment_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h4'), 'Мы принимаем оплату банковскими картами:', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_payment_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- Visa, Mastercard, МИР.', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_payment_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- Долями и Яндекс.Сплит.', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_payment_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), '- СБП и др.', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_payment_methods'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h5'), 'Мы также принимаем наличные в магазинах и можем создать электронную ссылку для оплаты.', false),
+
+    -- product_faq
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_faq'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h5'), '- Вы реализуете оригинальные товары?', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_faq'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), 'Мы продаем только новые и 100% оригинальные товары.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_faq'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h5'), '- Почему цена зависит от размера?', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_faq'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), 'Стоимость зависит от спроса на определенные размеры.', false),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_faq'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h5'), '- Какие размеры указаны на сайте?', true),
+    ((SELECT "Id" FROM reference_topics WHERE "Code" = 'product_faq'), (SELECT "Id" FROM "TextSizes" WHERE "Value" = 'h6'), 'Вся обувь на сайте представлена в US размерах с таблицей соответствия.', false);
 
 
 -- Добавляем по три изображения для каждого товара

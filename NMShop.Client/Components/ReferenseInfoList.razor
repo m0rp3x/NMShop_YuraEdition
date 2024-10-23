@@ -1,11 +1,12 @@
 ﻿@using NMShop.Shared.Models
 @using NMShop.Client.Services
+@using NMShop.Shared.Scaffold
 @inject ClientDataProvider DataProvider
 
 <div class="d-flex flex-column" style="gap: 10px;">
-    @foreach (var content in refInfo.Contents)
+    @foreach (var rc in refTopic.ReferenceContents)
     {
-        <MudText Style=@(content.IsBold ? "font-weight: bold;" : null) Typo=@(content.Size.ToEnum<Typo>())>@content.Text</MudText>
+        <MudText Style=@(rc.IsBold ? "font-weight: bold;" : null) Typo=@(rc.TextSize.Value.ToEnum<Typo>())>@rc.Content</MudText>
     }
 </div>
 
@@ -13,26 +14,12 @@
     [Parameter]
     public string Code { get; set; }
 
-    private ReferenceInfo refInfo = new();
-
-    private static ReferenceInfo _errorHolder = new()
-    {
-            Topic = "Error getting ReferenceInfo",
-            Contents = new()
-            {
-                new()
-                {
-                    Size = "h2",
-                    Text = "Error getting ReferenceInfo"
-                }
-            }
-    };
+    private ReferenceTopic refTopic = new();
 
     protected override async Task OnParametersSetAsync()
     {
         Console.WriteLine(Code);
-        var bebra = await DataProvider.GetReferenceInfo(Code);
-        refInfo = bebra.First();
+        refTopic = await DataProvider.GetReferenceInfoByTopicAsync(Code);
     }
 
 }

@@ -1,0 +1,29 @@
+﻿
+.FAQButtonsContainer{
+    width: 90%;
+}
+
+@media all and (min-width: 992px) {
+    /*Для маленьких экранов*/
+    .FAQButtonsContainer {
+        width: 83%;
+    }
+}
+
+
+@media all and (min-width: 1279px) {
+    /*Для средних экранов*/
+    .FAQButtonsContainer {
+        width: 75%;
+    }
+
+}
+
+
+@media all and (min-width: 1600px) {
+    /*Для больших экранов*/
+    .FAQButtonsContainer {
+        width: 64%;
+    }
+
+}

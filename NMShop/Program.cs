@@ -3,6 +3,7 @@ using NMShop.Components;
 using Microsoft.EntityFrameworkCore;
 using NMShop.Shared.Scaffold;
 using NMShop.Client.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,11 @@ builder.Services.AddCors(options =>
         .AllowAnyHeader());
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+}); 
+
 builder.Services.AddMudServices();
 
 // Добавление компонентов Razor

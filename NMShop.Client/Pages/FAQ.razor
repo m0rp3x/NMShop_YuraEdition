@@ -1,0 +1,56 @@
+﻿@using NMShop.Client.Services
+@using NMShop.Shared.Scaffold
+@using NMShop.Client.Components;
+
+@inject ClientDataProvider DataProvider
+
+@page "/FAQ/{RefTopicCode}"
+
+<PageTitle>FAQ</PageTitle>
+
+<div style="width: 100%; padding: 13vh 0 5vh 0;">
+
+    <div class="FAQButtonsContainer mx-auto">
+        @foreach (var rt in RefTopics)
+        {
+            <MudButton OnClick="() => ToggleRefTopic(rt)" Class="my-3 p-0" Style=@("transition: all 0.25s ease-in-out; width: 100%; display: block; text-transform: none; border-radius: 10px; border: 1px solid #b0b0b0;" + (OpenedTopics.Contains(rt.Code) ? "background: #f0f0f0;" : "background: #ffffff;"))>
+                <div class="d-flex mr-auto my-2">
+                    <MudText Class="align-self-center pt-1" Typo="Typo.h5">@rt.Name</MudText>
+
+                    <div class="ml-auto" style=@("transition: all 0.25s ease-in-out; width: 40px; aspect-ratio: 1/1; border-radius: 10px; border: 1px solid #b0b0b0; background: #f0f0f0; background-image: url(assets/icons/ArrowIcon.svg); background-position: center; background-repeat: no-repeat;" + (OpenedTopics.Contains(rt.Code) ? "" : "transform: rotate(-90deg);")) />
+                </div>
+
+                <div style=@("transition: all 0.2s ease-in-out;" + (OpenedTopics.Contains(rt.Code) ? "border-top: 1px solid #b0b0b0; max-height: fit-content;" : "max-height: 0px;"))>
+                    <div style="text-align:left; font-style: normal; opacity: 0.9; padding: 20px; ">
+                        <ReferenseInfoList Code="@rt.Code" />
+                    </div>
+                </div>
+            </MudButton>
+        }
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public string RefTopicCode { get; set; }
+
+    private List<ReferenceTopic> RefTopics = new();
+    private HashSet<string> OpenedTopics = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        RefTopics = (await DataProvider.GetChildTopicsByParentCodeAsync(RefTopicCode)).ToList();
+    }
+
+    private void ToggleRefTopic(ReferenceTopic topic)
+    {
+        if (OpenedTopics.Contains(topic.Code))
+        {
+            OpenedTopics.Remove(topic.Code);
+        }
+        else
+        {
+            OpenedTopics.Add(topic.Code);
+        }
+    }
+}

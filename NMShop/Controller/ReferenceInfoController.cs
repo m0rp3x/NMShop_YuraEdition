@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NMShop.Shared.Scaffold;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
-using NMShop.Shared.Models;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace NMShop.Controller
 {
@@ -8,21 +13,20 @@ namespace NMShop.Controller
     [Route("api/[controller]")]
     public class ReferenceInfoController : ControllerBase
     {
-        private const string DataFilePath = "data/reference_info.json";
-        private static List<ReferenceInfo> _cachedReferenceInfo;
+        private readonly NMShopContext _context;
 
-        public ReferenceInfoController()
+        public ReferenceInfoController(NMShopContext context)
         {
-            if (_cachedReferenceInfo == null)
-            {
-                _cachedReferenceInfo = LoadReferenceInfoAsync().Result;
-            }
+            _context = context;
         }
 
         [HttpGet("{topic}")]
-        public ActionResult<ReferenceInfo> GetReferenceInfo(string topic)
+        public async Task<ActionResult<ReferenceTopic>> GetReferenceInfoByTopic(string topic)
         {
-            var requestedInfo = _cachedReferenceInfo.FirstOrDefault(info => info.Topic.Equals(topic, System.StringComparison.OrdinalIgnoreCase));
+            var requestedInfo = await _context.ReferenceTopics
+                .Include(rt => rt.ReferenceContents)
+                .ThenInclude(rc => rc.TextSize)
+                .FirstOrDefaultAsync(rt => EF.Functions.ILike(rt.Code, topic));
 
             if (requestedInfo == null)
             {
@@ -33,29 +37,29 @@ namespace NMShop.Controller
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ReferenceInfo>> GetAllReferenceInfo()
+        public async Task<ActionResult<IEnumerable<ReferenceTopic>>> GetAllReferenceInfo()
         {
-            return Ok(_cachedReferenceInfo);
+            var referenceInfo = await _context.ReferenceTopics
+                .Include(rt => rt.ReferenceContents)
+                .ThenInclude(rc => rc.TextSize)
+                .ToListAsync();
+
+            return Ok(referenceInfo);
         }
 
-        [HttpPost("refresh-cache")]
-        public async Task<ActionResult> RefreshCache()
+        [HttpGet("{parentCode}/children")]
+        public async Task<ActionResult<IEnumerable<ReferenceTopic>>> GetChildTopicsByParentCode(string parentCode)
         {
-            _cachedReferenceInfo = await LoadReferenceInfoAsync();
-            return Ok();
-        }
+            var parentTopic = await _context.ReferenceTopics
+                .Include(rt => rt.InverseParentTopic)
+                .FirstOrDefaultAsync(rt => EF.Functions.ILike(rt.Code, parentCode));
 
-        private async Task<List<ReferenceInfo>> LoadReferenceInfoAsync()
-        {
-            if (!System.IO.File.Exists(DataFilePath))
+            if (parentTopic == null)
             {
-                return new List<ReferenceInfo>();
+                return NotFound();
             }
 
-            var jsonData = await System.IO.File.ReadAllTextAsync(DataFilePath);
-            var result = JsonSerializer.Deserialize<List<ReferenceInfo>>(jsonData) ?? new List<ReferenceInfo>();
-
-            return result;
+            return Ok(parentTopic.InverseParentTopic);
         }
     }
 }

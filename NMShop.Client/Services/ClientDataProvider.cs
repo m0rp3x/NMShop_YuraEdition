@@ -157,20 +157,24 @@ namespace NMShop.Client.Services
             return product;
         }
 
-        public async Task<IEnumerable<ReferenceInfo>> GetReferenceInfo(string topic = null)
+        public async Task<IEnumerable<ReferenceTopic>> GetChildTopicsByParentCodeAsync(string parentCode)
         {
-            var cacheKey = topic == null ? "referenceInfo" : $"referenceInfo_{topic}";
-            var cachedData = GetFromCache<IEnumerable<ReferenceInfo>>(cacheKey);
-            if (cachedData != null) return cachedData;
-
-            string url = topic == null
-                ? "https://localhost:7279/api/referenceinfo"
-                : $"https://localhost:7279/api/referenceinfo/{HttpUtility.UrlEncode(topic)}";
-
-            var data = await _http.GetFromJsonAsync<IEnumerable<ReferenceInfo>>(url);
-            SetCache(cacheKey, data);
-            return data;
+            string url = $"https://localhost:7279/api/referenceinfo/{HttpUtility.UrlEncode(parentCode)}/children";
+            return await _http.GetFromJsonAsync<IEnumerable<ReferenceTopic>>(url);
         }
+
+        public async Task<ReferenceTopic> GetReferenceInfoByTopicAsync(string topic)
+        {
+            string url = $"https://localhost:7279/api/referenceinfo/{HttpUtility.UrlEncode(topic)}";
+            return await _http.GetFromJsonAsync<ReferenceTopic>(url);
+        }
+
+        public async Task<IEnumerable<ReferenceTopic>> GetAllReferenceInfoAsync()
+        {
+            string url = "https://localhost:7279/api/referenceinfo";
+            return await _http.GetFromJsonAsync<IEnumerable<ReferenceTopic>>(url);
+        }
+
 
         public async Task<IEnumerable<ProductDto>> GetFilteredProducts(ProductFilter filter)
         {
