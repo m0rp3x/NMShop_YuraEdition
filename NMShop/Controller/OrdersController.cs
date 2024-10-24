@@ -239,7 +239,6 @@ namespace NMShop.Controllers
             {
                 var discountCheck = await GetPromoCodeDiscount(orderDto.PromoCode);
 
-                // Проверяем тип результата и извлекаем скидку
                 if (discountCheck.Result is OkObjectResult result && result.Value is int discountValue)
                 {
                     discountPercent = discountValue;

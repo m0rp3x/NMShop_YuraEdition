@@ -16,7 +16,7 @@
         <div style="display: flex; justify-content: center; gap: 20px;">
             @foreach(var nu in _navUnits)
             {
-                <MudButton Href="@nu.Category.Link" Style="font-size: 18px; font-weight: 600;" @onmouseover="() => ShowMenu(nu)">@nu.Category.Name</MudButton>
+                <MudButton Href="@nu.Category.Link" Style="font-size: var(--mud-typography-body1-size); font-weight: 600;" @onmouseover="() => ShowMenu(nu)">@nu.Category.Name</MudButton>
             }
         </div>
 

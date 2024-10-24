@@ -147,9 +147,9 @@
                     <MudIcon Class="ml-1" Icon="@Icons.Material.Outlined.FilterAlt"/>
                 </MudText>
 
-                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);border-radius: 20px;">
-                    <MudText Class="mr-2" Typo="Typo.h6" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
-                    <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.h6" Inline="true">@CurrentSortOption.Name</MudText>
+                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
+                    <MudText Class="mr-2" Typo="Typo.h5" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
+                    <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.h5" Inline="true">@CurrentSortOption.Name</MudText>
                     <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
                     <div class="absolute" style=@($"border-radius: 20px; width: 100%; transition: all 1s ease 0s; overflow: hidden; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "left: 0; top: 120%; height: fit-content;" : "height: 0px;"))>
                         @foreach (SortOption so in SortOptions)

@@ -302,9 +302,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_check_brand_gallery_limit
-BEFORE INSERT OR UPDATE ON "BrandGallery"
+BEFORE INSERT ON "BrandGallery"
 FOR EACH ROW
 EXECUTE FUNCTION check_brand_gallery_limit();
+
 
 -- Insert test data into reference tables
 INSERT INTO "Brands" ("Name") VALUES

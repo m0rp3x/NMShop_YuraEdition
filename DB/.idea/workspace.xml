@@ -9,10 +9,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.sql" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/ProductPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/ProductPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Services/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Services/ClientDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop/Controller/ReferenceInfoController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Controller/ReferenceInfoController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop/Data/reference_info.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

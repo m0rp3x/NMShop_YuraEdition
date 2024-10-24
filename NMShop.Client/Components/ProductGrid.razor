@@ -4,14 +4,14 @@
 @inject ClientDataProvider DataProvider
 
 <div class="d-flex flex-column">
-    <MudGrid Spacing="20">
+    <MudGrid Spacing="10">
         @foreach (ProductDto p in _products)
         {
             var (minPrice, minDiscountPrice) = p.GetMinPriceAndDiscount();
             bool willShowDiscountPrice = minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
 
-            <MudItem xs="6" md="4" lg="3" Class="">
-                <div @onclick="() => GoToProduct(p)" class="cursor-pointer pa-6">
+            <MudItem xs="6" lg="4" xl="3" Class="">
+                <div @onclick="() => GoToProduct(p)" class="cursor-pointer pa-xs-1 pa-lg-4 pa-xl-6">
 
                     <div class="relative">
                         <MudImage Class="hovering mb-7" Src=@(p.Images.GetMainImageSrc()) ObjectFit="ObjectFit.Contain" ObjectPosition="ObjectPosition.Center" Style="aspect-ratio: 1 / 0.8; width: 100%; height: auto;" />
@@ -19,11 +19,11 @@
                         <div class="absolute d-flex" style="bottom: 0px; left: 0px; gap: 10px;">
                             @if (minDiscountPrice is not null)
                             {
-                                <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
+                                <MudText Typo="Typo.body2" Style="border-radius: 8px; background-color: #ff6b3150;" Class="px-2 py-1">Sale</MudText>
                             }
                             @if (p.Gender == "Женский")
                             {
-                                <MudText Typo="Typo.body1" Style="border-radius: 8px; background-color: #ff60b850;" Class="px-2 py-1">Женский</MudText>
+                                <MudText Typo="Typo.body2" Style="border-radius: 8px; background-color: #ff60b850;" Class="px-2 py-1">Женский</MudText>
                             }
                         </div>
                     </div>

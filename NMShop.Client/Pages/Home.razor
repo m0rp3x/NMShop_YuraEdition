@@ -12,7 +12,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudCarousel Class="mud-width-full" Style="aspect-ratio: 4375 / 1200;" ShowArrows=true ShowBullets=true EnableSwipeGesture=true AutoCycle=true TData="object">
+<MudCarousel Class="mud-width-full" Style="aspect-ratio: 4375 / 1200;" ShowArrows=false ShowBullets=false EnableSwipeGesture=true AutoCycle=true TData="object">
 
     @foreach (string banner in new string[] { "favorite_brands", "delivery", "seasonal1", "seasonal2" })
     {
@@ -30,22 +30,22 @@
 
 <CategoryPreview CategoryType="Аксессуары" />
 
-<MudPaper Class="d-flex flex-column align-center py-20 my-10 mx-20" Style="border-radius: 20px; background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), linear-gradient(82.03deg, #DCE7D7 17.85%, #C5C390 33.14%, #C4944D 41.79%, #D9558E 49.88%, #36376F 57.42%, #008B87 66.4%, #4D295A 81.36%);">
+<MudPaper Class="d-flex flex-column align-center py-10 py-md-15 py-xl-20 my-10 mx-10 mx-md-15 mx-xl-20" Style="border-radius: 20px; background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), linear-gradient(82.03deg, #DCE7D7 17.85%, #C5C390 33.14%, #C4944D 41.79%, #D9558E 49.88%, #36376F 57.42%, #008B87 66.4%, #4D295A 81.36%);">
     <MudImage Src="/assets/icons/logo.svg" Width="120" Height="120" />
 
-    <MudText Align="Align.Center" Typo="Typo.h4" Class="mt-5" Style="color: white; text-transform: uppercase;">
+    <MudText Align="Align.Center" Typo="Typo.h5" Class="mt-5" Style="color: white; text-transform: uppercase;">
         в каталоге нет интересующей модели?<br />
         вы всегда можете оформить<br />
         индивидуальный заказ
     </MudText>
 
-    <MudButton DropShadow="true" Variant="Variant.Filled" Style="background-color: white;" Class="mt-5">
-        <MudText Typo="Typo.h5" Style="font-weight: 700; text-transform: uppercase;">оформить индивидуальный заказ</MudText>
+    <MudButton DropShadow="true" Variant="Variant.Filled" Style="background-color: white;" Class="mt-5 mx-6">
+        <MudText Typo="Typo.h6" Style="font-weight: 700; text-transform: uppercase;">оформить индивидуальный заказ</MudText>
     </MudButton>
 
     <MudButton Class="mt-5">
         <MudIcon Style="color: white;" Icon="@Icons.Material.Outlined.Info" Size="Size.Large" />
-        <MudText @onclick="OpenDialogAsync" Class="ml-4" Style="color: white; text-transform: uppercase;" Typo="Typo.h5">как это работает?</MudText>
+        <MudText @onclick="OpenDialogAsync" Class="ml-4" Style="color: white; text-transform: uppercase;" Typo="Typo.h6">как это работает?</MudText>
     </MudButton>
 
 
