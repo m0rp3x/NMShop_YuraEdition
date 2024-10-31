@@ -29,6 +29,7 @@ public class ProductDto
     
 public class PriceInfo
 {
+    public int Id { get; set; }
     public decimal Size { get; set; } // Размер в числовом формате
     public decimal Price { get; set; } // Цена за данный размер
     public decimal? DiscountPrice { get; set; } // Акционная цена (если есть)

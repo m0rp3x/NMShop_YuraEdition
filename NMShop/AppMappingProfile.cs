@@ -17,13 +17,14 @@ public class AppMappingProfile : Profile
             .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ProductImages.Select(i => new NMShop.Shared.Models.ProductImage { Bytes = i.Bytes, IsMain = i.IsMain }).ToList()))
             .ForMember(dest => dest.PriceInfos, opt => opt.MapFrom(src => src.StockInfos.Select(si => new PriceInfo
             {
+                Id = si.Id,
                 Size = si.Size,
                 Price = si.Price,
                 DiscountPrice = si.DiscountPrice,
                 Stock = si.AmountInStock
             }).ToList()));
 
-        CreateMap<OrderCreateDto, Order>()
+        CreateMap<CreateOrderDto, Order>()
             .ForMember(dest => dest.ClientFullName, opt => opt.MapFrom(src => src.ClientFullName))
             .ForMember(dest => dest.DeliveryAdress, opt => opt.MapFrom(src => src.DeliveryAdress))
             .ForMember(dest => dest.DeliveryTypeId, opt => opt.MapFrom(src => src.DeliveryTypeId))
@@ -40,7 +41,7 @@ public class AppMappingProfile : Profile
 
 
         CreateMap<OrderPartDto, OrderPart>()
-            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
+            .ForMember(dest => dest.StockInfoId, opt => opt.MapFrom(src => src.StockInfoId))
             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
             .ForMember(dest => dest.Id, opt => opt.Ignore());
     }

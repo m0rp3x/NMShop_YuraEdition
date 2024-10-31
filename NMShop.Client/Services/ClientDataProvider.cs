@@ -3,6 +3,8 @@ using System.Net.Http.Json;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using NMShop.Shared.Scaffold;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 namespace NMShop.Client.Services
 {
@@ -12,9 +14,32 @@ namespace NMShop.Client.Services
         private readonly Dictionary<string, (DateTime, object)> _cache = new();
         private readonly TimeSpan _cacheExpiration = TimeSpan.FromMinutes(5);
 
-        public ClientDataProvider(HttpClient http)
+        // Base URL configuration
+        private readonly string _baseUrl;
+
+        public ClientDataProvider(HttpClient http, IServiceProvider serviceProvider)
         {
             _http = http;
+
+            if (serviceProvider.GetService<IWebAssemblyHostEnvironment>() is not null)
+            {
+                var environment = serviceProvider.GetRequiredService<IWebAssemblyHostEnvironment>();
+                _baseUrl = environment.IsDevelopment()
+                    ? "http://localhost:5000"
+                    : "https://www.kickrooms.ru";
+            }
+            else if (serviceProvider.GetService<IHostingEnvironment>() is not null)
+            {
+                var environment = serviceProvider.GetRequiredService<IHostingEnvironment>();
+                _baseUrl = environment.IsDevelopment()
+                    ? "http://localhost:5000"
+                    : "https://www.kickrooms.ru";
+            }
+            else
+            {
+                // Default fallback
+                _baseUrl = "https://www.kickrooms.ru";
+            }
         }
 
         private T GetFromCache<T>(string key)
@@ -32,7 +57,7 @@ namespace NMShop.Client.Services
 
         private void SetCache<T>(string key, T value)
         {
-            if(value != null)
+            if (value != null)
             {
                 _cache[key] = (DateTime.Now, value);
             }
@@ -44,18 +69,18 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<NavigationUnit>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<NavigationUnit>>("https://localhost:7279/api/navigation/GetAllNavigationUnits");
+            var data = await _http.GetFromJsonAsync<IEnumerable<NavigationUnit>>($"{_baseUrl}/api/navigation/GetAllNavigationUnits");
             SetCache(cacheKey, data);
             return data;
         }
 
-        public async Task<IEnumerable<BrandGallery>> GetBrandGalleriesAsync()
+        public async Task<IEnumerable<BrandGalleryItem>> GetBrandGalleriesAsync()
         {
             var cacheKey = "brandGalleries";
-            var cachedData = GetFromCache<IEnumerable<BrandGallery>>(cacheKey);
+            var cachedData = GetFromCache<IEnumerable<BrandGalleryItem>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<BrandGallery>>("https://localhost:7279/api/navigation/GetAllBrandGalleries");
+            var data = await _http.GetFromJsonAsync<IEnumerable<BrandGalleryItem>>($"{_baseUrl}/api/navigation/GetAllBrandGalleries");
             SetCache(cacheKey, data);
             return data;
         }
@@ -66,7 +91,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<Brand>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<Brand>>("https://localhost:7279/api/productattributes/brands");
+            var data = await _http.GetFromJsonAsync<IEnumerable<Brand>>($"{_baseUrl}/api/productattributes/brands");
             SetCache(cacheKey, data);
             return data;
         }
@@ -77,7 +102,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<Gender>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<Gender>>("https://localhost:7279/api/productattributes/genders");
+            var data = await _http.GetFromJsonAsync<IEnumerable<Gender>>($"{_baseUrl}/api/productattributes/genders");
             SetCache(cacheKey, data);
             return data;
         }
@@ -88,7 +113,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<ProductType>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            string url = "https://localhost:7279/api/productattributes/product-types";
+            string url = $"{_baseUrl}/api/productattributes/product-types";
             if (parentCategoryId.HasValue)
             {
                 url += $"?parentCategoryId={parentCategoryId}";
@@ -105,7 +130,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<ProductColor>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<ProductColor>>("https://localhost:7279/api/productattributes/colors");
+            var data = await _http.GetFromJsonAsync<IEnumerable<ProductColor>>($"{_baseUrl}/api/productattributes/colors");
             SetCache(cacheKey, data);
             return data;
         }
@@ -116,7 +141,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<string>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            string url = $"https://localhost:7279/api/productattributes/category-size-display-type?categoryId={categoryId}";
+            string url = $"{_baseUrl}/api/productattributes/category-size-display-type?categoryId={categoryId}";
 
             var data = await _http.GetStringAsync(url);
             SetCache(cacheKey, data);
@@ -129,7 +154,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<SellingCategory>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<SellingCategory>>("https://localhost:7279/api/productattributes/selling-categories");
+            var data = await _http.GetFromJsonAsync<IEnumerable<SellingCategory>>($"{_baseUrl}/api/productattributes/selling-categories");
             SetCache(cacheKey, data);
             return data;
         }
@@ -140,7 +165,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<ProductDto>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<ProductDto>($"https://localhost:7279/api/products/id/{id}");
+            var data = await _http.GetFromJsonAsync<ProductDto>($"{_baseUrl}/api/products/id/{id}");
             SetCache(cacheKey, data);
             return data;
         }
@@ -151,7 +176,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<ProductDto>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            string url = $"https://localhost:7279/api/products/product-by-article?article={HttpUtility.UrlEncode(article)}";
+            string url = $"{_baseUrl}/api/products/product-by-article?article={HttpUtility.UrlEncode(article)}";
             var product = await _http.GetFromJsonAsync<ProductDto>(url);
             SetCache(cacheKey, product);
             return product;
@@ -159,26 +184,25 @@ namespace NMShop.Client.Services
 
         public async Task<IEnumerable<ReferenceTopic>> GetChildTopicsByParentCodeAsync(string parentCode)
         {
-            string url = $"https://localhost:7279/api/referenceinfo/{HttpUtility.UrlEncode(parentCode)}/children";
+            string url = $"{_baseUrl}/api/referenceinfo/{HttpUtility.UrlEncode(parentCode)}/children";
             return await _http.GetFromJsonAsync<IEnumerable<ReferenceTopic>>(url);
         }
 
         public async Task<ReferenceTopic> GetReferenceInfoByTopicAsync(string topic)
         {
-            string url = $"https://localhost:7279/api/referenceinfo/{HttpUtility.UrlEncode(topic)}";
+            string url = $"{_baseUrl}/api/referenceinfo/{HttpUtility.UrlEncode(topic)}";
             return await _http.GetFromJsonAsync<ReferenceTopic>(url);
         }
 
         public async Task<IEnumerable<ReferenceTopic>> GetAllReferenceInfoAsync()
         {
-            string url = "https://localhost:7279/api/referenceinfo";
+            string url = $"{_baseUrl}/api/referenceinfo";
             return await _http.GetFromJsonAsync<IEnumerable<ReferenceTopic>>(url);
         }
 
-
         public async Task<IEnumerable<ProductDto>> GetFilteredProducts(ProductFilter filter)
         {
-            var url = "https://localhost:7279/api/products/filter";
+            var url = $"{_baseUrl}/api/products/filter";
             var response = await _http.PostAsJsonAsync(url, filter);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<IEnumerable<ProductDto>>();
@@ -190,7 +214,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<int?>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var url = $"https://localhost:7279/api/productattributes/category-id-by-name?categoryName={HttpUtility.UrlEncode(categoryName)}";
+            var url = $"{_baseUrl}/api/productattributes/category-id-by-name?categoryName={HttpUtility.UrlEncode(categoryName)}";
             var data = await _http.GetFromJsonAsync<int?>(url);
             SetCache(cacheKey, data);
             return data;
@@ -198,7 +222,7 @@ namespace NMShop.Client.Services
 
         public async Task<int> GetFilteredProductsCount(ProductFilter filter)
         {
-            var url = "https://localhost:7279/api/products/filter-count";
+            var url = $"{_baseUrl}/api/products/filter-count";
             var response = await _http.PostAsJsonAsync(url, filter);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<int>();
@@ -210,17 +234,18 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<ContactMethod>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<ContactMethod>>("https://localhost:7279/api/orders/contact-methods");
+            var data = await _http.GetFromJsonAsync<IEnumerable<ContactMethod>>($"{_baseUrl}/api/orders/contact-methods");
             SetCache(cacheKey, data);
             return data;
         }
+
         public async Task<IEnumerable<DeliveryType>> GetDeliveryTypesAsync()
         {
             var cacheKey = "deliveryTypes";
             var cachedData = GetFromCache<IEnumerable<DeliveryType>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<DeliveryType>>("https://localhost:7279/api/orders/delivery-types");
+            var data = await _http.GetFromJsonAsync<IEnumerable<DeliveryType>>($"{_baseUrl}/api/orders/delivery-types");
             SetCache(cacheKey, data);
             return data;
         }
@@ -231,7 +256,7 @@ namespace NMShop.Client.Services
             var cachedData = GetFromCache<IEnumerable<PaymentType>>(cacheKey);
             if (cachedData != null) return cachedData;
 
-            var data = await _http.GetFromJsonAsync<IEnumerable<PaymentType>>("https://localhost:7279/api/orders/payment-types");
+            var data = await _http.GetFromJsonAsync<IEnumerable<PaymentType>>($"{_baseUrl}/api/orders/payment-types");
             SetCache(cacheKey, data);
             return data;
         }
@@ -246,8 +271,8 @@ namespace NMShop.Client.Services
             {
                 Console.Error.WriteLine("Brand name cannot be null or empty.");
             }
-            
-            var url = $"https://localhost:7279/api/productattributes/brand-id-by-name?brandName={HttpUtility.UrlEncode(brandName)}";
+
+            var url = $"{_baseUrl}/api/productattributes/brand-id-by-name?brandName={HttpUtility.UrlEncode(brandName)}";
             var data = await _http.GetFromJsonAsync<int?>(url);
             SetCache(cacheKey, data);
             return data;
@@ -260,12 +285,11 @@ namespace NMShop.Client.Services
                 Console.Error.WriteLine("Promo code cannot be null or empty.");
             }
 
-            var url = $"https://localhost:7279/api/orders/promo-code/{HttpUtility.UrlEncode(code)}";
+            var url = $"{_baseUrl}/api/orders/promo-code/{HttpUtility.UrlEncode(code)}";
             return await _http.GetFromJsonAsync<int>(url);
         }
 
-
-        public async Task<(bool isSuccess, string message)> SubmitOrderAsync(OrderCreateDto order)
+        public async Task<(bool isSuccess, string message)> SubmitOrderAsync(CreateOrderDto order)
         {
             if (order == null)
             {
@@ -274,7 +298,7 @@ namespace NMShop.Client.Services
 
             try
             {
-                var response = await _http.PostAsJsonAsync("https://localhost:7279/api/orders/submit-order", order);
+                var response = await _http.PostAsJsonAsync($"{_baseUrl}/api/orders/submit-order", order);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -289,9 +313,5 @@ namespace NMShop.Client.Services
                 return (false, $"Ошибка: {ex.Message}");
             }
         }
-
-
-
-
     }
 }

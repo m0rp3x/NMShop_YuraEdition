@@ -48,11 +48,11 @@ namespace NMShop.Server.Controllers
 
         [HttpGet]
         [Route("GetAllBrandGalleries")]
-        public async Task<ActionResult<List<BrandGallery>>> GetAllBrandGalleries()
+        public async Task<ActionResult<List<BrandGalleryItem>>> GetAllBrandGalleries()
         {
-            var brandGalleries = await _context.BrandGalleries
+            var brandGalleries = await _context.BrandGalleryItems
                 .Include(bg => bg.Brand)
-                .Select(bg => new BrandGallery
+                .Select(bg => new BrandGalleryItem
                 {
                     Id = bg.Id,
                     BrandId = bg.BrandId,

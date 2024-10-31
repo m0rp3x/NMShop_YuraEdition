@@ -9,7 +9,7 @@
     <div class="px-3 py-15"  style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
         <!-- Логотип слева -->
         <div class="d-flex" style="justify-self: start;">
-            <MudImage @onclick="NavigateTest" Src="/assets/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="45" Height="45" />
+            <MudImage @onclick="NavigateMain" Src="/assets/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="45" Height="45" />
         </div>
 
         <!-- Навигационные кнопки по центру -->
@@ -75,9 +75,10 @@
         _navUnits = await DataProvider.GetNavigationUnitsAsync();
     }
 
-    private void NavigateTest()
+    private void NavigateMain()
     {
-        Navigation.NavigateTo("/catalog/");
+        // Navigation.NavigateTo("/");
+        Console.WriteLine(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == null);
     }
 
     private void ShowMenu(NavigationUnit nu)

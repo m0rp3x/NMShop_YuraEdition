@@ -189,9 +189,9 @@ namespace NMShop.Client.Services
         private void NotifyStateChanged() => OnChange?.Invoke();
 
         // Метод для построения объекта заказа на основе формы
-        public async Task<OrderCreateDto> BuildOrderAsync(CheckoutForm checkoutForm)
+        public async Task<CreateOrderDto> BuildOrderAsync(CheckoutForm checkoutForm)
         {
-            var order = new OrderCreateDto
+            var order = new CreateOrderDto
             {
                 ClientFullName = checkoutForm.FIO,
                 DeliveryAdress = checkoutForm.Address,
@@ -203,7 +203,7 @@ namespace NMShop.Client.Services
                 DeliveryRecipientPhone = checkoutForm.IsClientRecipient ? checkoutForm.Contact : checkoutForm.Recipient_Phone,
                 OrderParts = _items.Select(item => new OrderPartDto
                 {
-                    ProductId = item.Product.Id,
+                    StockInfoId = item.PriceInfo.Id,
                     Amount = item.Quantity,
                 }).ToList(),
                 PromoCode = AppliedPromoCode?.Code

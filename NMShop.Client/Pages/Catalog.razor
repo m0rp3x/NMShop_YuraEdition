@@ -138,7 +138,7 @@
 
                 <MudSpacer />
 
-                <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.h5"
+                <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.body1"
                          @onmouseover="() => {_isFilterButtonHovered = true;}"
                          @onmouseout="() => {_isFilterButtonHovered = false;}"
                          @onclick="() => {_isDrawerOpened = !_isDrawerOpened;}"
@@ -148,9 +148,9 @@
                 </MudText>
 
                 <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
-                    <MudText Class="mr-2" Typo="Typo.h5" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
-                    <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.h5" Inline="true">@CurrentSortOption.Name</MudText>
-                    <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateX(180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" />
+                    <MudText Class="mr-2" Typo="Typo.body1" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
+                    <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.body1" Inline="true">@CurrentSortOption.Name</MudText>
+                    <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateZ(-180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" />
                     <div class="absolute" style=@($"border-radius: 20px; width: 100%; transition: all 1s ease 0s; overflow: hidden; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "left: 0; top: 120%; height: fit-content;" : "height: 0px;"))>
                         @foreach (SortOption so in SortOptions)
                         {
@@ -199,7 +199,7 @@
     private SortOption CurrentSortOption = SortOptions[0];
 
     private string FilterButtonStyle =>
-    "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
+    "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; border: none; line-height: 1; "
     + (_isFilterButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
 
     private List<BrandModel> Brands = new();

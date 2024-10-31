@@ -1,29 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace NMShop.Shared.Scaffold;
 
 [Table("DeliveryTypes", Schema = "NMShop")]
+[Index("Name", Name = "DeliveryTypes_Name_key", IsUnique = true)]
 public partial class DeliveryType
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [DisplayName("Идентификатор")]
     public int Id { get; set; }
 
     [StringLength(100)]
-    [DisplayName("Название")]
     public string Name { get; set; } = null!;
 
     [InverseProperty("DeliveryType")]
-    [Display(AutoGenerateField = false)]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-
-    public override string ToString()
-    {
-        return $"{Name}";  // Отображать ID бренда
-    }
-
-
 }

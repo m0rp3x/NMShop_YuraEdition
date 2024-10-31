@@ -35,10 +35,14 @@ builder.Services.AddRazorComponents()
 
 
 
+// Configuring DB Connection depending on environment
+string connectionString = builder.Environment.IsDevelopment()
+    ? builder.Configuration.GetConnectionString("RemoteConnection")
+    : builder.Configuration.GetConnectionString("LocalConnection");
+
 builder.Services.AddDbContext<NMShopContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("RemoteConnection"));
-
+    options.UseNpgsql(connectionString);
 });
 
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
@@ -68,8 +72,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 app.MapControllers();
-app.UseCoreAdminCustomUrl("adolfhitler");
+
+var adminUrl = builder.Configuration["CoreAdmin:CustomUrl"];
+app.UseCoreAdminCustomUrl(adminUrl);
 app.UseCoreAdminCustomTitle("Я ебу собак");
+app.UseCoreAdminCustomAuth((serviceProvider) => Task.FromResult(true));
+
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(NMShop.Client._Imports).Assembly);

@@ -39,14 +39,14 @@ namespace NMShop.Controllers
                     DeliveryTypeName = o.DeliveryType.Name,
                     PaymentTypeName = o.PaymentType.Name,
                     OrderStatusName = o.OrderStatus.Name,
-                    ContactValue = o.ContactValue
+                    ContactValue = o.ContactValue,
+                    //Total = o.OrderParts.Select(op => (op. .DiscountPrice ?? PriceInfo.Price) * Quantity)
                 })
                 .ToListAsync();
 
             return Ok(orders);
         }
         
-        // Пример контроллера на стороне API
         [HttpGet("by-contact")]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByContact(string contactValue)
         {
@@ -66,14 +66,14 @@ namespace NMShop.Controllers
 
         // GET: api/orders/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrder(int id)
+        public async Task<ActionResult<OrderDto>> GetOrder(int id)
         {
             var order = await _context.Orders
                 .Include(o => o.DeliveryType)
                 .Include(o => o.PaymentType)
                 .Include(o => o.OrderStatus)
                 .Include(o => o.OrderParts)
-                .Include(o => o.ContactValue)
+                    .ThenInclude(op => op.StockInfo)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
@@ -81,7 +81,31 @@ namespace NMShop.Controllers
                 return NotFound();
             }
 
-            return Ok(order);
+            // Calculate total price considering promo code discount
+            decimal total = order.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount);
+
+            if (order.PromoCodeId.HasValue)
+            {
+                var promoCode = await _context.PromoCodes.FirstOrDefaultAsync(pc => pc.Id == order.PromoCodeId);
+                if (promoCode != null && promoCode.DiscountPercent > 0)
+                {
+                    total -= total * (promoCode.DiscountPercent / 100m);
+                }
+            }
+
+            OrderDto result = new()
+            {
+                Id = order.Id,
+                ClientFullName = order.ClientFullName,
+                DeliveryAdress = order.DeliveryAdress,
+                DeliveryTypeName = order.DeliveryType.Name,
+                PaymentTypeName = order.PaymentType.Name,
+                OrderStatusName = order.OrderStatus.Name,
+                ContactValue = order.ContactValue,
+                Total = total
+            };
+
+            return Ok(result);
         }
 
         // POST: api/orders
@@ -188,7 +212,7 @@ namespace NMShop.Controllers
         }
 
         [HttpPost("submit-order")]
-        public async Task<IActionResult> SubmitOrder([FromBody] OrderCreateDto orderDto)
+        public async Task<IActionResult> SubmitOrder([FromBody] CreateOrderDto orderDto)
         {
             if (orderDto == null)
             {
@@ -227,9 +251,9 @@ namespace NMShop.Controllers
 
             foreach (var part in orderDto.OrderParts)
             {
-                if (part.ProductId == 0)
+                if (part.StockInfoId == 0)
                 {
-                    return BadRequest(new { message = "Поле 'Product' является обязательным для всех товаров." });
+                    return BadRequest(new { message = "Поле 'StockInfoId' является обязательным для всех товаров." });
                 }
             }
 

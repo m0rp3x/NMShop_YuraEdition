@@ -3,69 +3,22 @@ CREATE SCHEMA "NMShop";
 SET search_path = "NMShop";
 ALTER USER m0rp3x SET search_path = "NMShop";
 
-CREATE TABLE IF NOT EXISTS "ProductImages" (
-	"Id" serial NOT NULL UNIQUE,
-	"Bytes" bytea NOT NULL,
-	"Product_Id" integer NOT NULL,
-	"IsMain" boolean NOT NULL,
-	PRIMARY KEY ("Id")
+CREATE TABLE IF NOT EXISTS "DeliveryTypes" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(100) NOT NULL UNIQUE,
+    PRIMARY KEY ("Id")
 );
 
-CREATE TABLE IF NOT EXISTS "Product" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(150) NOT NULL,
-	"Brand_Id" integer NOT NULL,
-	"Article" varchar(150) NOT NULL UNIQUE,
-	"Description" varchar(1000) NOT NULL,
-	"Gender_Id" integer NOT NULL,
-	"ProductType_Id" integer NOT NULL,
-	"SellingCategory_Id" integer NOT NULL,
-	"DateAdded" date NOT NULL,
-	"Color_Id" integer NOT NULL,
-	PRIMARY KEY ("Id")
+CREATE TABLE IF NOT EXISTS "PaymentTypes" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(100) NOT NULL UNIQUE,
+    PRIMARY KEY ("Id")
 );
 
-CREATE TABLE IF NOT EXISTS "Brands" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL UNIQUE,
-	PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "Genders" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL UNIQUE,
-	PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "SellingCategories" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL UNIQUE,
-	PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "ProductTypes" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(50) NOT NULL UNIQUE,
-	"ParentType_Id" integer,
-    "SizeDisplayType" varchar(10),
-	PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "ProductColors" (
-	"Id" serial NOT NULL UNIQUE,
-	"Value" varchar(6) NOT NULL UNIQUE,
-	"Name" varchar(30) NOT NULL UNIQUE,
-	PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "StockInfo" (
-	"Id" serial NOT NULL UNIQUE,
-	"Product_Id" integer NOT NULL,
-	"Size" numeric(10,0) NOT NULL,
-	"Price" numeric(10,0) NOT NULL,
-	"DiscountPrice" numeric(10,0),
-	"AmountInStock" integer NOT NULL,
-	PRIMARY KEY ("Id")
+CREATE TABLE IF NOT EXISTS "OrderStatuses" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(100) NOT NULL UNIQUE,
+    PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "ContactMethods" (
@@ -83,24 +36,6 @@ CREATE TABLE IF NOT EXISTS "PromoCodes" (
     "DiscountPercent" integer NOT NULL,
     "ExpirationDate" date,
     PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "DeliveryTypes" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL UNIQUE,
-	PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "PaymentTypes" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL UNIQUE,
-	PRIMARY KEY ("Id")
-);
-
-CREATE TABLE IF NOT EXISTS "OrderStatuses" (
-	"Id" serial NOT NULL UNIQUE,
-	"Name" varchar(100) NOT NULL UNIQUE,
-	PRIMARY KEY ("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "Orders" (
@@ -125,12 +60,87 @@ CREATE TABLE IF NOT EXISTS "Orders" (
     FOREIGN KEY ("PromoCode_Id") REFERENCES "PromoCodes"("Id")
 );
 
+CREATE TABLE IF NOT EXISTS "Brands" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(100) NOT NULL UNIQUE,
+    PRIMARY KEY ("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "Genders" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(50) NOT NULL UNIQUE,
+    PRIMARY KEY ("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "SellingCategories" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(50) NOT NULL UNIQUE,
+    PRIMARY KEY ("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "ProductTypes" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(50) NOT NULL UNIQUE,
+    "ParentType_Id" integer,
+    "SizeDisplayType" varchar(10),
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("ParentType_Id") REFERENCES "ProductTypes"("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "ProductColors" (
+    "Id" serial NOT NULL UNIQUE,
+    "Value" varchar(6) NOT NULL UNIQUE,
+    "Name" varchar(30) NOT NULL UNIQUE,
+    PRIMARY KEY ("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "Product" (
+    "Id" serial NOT NULL UNIQUE,
+    "Name" varchar(150) NOT NULL,
+    "Brand_Id" integer NOT NULL,
+    "Article" varchar(150) NOT NULL UNIQUE,
+    "Description" varchar(1000) NOT NULL,
+    "Gender_Id" integer NOT NULL,
+    "ProductType_Id" integer NOT NULL,
+    "SellingCategory_Id" integer NOT NULL,
+    "DateAdded" date NOT NULL,
+    "Color_Id" integer NOT NULL,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("Brand_Id") REFERENCES "Brands"("Id"),
+    FOREIGN KEY ("Gender_Id") REFERENCES "Genders"("Id"),
+    FOREIGN KEY ("ProductType_Id") REFERENCES "ProductTypes"("Id"),
+    FOREIGN KEY ("SellingCategory_Id") REFERENCES "SellingCategories"("Id"),
+    FOREIGN KEY ("Color_Id") REFERENCES "ProductColors"("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "ProductImages" (
+    "Id" serial NOT NULL UNIQUE,
+    "Bytes" bytea NOT NULL,
+    "Product_Id" integer NOT NULL,
+    "IsMain" boolean NOT NULL,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("Product_Id") REFERENCES "Product"("Id")
+);
+
+CREATE TABLE IF NOT EXISTS "StockInfo" (
+    "Id" serial NOT NULL UNIQUE,
+    "Product_Id" integer NOT NULL,
+    "Size" numeric(10,0) NOT NULL,
+    "Price" numeric(10,0) NOT NULL,
+    "DiscountPrice" numeric(10,0),
+    "AmountInStock" integer NOT NULL,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("Product_Id") REFERENCES "Product"("Id")
+);
+
 CREATE TABLE IF NOT EXISTS "OrderParts" (
-	"Id" serial NOT NULL UNIQUE,
-	"Order_Id" integer NOT NULL,
-	"Product_Id" integer NOT NULL,
-	"Amount" integer NOT NULL,
-	PRIMARY KEY ("Id")
+    "Id" serial NOT NULL UNIQUE,
+    "Order_Id" integer NOT NULL,
+    "StockInfo_Id" integer NOT NULL,
+    "Amount" integer NOT NULL,
+    PRIMARY KEY ("Id"),
+    FOREIGN KEY ("Order_Id") REFERENCES "Orders"("Id"),
+    FOREIGN KEY ("StockInfo_Id") REFERENCES "StockInfo"("Id")
 );
 
 CREATE TABLE IF NOT EXISTS "NavigationItems" (
@@ -168,7 +178,7 @@ CREATE TABLE IF NOT EXISTS "ReferenceContent" (
     FOREIGN KEY ("TextSize_Id") REFERENCES "TextSizes"("Id")
 );
 
-CREATE TABLE IF NOT EXISTS "BrandGallery" (
+CREATE TABLE IF NOT EXISTS "BrandGalleryItems" (
     "Id" serial NOT NULL UNIQUE,
     "Brand_Id" integer NOT NULL,
     "Image" bytea NOT NULL,
@@ -176,19 +186,11 @@ CREATE TABLE IF NOT EXISTS "BrandGallery" (
     FOREIGN KEY ("Brand_Id") REFERENCES "Brands"("Id")
 );
 
-ALTER TABLE "ProductImages" ADD CONSTRAINT "fk_ProductImages_Product_Id" FOREIGN KEY ("Product_Id") REFERENCES "Product"("Id");
-ALTER TABLE "Product" ADD CONSTRAINT "fk_Product_Brand_Id" FOREIGN KEY ("Brand_Id") REFERENCES "Brands"("Id");
-ALTER TABLE "Product" ADD CONSTRAINT "fk_Product_Gender_Id" FOREIGN KEY ("Gender_Id") REFERENCES "Genders"("Id");
-ALTER TABLE "Product" ADD CONSTRAINT "fk_Product_ProductType_Id" FOREIGN KEY ("ProductType_Id") REFERENCES "ProductTypes"("Id");
-ALTER TABLE "Product" ADD CONSTRAINT "fk_Product_SellingCategory_Id" FOREIGN KEY ("SellingCategory_Id") REFERENCES "SellingCategories"("Id");
-ALTER TABLE "Product" ADD CONSTRAINT "fk_Product_Color_Id" FOREIGN KEY ("Color_Id") REFERENCES "ProductColors"("Id");
-ALTER TABLE "ProductTypes" ADD CONSTRAINT "fk_ProductTypes_ParentType_Id" FOREIGN KEY ("ParentType_Id") REFERENCES "ProductTypes"("Id");
-ALTER TABLE "StockInfo" ADD CONSTRAINT "fk_StockInfo_Product_Id" FOREIGN KEY ("Product_Id") REFERENCES "Product"("Id");
-ALTER TABLE "Orders" ADD CONSTRAINT "fk_Orders_DeliveryType_Id" FOREIGN KEY ("DeliveryType_Id") REFERENCES "DeliveryTypes"("Id");
-ALTER TABLE "Orders" ADD CONSTRAINT "fk_Orders_PaymentType_Id" FOREIGN KEY ("PaymentType_Id") REFERENCES "PaymentTypes"("Id");
-ALTER TABLE "Orders" ADD CONSTRAINT "fk_Orders_OrderStatus_Id" FOREIGN KEY ("OrderStatus_Id") REFERENCES "OrderStatuses"("Id");
-ALTER TABLE "OrderParts" ADD CONSTRAINT "fk_OrderParts_Order_Id" FOREIGN KEY ("Order_Id") REFERENCES "Orders"("Id");
-ALTER TABLE "OrderParts" ADD CONSTRAINT "fk_OrderParts_Product_Id" FOREIGN KEY ("Product_Id") REFERENCES "Product"("Id");
+CREATE TABLE IF NOT EXISTS "BannerCarouselItems" (
+    "Id" serial NOT NULL UNIQUE,
+    "Image" bytea NOT NULL,
+    PRIMARY KEY ("Id")
+);
 
 
 -- Add constraint to prevent deep inheritance chains in ProductTypes
@@ -244,8 +246,6 @@ BEFORE INSERT OR UPDATE ON "NMShop"."Orders"
 FOR EACH ROW
 EXECUTE FUNCTION check_promo_code_validity();
 
-
-
 -- Добавляем проверку на максимальное наследование навигационного пункта
 CREATE OR REPLACE FUNCTION check_navigation_depth()
 RETURNS TRIGGER AS $$
@@ -293,7 +293,7 @@ RETURNS TRIGGER AS $$
 DECLARE
     brand_gallery_count integer;
 BEGIN
-    SELECT COUNT(*) INTO brand_gallery_count FROM "BrandGallery" WHERE "Brand_Id" = NEW."Brand_Id";
+    SELECT COUNT(*) INTO brand_gallery_count FROM "BrandGalleryItems" WHERE "Brand_Id" = NEW."Brand_Id";
     IF brand_gallery_count >= 3 THEN
         RAISE EXCEPTION 'Нельзя добавить больше 3 записей в галерею брендов.';
     END IF;
@@ -302,9 +302,16 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_check_brand_gallery_limit
-BEFORE INSERT ON "BrandGallery"
+BEFORE INSERT ON "BrandGalleryItems"
 FOR EACH ROW
 EXECUTE FUNCTION check_brand_gallery_limit();
+
+
+
+
+
+
+
 
 
 -- Insert test data into reference tables
@@ -425,8 +432,6 @@ INSERT INTO "Product" ("Name", "Brand_Id", "Article", "Description", "Gender_Id"
   ('Кеды Nike Air', 1, 'SN004', 'Спортивные кеды', 1, 15, 4, '2024-11-08', 3);
 
 
-
-
 INSERT INTO "ContactMethods" ("Name", "ValidationMask", "ValidationErrorText")
 VALUES
     ('Телефон', '^\d{10,11}$', 'Телефон должен содержать от 10 до 11 цифр.'),
@@ -442,11 +447,7 @@ INSERT INTO "PromoCodes" ("Code", "MaxUsages", "DiscountPercent", "ExpirationDat
 
 INSERT INTO "TextSizes" ("Value") VALUES ('Маленький'), ('Средний'), ('Большой');
 
-
-
-
-
-INSERT INTO "BrandGallery" ("Brand_Id", "Image") VALUES
+INSERT INTO "BrandGalleryItems" ("Brand_Id", "Image") VALUES
   (1, E''::bytea),
   (1, E''::bytea),
   (1, E''::bytea);

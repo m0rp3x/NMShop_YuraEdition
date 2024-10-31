@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NMShop.Shared.Models
 {
-    public class OrderCreateDto
+    public class CreateOrderDto
     {
         public string ClientFullName { get; set; } = null!;
         public string DeliveryAdress { get; set; } = null!;
@@ -25,7 +25,7 @@ namespace NMShop.Shared.Models
 
     public class OrderPartDto
     {
-        public int ProductId { get; set; }
+        public int StockInfoId { get; set; }
         public int Amount { get; set; }
     }
 

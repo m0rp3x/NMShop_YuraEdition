@@ -15,9 +15,11 @@ public partial class NMShopContext : DbContext
     {
     }
 
+    public virtual DbSet<BannerCarouselItem> BannerCarouselItems { get; set; }
+
     public virtual DbSet<Brand> Brands { get; set; }
 
-    public virtual DbSet<BrandGallery> BrandGalleries { get; set; }
+    public virtual DbSet<BrandGalleryItem> BrandGalleryItems { get; set; }
 
     public virtual DbSet<ContactMethod> ContactMethods { get; set; }
 
@@ -55,42 +57,65 @@ public partial class NMShopContext : DbContext
 
     public virtual DbSet<TextSize> TextSizes { get; set; }
 
+    public virtual DbSet<TgAdmin> TgAdmins { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=194.87.187.147;Port=5432;Username=m0rp3x;Password=16092009##;Database=nmshop");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasPostgresExtension("pg_catalog", "adminpack");
+        modelBuilder.Entity<BannerCarouselItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("BannerCarouselItems_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"BannerCarouselItems_Id_seq\"'::regclass)");
+        });
 
         modelBuilder.Entity<Brand>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Brands_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Brands_Id_seq\"'::regclass)");
         });
 
-        modelBuilder.Entity<BrandGallery>(entity =>
+        modelBuilder.Entity<BrandGalleryItem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("BrandGallery_pkey");
+            entity.HasKey(e => e.Id).HasName("BrandGalleryItems_pkey");
 
-            entity.HasOne(d => d.Brand).WithMany(p => p.BrandGalleries)
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"BrandGalleryItems_Id_seq\"'::regclass)");
+
+            entity.HasOne(d => d.Brand).WithMany(p => p.BrandGalleryItems)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("BrandGallery_Brand_Id_fkey");
+                .HasConstraintName("BrandGalleryItems_Brand_Id_fkey");
         });
 
         modelBuilder.Entity<ContactMethod>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ContactMethods_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"ContactMethods_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<DeliveryType>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("DeliveryTypes_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"DeliveryTypes_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<Gender>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Genders_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Genders_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<NavigationItem>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("NavigationItems_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"NavigationItems_Id_seq\"'::regclass)");
 
             entity.HasOne(d => d.ParentItem).WithMany(p => p.InverseParentItem).HasConstraintName("NavigationItems_ParentItem_Id_fkey");
         });
@@ -98,6 +123,9 @@ public partial class NMShopContext : DbContext
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Orders_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Orders_Id_seq\"'::regclass)");
+            entity.Property(e => e.EstimatedDeliveryDateRange).HasDefaultValueSql("'Уточняем'::character varying");
 
             entity.HasOne(d => d.ContactMethod).WithMany(p => p.Orders)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -122,79 +150,97 @@ public partial class NMShopContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("OrderParts_pkey");
 
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"OrderParts_Id_seq\"'::regclass)");
+
             entity.HasOne(d => d.Order).WithMany(p => p.OrderParts)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_OrderParts_Order_Id");
+                .HasConstraintName("OrderParts_Order_Id_fkey");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.OrderParts)
+            entity.HasOne(d => d.StockInfo).WithMany(p => p.OrderParts)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_OrderParts_Product_Id");
+                .HasConstraintName("OrderParts_StockInfo_Id_fkey");
         });
 
         modelBuilder.Entity<OrderStatus>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("OrderStatuses_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"OrderStatuses_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<PaymentType>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PaymentTypes_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"PaymentTypes_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("Product_pkey");
 
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Product_Id_seq\"'::regclass)");
+
             entity.HasOne(d => d.Brand).WithMany(p => p.Products)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Product_Brand_Id");
+                .HasConstraintName("Product_Brand_Id_fkey");
 
             entity.HasOne(d => d.Color).WithMany(p => p.Products)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Product_Color_Id");
+                .HasConstraintName("Product_Color_Id_fkey");
 
             entity.HasOne(d => d.Gender).WithMany(p => p.Products)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Product_Gender_Id");
+                .HasConstraintName("Product_Gender_Id_fkey");
 
             entity.HasOne(d => d.ProductType).WithMany(p => p.Products)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Product_ProductType_Id");
+                .HasConstraintName("Product_ProductType_Id_fkey");
 
             entity.HasOne(d => d.SellingCategory).WithMany(p => p.Products)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_Product_SellingCategory_Id");
+                .HasConstraintName("Product_SellingCategory_Id_fkey");
         });
 
         modelBuilder.Entity<ProductColor>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ProductColors_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"ProductColors_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<ProductImage>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ProductImages_pkey");
 
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"ProductImages_Id_seq\"'::regclass)");
+
             entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_ProductImages_Product_Id");
+                .HasConstraintName("ProductImages_Product_Id_fkey");
         });
 
         modelBuilder.Entity<ProductType>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ProductTypes_pkey");
 
-            entity.HasOne(d => d.ParentType).WithMany(p => p.InverseParentType).HasConstraintName("fk_ProductTypes_ParentType_Id");
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"ProductTypes_Id_seq\"'::regclass)");
+
+            entity.HasOne(d => d.ParentType).WithMany(p => p.InverseParentType).HasConstraintName("ProductTypes_ParentType_Id_fkey");
         });
 
         modelBuilder.Entity<PromoCode>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PromoCodes_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"PromoCodes_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<ReferenceContent>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ReferenceContent_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"ReferenceContent_Id_seq\"'::regclass)");
 
             entity.HasOne(d => d.TextSize).WithMany(p => p.ReferenceContents)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -209,26 +255,41 @@ public partial class NMShopContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("ReferenceTopics_pkey");
 
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"ReferenceTopics_Id_seq\"'::regclass)");
+
             entity.HasOne(d => d.ParentTopic).WithMany(p => p.InverseParentTopic).HasConstraintName("ReferenceTopics_ParentTopic_Id_fkey");
         });
 
         modelBuilder.Entity<SellingCategory>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("SellingCategories_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"SellingCategories_Id_seq\"'::regclass)");
         });
 
         modelBuilder.Entity<StockInfo>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("StockInfo_pkey");
 
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"StockInfo_Id_seq\"'::regclass)");
+
             entity.HasOne(d => d.Product).WithMany(p => p.StockInfos)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_StockInfo_Product_Id");
+                .HasConstraintName("StockInfo_Product_Id_fkey");
         });
 
         modelBuilder.Entity<TextSize>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("TextSizes_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"TextSizes_Id_seq\"'::regclass)");
+        });
+
+        modelBuilder.Entity<TgAdmin>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("tg_admins_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('tg_admins_id_seq'::regclass)");
         });
 
         OnModelCreatingPartial(modelBuilder);

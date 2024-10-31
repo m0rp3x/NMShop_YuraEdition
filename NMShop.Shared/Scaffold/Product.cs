@@ -1,58 +1,42 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace NMShop.Shared.Scaffold;
 
 [Table("Product", Schema = "NMShop")]
+[Index("Article", Name = "Product_Article_key", IsUnique = true)]
 public partial class Product
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [DisplayName("Идентификатор")]
-
     public int Id { get; set; }
 
     [StringLength(150)]
-    [DisplayName("Название")]
-
     public string Name { get; set; } = null!;
 
     [Column("Brand_Id")]
-    [DisplayName("Бренд")]
-
     public int BrandId { get; set; }
 
     [StringLength(150)]
-    [DisplayName("Артикул товара")]
-
     public string Article { get; set; } = null!;
 
     [StringLength(1000)]
-    [DisplayName("Описание товара")]
-
     public string Description { get; set; } = null!;
 
     [Column("Gender_Id")]
-    [DisplayName("Гендер")]
-
     public int GenderId { get; set; }
 
     [Column("ProductType_Id")]
-    [DisplayName("Тип продукта")]
-
     public int ProductTypeId { get; set; }
 
     [Column("SellingCategory_Id")]
-    [DisplayName("Категория продажи")]
-
     public int SellingCategoryId { get; set; }
-    [DisplayName("Дата добавления")]
+
     public DateOnly DateAdded { get; set; }
 
     [Column("Color_Id")]
-    [DisplayName("Цвет")]
-
     public int ColorId { get; set; }
 
     [ForeignKey("BrandId")]
@@ -68,9 +52,6 @@ public partial class Product
     public virtual Gender Gender { get; set; } = null!;
 
     [InverseProperty("Product")]
-    public virtual ICollection<OrderPart> OrderParts { get; set; } = new List<OrderPart>();
-
-    [InverseProperty("Product")]
     public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
 
     [ForeignKey("ProductTypeId")]
@@ -82,12 +63,5 @@ public partial class Product
     public virtual SellingCategory SellingCategory { get; set; } = null!;
 
     [InverseProperty("Product")]
-    [Display(AutoGenerateField = false)]
     public virtual ICollection<StockInfo> StockInfos { get; set; } = new List<StockInfo>();
-
-    public override string ToString()
-    {
-        return $"#{Id} - {Name}"; // Отображать ID бренда
-    }
-
 }

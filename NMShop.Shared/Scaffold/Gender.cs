@@ -1,29 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace NMShop.Shared.Scaffold;
 
 [Table("Genders", Schema = "NMShop")]
+[Index("Name", Name = "Genders_Name_key", IsUnique = true)]
 public partial class Gender
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [DisplayName("Идентификатор")]
-
     public int Id { get; set; }
 
     [StringLength(50)]
-    [DisplayName("Название")]
     public string Name { get; set; } = null!;
 
     [InverseProperty("Gender")]
-    [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
-
-    public override string ToString()
-    {
-        return $"{Name}";  // Отображать ID бренда
-    }
-
 }

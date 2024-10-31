@@ -161,7 +161,7 @@ namespace NMShop.Controller
                 productsQuery = productsQuery.Where(p => filter.ColorIds.Contains(p.ColorId));
             }
 
-            // Sorting
+            // Optimized Sorting
             if (!string.IsNullOrEmpty(filter.SortBy))
             {
                 switch (filter.SortBy.ToLower())
@@ -178,8 +178,8 @@ namespace NMShop.Controller
                         break;
                     case "popularity":
                         productsQuery = filter.IsAscending
-                            ? productsQuery.OrderBy(p => p.OrderParts.Sum(op => op.Amount))
-                            : productsQuery.OrderByDescending(p => p.OrderParts.Sum(op => op.Amount));
+                            ? productsQuery.OrderBy(p => p.StockInfos.Sum(si => si.OrderParts.Sum(op => op.Amount)))
+                            : productsQuery.OrderByDescending(p => p.StockInfos.Sum(si => si.OrderParts.Sum(op => op.Amount)));
                         break;
                     default:
                         productsQuery = productsQuery.OrderBy(p => p.Id);
@@ -188,13 +188,8 @@ namespace NMShop.Controller
             }
             else
             {
-                // Default sorting
-                productsQuery = productsQuery.OrderBy(p => p.Id);
+                productsQuery = productsQuery.OrderByDescending(p => p.StockInfos.Sum(si => si.OrderParts.Sum(op => op.Amount)));
             }
-
-
-            var guid = new Random().Next();
-
 
             // Skip and Take
             if (filter.Skip.HasValue && filter.Skip.Value > 0)
