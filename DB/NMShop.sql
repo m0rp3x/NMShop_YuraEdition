@@ -192,36 +192,34 @@ CREATE TABLE IF NOT EXISTS "BannerCarouselItems" (
 );
 
 
-CREATE TABLE IF NOT EXISTS Users (
-    Id SERIAL PRIMARY KEY,
-    Username VARCHAR(50) NOT NULL,
-    Role VARCHAR(20) NOT NULL CHECK (Role IN ('Client', 'Operator'))
+CREATE TABLE Users (
+    UserID SERIAL PRIMARY KEY,
+    Username VARCHAR(50),
+    TelegramID BIGINT UNIQUE,
+    Role VARCHAR(20) DEFAULT 'Client',
+    CreatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Chats (
-    Id SERIAL PRIMARY KEY,
-    ClientId INT NOT NULL,
-    OperatorId INT,
-    CreatedAt TIMESTAMP NOT NULL DEFAULT NOW(),
-    ClosedAt TIMESTAMP,
-    IsOpen BOOLEAN NOT NULL DEFAULT TRUE,
-    FOREIGN KEY (ClientId) REFERENCES Users (Id),
-    FOREIGN KEY (OperatorId) REFERENCES Users (Id)
+CREATE TABLE Tickets (
+    TicketID SERIAL PRIMARY KEY,
+    UserID INT,
+    Subject VARCHAR(255),
+    Description TEXT,
+    Status VARCHAR(20) DEFAULT 'Open',
+    CreatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
-CREATE TABLE IF NOT EXISTS Messages (
-    Id SERIAL PRIMARY KEY,
-    ChatId INT NOT NULL,
-    UserId INT NOT NULL,
-    Content TEXT NOT NULL,
-    Timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
-    FOREIGN KEY (ChatId) REFERENCES Chats (Id),
-    FOREIGN KEY (UserId) REFERENCES Users (Id)
+CREATE TABLE TicketMessages (
+    MessageID SERIAL PRIMARY KEY,
+    TicketID INT,
+    UserID INT,
+    Message TEXT,
+    SentAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (TicketID) REFERENCES Tickets(TicketID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
-
-
-
-
 
 -- Add constraint to prevent deep inheritance chains in ProductTypes
 CREATE OR REPLACE FUNCTION check_parent_depth()
