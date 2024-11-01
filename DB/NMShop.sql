@@ -193,6 +193,37 @@ CREATE TABLE IF NOT EXISTS "BannerCarouselItems" (
 );
 
 
+CREATE TABLE IF NOT EXISTS Users (
+    Id SERIAL PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL,
+    Role VARCHAR(20) NOT NULL CHECK (Role IN ('Client', 'Operator'))
+);
+
+CREATE TABLE IF NOT EXISTS Chats (
+    Id SERIAL PRIMARY KEY,
+    ClientId INT NOT NULL,
+    OperatorId INT,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    ClosedAt TIMESTAMP,
+    IsOpen BOOLEAN NOT NULL DEFAULT TRUE,
+    FOREIGN KEY (ClientId) REFERENCES Users (Id),
+    FOREIGN KEY (OperatorId) REFERENCES Users (Id)
+);
+
+CREATE TABLE IF NOT EXISTS Messages (
+    Id SERIAL PRIMARY KEY,
+    ChatId INT NOT NULL,
+    UserId INT NOT NULL,
+    Content TEXT NOT NULL,
+    Timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (ChatId) REFERENCES Chats (Id),
+    FOREIGN KEY (UserId) REFERENCES Users (Id)
+);
+
+
+
+
+
 -- Add constraint to prevent deep inheritance chains in ProductTypes
 CREATE OR REPLACE FUNCTION check_parent_depth()
 RETURNS TRIGGER AS $$
@@ -750,13 +781,7 @@ $$;
 
 
 
-CREATE TABLE tg_admins
-(
-    Id          SERIAL PRIMARY KEY,
-    Username    VARCHAR(255) NOT NULL,
-    TelegramId  VARCHAR(12) NOT NULL,
-    CONSTRAINT tg_admins_username_uindex UNIQUE (Username)
-);
+
 
 
 
