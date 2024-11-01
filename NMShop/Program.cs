@@ -11,6 +11,7 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddSingleton<ClientDataProvider>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<SearchService>();
 
 builder.Services.AddControllersWithViews()
     .AddDataAnnotationsLocalization();

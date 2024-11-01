@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace NMShop.Shared.Scaffold;
 
 [Table("BannerCarouselItems", Schema = "NMShop")]

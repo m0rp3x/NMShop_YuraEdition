@@ -68,5 +68,15 @@ namespace NMShop.Server.Controllers
             return Ok(brandGalleries);
         }
 
+
+        [HttpGet]
+        [Route("GetAllBannerCarouselItems")]
+        public async Task<ActionResult<List<BannerCarouselItem>>> GetAllBannerCarouselItems()
+        {
+            var bannerCarouselItems = await _context.BannerCarouselItems
+                .ToListAsync();
+
+            return Ok(bannerCarouselItems);
+        }
     }
 }

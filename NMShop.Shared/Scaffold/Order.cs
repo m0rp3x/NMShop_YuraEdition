@@ -48,6 +48,8 @@ public partial class Order
     [Column("PromoCode_Id")]
     public int? PromoCodeId { get; set; }
 
+    public decimal? Total { get; set; }
+
     [ForeignKey("ContactMethodId")]
     [InverseProperty("Orders")]
     public virtual ContactMethod ContactMethod { get; set; } = null!;

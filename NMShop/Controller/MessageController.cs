@@ -27,8 +27,8 @@ public class MessageController : ControllerBase
     {
         var message = new Message
         {
-            ChatId = chatId,
-            UserId = userId,
+            Chatid = chatId,
+            Userid = userId,
             Content = content,
             Timestamp = DateTime.UtcNow
         };
@@ -44,7 +44,7 @@ public class MessageController : ControllerBase
     public async Task<IActionResult> GetMessagesByChat(int chatId)
     {
         var messages = await _context.Messages
-            .Where(m => m.ChatId == chatId)
+            .Where(m => m.Chatid == chatId)
             .Include(m => m.User)
             .ToListAsync();
         

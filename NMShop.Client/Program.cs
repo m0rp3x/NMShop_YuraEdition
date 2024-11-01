@@ -10,6 +10,7 @@ builder.Services.AddSingleton(sp =>
 
 builder.Services.AddSingleton<ClientDataProvider>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<SearchService>();
 builder.Services.AddLocalization();
 // Регистрация MudBlazor
 builder.Services.AddMudServices();

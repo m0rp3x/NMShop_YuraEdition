@@ -81,7 +81,6 @@ namespace NMShop.Controllers
                 return NotFound();
             }
 
-            // Calculate total price considering promo code discount
             decimal total = order.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount);
 
             if (order.PromoCodeId.HasValue)
@@ -286,6 +285,13 @@ namespace NMShop.Controllers
             }
 
             order.OrderStatusId = 1;
+
+            order.Total = order.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount);
+
+            if (discountPercent > 0)
+            {
+                order.Total -= order.Total * (discountPercent / 100m);
+            }
 
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();

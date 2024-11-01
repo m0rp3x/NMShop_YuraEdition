@@ -26,9 +26,9 @@ public class ChatController : ControllerBase
     {
         var chat = new Chat
         {
-            ClientId = clientId,
-            IsOpen = true,
-            CreatedAt = DateTime.UtcNow
+            Clientid = clientId,
+            Isopen = true,
+            Createdat = DateTime.UtcNow
         };
         
         _context.Chats.Add(chat);
@@ -44,8 +44,8 @@ public class ChatController : ControllerBase
         var chat = await _context.Chats.FindAsync(chatId);
         if (chat == null) return NotFound();
         
-        chat.IsOpen = false;
-        chat.ClosedAt = DateTime.UtcNow;
+        chat.Isopen = false;
+        chat.Closedat = DateTime.UtcNow;
         await _context.SaveChangesAsync();
 
         return Ok(chat);
@@ -56,7 +56,7 @@ public class ChatController : ControllerBase
     public async Task<IActionResult> GetChatsByClient(int clientId)
     {
         var chats = await _context.Chats
-            .Where(c => c.ClientId == clientId)
+            .Where(c => c.Clientid == clientId)
             .Include(c => c.Messages)
             .ToListAsync();
         

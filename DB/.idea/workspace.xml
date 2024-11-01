@@ -9,13 +9,32 @@
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.sql" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/NavMenu.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/NMShop.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/NMShop.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Pages/Catalog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Services/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Services/ClientDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/BannerCarouselItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Brand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/BrandGalleryItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Chat.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ContactMethod.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/DeliveryType.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Gender.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Message.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/NMShopContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/NavigationItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Order.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderPart.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderStatus.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PaymentType.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Product.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductColor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductImage.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductType.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PromoCode.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceContent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceTopic.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/SellingCategory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/StockInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/TextSize.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/TgAdmin.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/User.cs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -85,6 +85,17 @@ namespace NMShop.Client.Services
             return data;
         }
 
+        public async Task<IEnumerable<BannerCarouselItem>> GetBannerCarouselItems()
+        {
+            var cacheKey = "bannerCarouselItems";
+            var cachedData = GetFromCache<IEnumerable<BannerCarouselItem>>(cacheKey);
+            if (cachedData != null) return cachedData;
+
+            var data = await _http.GetFromJsonAsync<IEnumerable<BannerCarouselItem>>($"{_baseUrl}/api/navigation/GetAllBannerCarouselItems");
+            SetCache(cacheKey, data);
+            return data;
+        }
+
         public async Task<IEnumerable<Brand>> GetBrandsAsync()
         {
             var cacheKey = "brands";

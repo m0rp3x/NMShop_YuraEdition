@@ -1,0 +1,65 @@
+﻿@using NMShop.Client.Services;
+@using NMShop.Client.Components;
+
+@implements IDisposable
+
+@inject NavigationManager Navigation;
+@inject SearchService SearchService
+
+@if (SearchService.IsSearchOpen)
+{
+    <div @onclick=SearchService.ToggleSearch class="absolute"
+         style=@($"backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); width: 100vw; height: 100vh; z-index: {(int)ZEnum.Search - 1};")>
+
+        <div @onclick:stopPropagation
+             class="mb-auto d-flex flex-column justify-center py-15"
+             style=@($"width: 100vw; height: 500px; background-color: white; z-index: {(int)ZEnum.Search};")>
+
+            <div class="resize-width d-flex">
+                <input placeholder="Найти"
+                       style="font-size: 17px; height: 50px; color: #000000; font-weight: 400; padding: 10px 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; resize: none; border-radius: 25px;"
+                       class="d-flex flex-grow-1 mr-10"
+                       type="text"
+                       @bind="SearchQuery"
+                       size="50" />
+
+                <MudText @onmouseover="() => {_isSearchButtonHovered = true;}"
+                         @onmouseout="() => {_isSearchButtonHovered = false;}"
+                         @onclick="GoToResults"
+                         Style=@SearchButtonStyle
+                         Typo="Typo.body1" Class="px-5 py-3">Найти</MudText>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    private bool _isSearchButtonHovered = false;
+
+    private string SearchQuery;
+
+    private string SearchButtonStyle =>
+    "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; border: none;"
+    + (_isSearchButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+
+    protected override void OnInitialized()
+    {
+        SearchService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        SearchService.OnChange -= StateHasChanged;
+    }
+
+    void GoToResults()
+    {
+        _isSearchButtonHovered = false;
+        Navigation.NavigateTo("/checkout");
+        SearchService.ToggleSearch();
+    }
+}
+
+
+

@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS "Orders" (
     "ContactMethod_Id" integer NOT NULL,
     "ContactValue" varchar(255) NOT NULL,
     "PromoCode_Id" integer,
+    "Total" decimal ,
     PRIMARY KEY ("Id"),
     FOREIGN KEY ("DeliveryType_Id") REFERENCES "DeliveryTypes"("Id"),
     FOREIGN KEY ("PaymentType_Id") REFERENCES "PaymentTypes"("Id"),

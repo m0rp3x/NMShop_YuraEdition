@@ -21,18 +21,17 @@ public partial class NMShopContext : DbContext
 
     public virtual DbSet<BrandGalleryItem> BrandGalleryItems { get; set; }
 
+    public virtual DbSet<Chat> Chats { get; set; }
+
     public virtual DbSet<ContactMethod> ContactMethods { get; set; }
 
     public virtual DbSet<DeliveryType> DeliveryTypes { get; set; }
 
     public virtual DbSet<Gender> Genders { get; set; }
 
-    public virtual DbSet<NavigationItem> NavigationItems { get; set; }
-    
-    public virtual DbSet<User> Users { get; set; }
-    
-    public virtual DbSet<Chat> Chats { get; set; }
     public virtual DbSet<Message> Messages { get; set; }
+
+    public virtual DbSet<NavigationItem> NavigationItems { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
@@ -62,7 +61,7 @@ public partial class NMShopContext : DbContext
 
     public virtual DbSet<TextSize> TextSizes { get; set; }
 
-    public virtual DbSet<TgAdmin> TgAdmins { get; set; }
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -95,6 +94,21 @@ public partial class NMShopContext : DbContext
                 .HasConstraintName("BrandGalleryItems_Brand_Id_fkey");
         });
 
+        modelBuilder.Entity<Chat>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("chats_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('chats_id_seq'::regclass)");
+            entity.Property(e => e.Createdat).HasDefaultValueSql("now()");
+            entity.Property(e => e.Isopen).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Client).WithMany(p => p.ChatClients)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("chats_clientid_fkey");
+
+            entity.HasOne(d => d.Operator).WithMany(p => p.ChatOperators).HasConstraintName("chats_operatorid_fkey");
+        });
+
         modelBuilder.Entity<ContactMethod>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ContactMethods_pkey");
@@ -114,6 +128,22 @@ public partial class NMShopContext : DbContext
             entity.HasKey(e => e.Id).HasName("Genders_pkey");
 
             entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Genders_Id_seq\"'::regclass)");
+        });
+
+        modelBuilder.Entity<Message>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("messages_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('messages_id_seq'::regclass)");
+            entity.Property(e => e.Timestamp).HasDefaultValueSql("now()");
+
+            entity.HasOne(d => d.Chat).WithMany(p => p.Messages)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("messages_chatid_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Messages)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("messages_userid_fkey");
         });
 
         modelBuilder.Entity<NavigationItem>(entity =>
@@ -290,11 +320,11 @@ public partial class NMShopContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"TextSizes_Id_seq\"'::regclass)");
         });
 
-        modelBuilder.Entity<TgAdmin>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("tg_admins_pkey");
+            entity.HasKey(e => e.Id).HasName("users_pkey");
 
-            entity.Property(e => e.Id).HasDefaultValueSql("nextval('tg_admins_id_seq'::regclass)");
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('users_id_seq'::regclass)");
         });
 
         OnModelCreatingPartial(modelBuilder);
