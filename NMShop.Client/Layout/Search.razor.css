@@ -1,32 +1,32 @@
 ﻿
 .resize-width {
-    width: 100%;
+    width: 90%;
 }
 
 /* md - Medium */
 @media (min-width: 960px) and (max-width: 1279px) {
     .resize-width {
-        width: 90%;
+        width: 80%;
     }
 }
 
 /* lg - Large */
 @media (min-width: 1280px) and (max-width: 1919px) {
     .resize-width {
-        width: 80%;
+        width: 70%;
     }
 }
 
 /* xl - Extra Large */
 @media (min-width: 1920px) and (max-width: 2559px) {
     .resize-width {
-        width: 70%;
+        width: 60%;
     }
 }
 
 /* xxl - Extra Extra Large */
 @media (min-width: 2560px) {
     .resize-width {
-        width: 60%;
+        width: 50%;
     }
 }

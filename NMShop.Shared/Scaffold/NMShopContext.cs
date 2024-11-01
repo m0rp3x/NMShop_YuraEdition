@@ -21,15 +21,11 @@ public partial class NMShopContext : DbContext
 
     public virtual DbSet<BrandGalleryItem> BrandGalleryItems { get; set; }
 
-    public virtual DbSet<Chat> Chats { get; set; }
-
     public virtual DbSet<ContactMethod> ContactMethods { get; set; }
 
     public virtual DbSet<DeliveryType> DeliveryTypes { get; set; }
 
     public virtual DbSet<Gender> Genders { get; set; }
-
-    public virtual DbSet<Message> Messages { get; set; }
 
     public virtual DbSet<NavigationItem> NavigationItems { get; set; }
 
@@ -60,6 +56,10 @@ public partial class NMShopContext : DbContext
     public virtual DbSet<StockInfo> StockInfos { get; set; }
 
     public virtual DbSet<TextSize> TextSizes { get; set; }
+
+    public virtual DbSet<Ticket> Tickets { get; set; }
+
+    public virtual DbSet<Ticketmessage> Ticketmessages { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -94,21 +94,6 @@ public partial class NMShopContext : DbContext
                 .HasConstraintName("BrandGalleryItems_Brand_Id_fkey");
         });
 
-        modelBuilder.Entity<Chat>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("chats_pkey");
-
-            entity.Property(e => e.Id).HasDefaultValueSql("nextval('chats_id_seq'::regclass)");
-            entity.Property(e => e.Createdat).HasDefaultValueSql("now()");
-            entity.Property(e => e.Isopen).HasDefaultValue(true);
-
-            entity.HasOne(d => d.Client).WithMany(p => p.ChatClients)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("chats_clientid_fkey");
-
-            entity.HasOne(d => d.Operator).WithMany(p => p.ChatOperators).HasConstraintName("chats_operatorid_fkey");
-        });
-
         modelBuilder.Entity<ContactMethod>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ContactMethods_pkey");
@@ -128,22 +113,6 @@ public partial class NMShopContext : DbContext
             entity.HasKey(e => e.Id).HasName("Genders_pkey");
 
             entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"Genders_Id_seq\"'::regclass)");
-        });
-
-        modelBuilder.Entity<Message>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("messages_pkey");
-
-            entity.Property(e => e.Id).HasDefaultValueSql("nextval('messages_id_seq'::regclass)");
-            entity.Property(e => e.Timestamp).HasDefaultValueSql("now()");
-
-            entity.HasOne(d => d.Chat).WithMany(p => p.Messages)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("messages_chatid_fkey");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Messages)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("messages_userid_fkey");
         });
 
         modelBuilder.Entity<NavigationItem>(entity =>
@@ -320,11 +289,37 @@ public partial class NMShopContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("nextval('\"TextSizes_Id_seq\"'::regclass)");
         });
 
+        modelBuilder.Entity<Ticket>(entity =>
+        {
+            entity.HasKey(e => e.Ticketid).HasName("tickets_pkey");
+
+            entity.Property(e => e.Ticketid).HasDefaultValueSql("nextval('tickets_ticketid_seq'::regclass)");
+            entity.Property(e => e.Createdat).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Status).HasDefaultValueSql("'Open'::character varying");
+            entity.Property(e => e.Updatedat).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Tickets).HasConstraintName("tickets_userid_fkey");
+        });
+
+        modelBuilder.Entity<Ticketmessage>(entity =>
+        {
+            entity.HasKey(e => e.Messageid).HasName("ticketmessages_pkey");
+
+            entity.Property(e => e.Messageid).HasDefaultValueSql("nextval('ticketmessages_messageid_seq'::regclass)");
+            entity.Property(e => e.Sentat).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.Ticket).WithMany(p => p.Ticketmessages).HasConstraintName("ticketmessages_ticketid_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Ticketmessages).HasConstraintName("ticketmessages_userid_fkey");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("users_pkey");
+            entity.HasKey(e => e.Userid).HasName("users_pkey");
 
-            entity.Property(e => e.Id).HasDefaultValueSql("nextval('users_id_seq'::regclass)");
+            entity.Property(e => e.Userid).HasDefaultValueSql("nextval('users_userid_seq'::regclass)");
+            entity.Property(e => e.Createdat).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Role).HasDefaultValueSql("'Client'::character varying");
         });
 
         OnModelCreatingPartial(modelBuilder);

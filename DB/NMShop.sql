@@ -1,7 +1,5 @@
 DROP SCHEMA IF EXISTS "NMShop" CASCADE;
 CREATE SCHEMA "NMShop";
-SET search_path = "NMShop";
-ALTER USER m0rp3x SET search_path = "NMShop";
 
 CREATE TABLE IF NOT EXISTS "DeliveryTypes" (
     "Id" serial NOT NULL UNIQUE,

@@ -5,36 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2992ba10-ac5c-4fd5-ab58-61a4d501a0e4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e/storage_v2/_src_/database/nmshop.NfHqwQ/schema/NMShop.VWF-iQ.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.sql" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/BannerCarouselItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Brand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/BrandGalleryItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Chat.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ContactMethod.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/DeliveryType.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Gender.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Message.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/NMShopContext.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/NavigationItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Order.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderPart.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/OrderStatus.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PaymentType.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/Product.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductColor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductImage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ProductType.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/PromoCode.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceContent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/ReferenceTopic.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/SellingCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/StockInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/TextSize.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/TgAdmin.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Scaffold/User.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/BrandGallery.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/BrandGallery.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/Cart.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Services/CartService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Services/CartService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

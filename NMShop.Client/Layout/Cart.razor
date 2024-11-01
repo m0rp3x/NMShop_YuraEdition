@@ -6,48 +6,48 @@
 @inject NavigationManager Navigation;
 @inject CartService CartService
 
-@if (CartService.IsCartOpen)
-{
-    <div @onclick=CartService.ToggleCart class="absolute" 
-        style=@($"backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); width: 100vw; height: 100vh; z-index: {(int)ZEnum.Cart - 1};")>
+<div @onclick=CartService.ToggleCart class="absolute"
+     style=@($"overflow: hidden; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); height: 100vh; z-index: {(int)ZEnum.Cart - 1}; width: " + (CartService.IsCartOpen ? "100vw;" : "0px"))>
 
-        <div @onclick:stopPropagation
-        class="ml-auto d-flex flex-column justify-space-between pt-6" 
-        style=@($"width: 800px; max-width: 100vw; height: 100vh; background-color: white; z-index: {(int)ZEnum.Cart};")>
+    <div @onclick:stopPropagation
+         class="ml-auto d-flex flex-column justify-space-between pt-6"
+         style=@($"width: 800px; max-width: 100vw; height: 100vh; background-color: white; z-index: {(int)ZEnum.Cart};")>
 
-            <div class="px-4">
-                <div class="d-flex justify-space-between">
-                    <MudText Typo="Typo.h4">Корзина</MudText>
+        <div class="px-4">
+            <div class="d-flex justify-space-between">
+                <MudText Typo="Typo.h4">Корзина</MudText>
 
-                    <MudIconButton OnClick="CartService.ToggleCart" Icon="@Icons.Material.Filled.Close" Size="Size.Large" />
-                </div>
-
-                <CartItemsGrid/>
+                <MudIconButton OnClick="CartService.ToggleCart" Icon="@Icons.Material.Filled.Close" Size="Size.Large" />
             </div>
 
-            @if(CartService.Items.Count() > 0)
+            @if (CartService.IsCartOpen)
             {
-                <div class="d-flex justify-space-between pa-4" style="border-top: 1px solid #000000;">
-
-                    <div>
-                        <MudText Inline="true" Typo="Typo.h5">ИТОГО:</MudText>
-                        <MudText Inline="true" Typo="Typo.h4">@CartService.GetTotalCartPrice() ₽</MudText>
-                    </div>
-
-                    <MudText @onmouseover="() => {_isCheckoutButtonHovered = true;}"
-                             @onmouseout="() => {_isCheckoutButtonHovered = false;}"
-                             @onclick="GoToCheckOut"
-                             Style=@CheckoutButtonStyle
-                             Typo="Typo.body1" Class="px-5 py-3">ОФОРМИТЬ ЗАКАЗ</MudText>
-                </div>
-            }
-            else
-            {
-                <MudText Class="my-4 mx-auto" Typo="Typo.h4">Корзина пуста</MudText>
+                <CartItemsGrid />
             }
         </div>
+
+        @if (CartService.Items.Count() > 0)
+        {
+            <div class="d-flex justify-space-between pa-4" style="border-top: 1px solid #000000;">
+
+                <div>
+                    <MudText Inline="true" Typo="Typo.h5">ИТОГО:</MudText>
+                    <MudText Inline="true" Typo="Typo.h4">@CartService.GetTotalCartPrice() ₽</MudText>
+                </div>
+
+                <MudText @onmouseover="() => {_isCheckoutButtonHovered = true;}"
+                         @onmouseout="() => {_isCheckoutButtonHovered = false;}"
+                         @onclick="GoToCheckOut"
+                         Style=@CheckoutButtonStyle
+                         Typo="Typo.body1" Class="px-5 py-3">ОФОРМИТЬ ЗАКАЗ</MudText>
+            </div>
+        }
+        else
+        {
+            <MudText Class="my-4 mx-auto" Typo="Typo.h4">Корзина пуста</MudText>
+        }
     </div>
-}
+</div>
 
 @code {
 

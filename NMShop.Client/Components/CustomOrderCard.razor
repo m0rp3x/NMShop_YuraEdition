@@ -1,0 +1,33 @@
+﻿@inject IDialogService DialogService
+
+<MudPaper Class="d-flex flex-column align-center py-10 py-md-15 py-xl-20 my-10 mx-10 mx-md-15 mx-xl-20" Style="border-radius: 20px; background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), linear-gradient(82.03deg, #DCE7D7 17.85%, #C5C390 33.14%, #C4944D 41.79%, #D9558E 49.88%, #36376F 57.42%, #008B87 66.4%, #4D295A 81.36%);">
+    <MudImage Src="/assets/icons/logo.svg" Width="120" Height="120" />
+
+    <MudText Align="Align.Center" Typo="Typo.h5" Class="mt-5" Style="color: white; text-transform: uppercase;">
+        в каталоге нет интересующей модели?<br />
+        вы всегда можете оформить<br />
+        индивидуальный заказ
+    </MudText>
+
+    <MudButton DropShadow="true" Variant="Variant.Filled" Style="background-color: white;" Class="mt-5 mx-6">
+        <MudText Typo="Typo.h6" Style="font-weight: 700; text-transform: uppercase;">оформить индивидуальный заказ</MudText>
+    </MudButton>
+
+    <MudButton Class="mt-5">
+        <MudIcon Style="color: white;" Icon="@Icons.Material.Outlined.Info" Size="Size.Large" />
+        <MudText @onclick="OpenDialogAsync" Class="ml-4" Style="color: white; text-transform: uppercase;" Typo="Typo.h6">как это работает?</MudText>
+    </MudButton>
+
+
+</MudPaper>
+
+@code {
+
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<Whythiswork>("Simple Dialog", options);
+    }
+
+}

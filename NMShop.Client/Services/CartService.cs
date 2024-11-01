@@ -95,9 +95,16 @@ namespace NMShop.Client.Services
         public async void UpdateQuantity(ProductDto product, PriceInfo priceInfo, int quantity)
         {
             var existingItem = _items.FirstOrDefault(item => item.Product.Article == product.Article && item.PriceInfo.Size == priceInfo.Size);
-            if (existingItem != null && quantity > 0 && quantity < 100)
+            if (existingItem != null)
             {
-                existingItem.Quantity = quantity;
+                if (quantity <= 0)
+                {
+                    _items.Remove(existingItem);
+                }
+                else if (quantity < 100)
+                {
+                    existingItem.Quantity = quantity;
+                }
                 await SaveCartToLocalStorageAsync();
                 NotifyStateChanged();
             }

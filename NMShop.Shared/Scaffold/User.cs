@@ -7,26 +7,30 @@ using Microsoft.EntityFrameworkCore;
 namespace NMShop.Shared.Scaffold;
 
 [Table("users", Schema = "NMShop")]
+[Index("Telegramid", Name = "users_telegramid_key", IsUnique = true)]
 public partial class User
 {
     [Key]
-    [Column("id")]
-    public int Id { get; set; }
+    [Column("userid")]
+    public int Userid { get; set; }
 
     [Column("username")]
     [StringLength(50)]
-    public string Username { get; set; } = null!;
+    public string? Username { get; set; }
+
+    [Column("telegramid")]
+    public long? Telegramid { get; set; }
 
     [Column("role")]
     [StringLength(20)]
-    public string Role { get; set; } = null!;
+    public string? Role { get; set; }
 
-    [InverseProperty("Client")]
-    public virtual ICollection<Chat> ChatClients { get; set; } = new List<Chat>();
-
-    [InverseProperty("Operator")]
-    public virtual ICollection<Chat> ChatOperators { get; set; } = new List<Chat>();
+    [Column("createdat")]
+    public DateTime? Createdat { get; set; }
 
     [InverseProperty("User")]
-    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
+    public virtual ICollection<Ticketmessage> Ticketmessages { get; set; } = new List<Ticketmessage>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

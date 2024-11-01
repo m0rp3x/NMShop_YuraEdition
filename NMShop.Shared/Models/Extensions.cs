@@ -8,6 +8,7 @@ namespace NMShop.Shared.Models
         {
             var queryParams = new Dictionary<string, string>();
 
+            if (!string.IsNullOrWhiteSpace(filter.SearchQuery)) queryParams["SearchQuery"] = string.Join(",", filter.SearchQuery);
             if (filter.BrandIds != null && filter.BrandIds.Any()) queryParams["BrandIds"] = string.Join(",", filter.BrandIds);
             if (filter.MinPrice.HasValue) queryParams["MinPrice"] = filter.MinPrice.Value.ToString();
             if (filter.MaxPrice.HasValue) queryParams["MaxPrice"] = filter.MaxPrice.Value.ToString();

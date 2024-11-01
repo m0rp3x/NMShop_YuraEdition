@@ -4,6 +4,13 @@
 @inject ClientDataProvider DataProvider
 
 <div class="d-flex flex-column mud-width-full">
+
+    @if (UsePagination && totalProducts == 0)
+    {
+        <MudText Typo="Typo.h5">К сожалению, такого у нас пока нет :(</MudText>
+        <CustomOrderCard/>
+    }
+
     <MudGrid Spacing="10">
         @foreach (ProductDto p in _products)
         {
@@ -43,7 +50,7 @@
         }
     </MudGrid>
 
-    @if (UsePagination)
+    @if (UsePagination && totalPages > 1)
     {
         <MudPagination @bind-SelectedPage="selectedPage"
                        Class="align-self-center my-3"

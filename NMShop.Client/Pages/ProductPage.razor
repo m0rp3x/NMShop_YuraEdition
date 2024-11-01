@@ -12,6 +12,8 @@
 
 @page "/catalog/{productParentType}/{article}"
 
+<PageTitle>@product.Name</PageTitle>
+
 <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
     <div class="d-flex relative" style=@($"color: #666666; gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
         <MudLink Typo="Typo.h5" Color="Color.Inherit" Href="/catalog">Каталог</MudLink>
