@@ -202,36 +202,25 @@ CREATE TABLE Users (
     CreatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Admins (
-    AdminID SERIAL PRIMARY KEY,
-    Username VARCHAR(50),
-    TelegramID BIGINT UNIQUE,
-    CreatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE Tickets (
     TicketID SERIAL PRIMARY KEY,
     UserID INT,
-    AdminID INT NULL,
     Subject VARCHAR(255),
     Description TEXT,
     Status VARCHAR(20) DEFAULT 'Open',
     CreatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UpdatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (AdminID) REFERENCES Admins(AdminID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 CREATE TABLE TicketMessages (
     MessageID SERIAL PRIMARY KEY,
     TicketID INT,
     UserID INT,
-    AdminID INT NULL,
     Message TEXT,
     SentAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (TicketID) REFERENCES Tickets(TicketID),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (AdminID) REFERENCES Admins(AdminID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
 -- Add constraint to prevent deep inheritance chains in ProductTypes
