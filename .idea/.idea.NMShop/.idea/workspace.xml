@@ -11,7 +11,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="ордеры">
-      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Order.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Order.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Chat.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Message.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/User.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop/Controller/ChatController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop/Controller/MessageController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,12 +39,13 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Sharp336/NMShop.git&quot;,
-    &quot;accountId&quot;: &quot;9f1d7202-1a97-40ff-8a54-c95ad77a6254&quot;
+    &quot;accountId&quot;: &quot;cb9284dc-8155-48ca-8279-b46053dc42c2&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/koval/RiderProjects/NMShop2/NMShop.Client/Pages/Catalog.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -174,6 +181,9 @@
       <workItem from="1729193680298" duration="1813000" />
       <workItem from="1729279846885" duration="5276000" />
       <workItem from="1729531892500" duration="3077000" />
+      <workItem from="1730213538065" duration="9562000" />
+      <workItem from="1730468045987" duration="2106000" />
+      <workItem from="1730479665000" duration="876000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -414,22 +424,6 @@
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NMShop.Client/Components/ReferenseInfoList.razor</url>
-          <line>35</line>
-          <properties isMultiMethodBreakpoint="true">
-            <option name="multiMethodBreakpoint" value="true" />
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NMShop.Client/Components/ReferenseInfoList.razor</url>
-          <line>32</line>
-          <properties isMultiMethodBreakpoint="true">
-            <option name="multiMethodBreakpoint" value="true" />
-          </properties>
-          <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor</url>

@@ -28,6 +28,11 @@ public partial class NMShopContext : DbContext
     public virtual DbSet<Gender> Genders { get; set; }
 
     public virtual DbSet<NavigationItem> NavigationItems { get; set; }
+    
+    public virtual DbSet<User> Users { get; set; }
+    
+    public virtual DbSet<Chat> Chats { get; set; }
+    public virtual DbSet<Message> Messages { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
 
