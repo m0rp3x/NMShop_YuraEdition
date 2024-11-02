@@ -11,13 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="ордеры">
-      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Chat.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Message.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/User.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NMShop/Controller/ChatController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NMShop/Controller/MessageController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Models/TicketReplyModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop/Controller/TicketController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,6 +180,7 @@
       <workItem from="1730213538065" duration="9562000" />
       <workItem from="1730468045987" duration="2106000" />
       <workItem from="1730479665000" duration="876000" />
+      <workItem from="1730504077020" duration="12249000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
