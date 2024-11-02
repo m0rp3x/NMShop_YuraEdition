@@ -28,11 +28,11 @@
 
         @if (CartService.Items.Count() > 0)
         {
-            <div class="d-flex justify-space-between pa-4" style="border-top: 1px solid #000000;">
+            <div class="d-flex justify-space-between pa-4 align-center" style="border-top: 1px solid #000000;">
 
-                <div>
-                    <MudText Inline="true" Typo="Typo.h5">ИТОГО:</MudText>
-                    <MudText Inline="true" Typo="Typo.h4">@CartService.GetTotalCartPrice() ₽</MudText>
+                <div style="height: fit-content;">
+                    <MudText Inline="true" Typo="Typo.h6">ИТОГО:</MudText>
+                    <MudText Inline="true" Typo="Typo.h5">@CartService.GetTotalCartPrice() ₽</MudText>
                 </div>
 
                 <MudText @onmouseover="() => {_isCheckoutButtonHovered = true;}"

@@ -15,9 +15,40 @@
         <div style="color: var(--mud-palette-text-primary);">
             <MudIconButton OnClick="SearchService.ToggleSearch" Icon="@Icons.Material.Filled.Search" Color="Color.Inherit" />
             <MudIconButton OnClick="CartService.ToggleCart" Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Inherit" />
-            <MudIconButton Icon="@Icons.Material.Filled.MenuOpen" Color="Color.Inherit" />
+            <MudIconButton OnClick="() => {_isMenuHidden = !_isMenuHidden;}" Icon="@Icons.Material.Filled.MenuOpen" Color="Color.Inherit" />
         </div>
 
+        <div class="absolute p-6" style=@("transition: all 0.7s ease 0s; -webkit-transition: all 0.7s ease 0s; overflow: hidden; top: 100%; left: 0; right: 0; background-color: #F8F8F8; width: 100%;" + (_isMenuHidden ? "height: 0;" : "height: calc(100vh - 100%);"))>
+            @foreach (var nu in _navUnits)
+            {
+                <div class="d-flex pa-3 align-center" style="color: var(--mud-palette-text-primary);">
+                    <MudText Class="flex-grow-1" Style="height: fit-content;" @onclick="() => Navigation.NavigateTo(nu.Category.Link)" Typo="Typo.h5">@nu.Category.Name</MudText>
+                    <MudIconButton OnClick="() => OnMobileCategoryClick(nu)" Icon="@Icons.Material.Filled.ArrowForwardIos" Color="Color.Inherit" Size="Size.Small" />
+                </div>
+            }
+        </div>
+
+        <div class="absolute p-6 d-flex flex-column" style=@("transition: all 0.7s ease 0s; -webkit-transition: all 0.7s ease 0s; overflow: hidden; top: 100%; left: 0; right: 0; height: calc(100vh - 100%); background-color: #F8F8F8;" + (_currentCategory == null ? "width: 0; opacity: 0;" : "width: 100%; opacity: 1;"))>
+            @if (_currentCategory != null && _currentCategory.Items != null && _currentCategory.Items.Count() > 0)
+            {
+                <MudButton Class="d-flex pt-3 pb-1 align-center flex-grow-1" Style="max-height: fit-content; color: var(--mud-palette-text-primary);" OnClick="HideMenu">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit" Size="Size.Small" />
+                    <MudText Align="Align.Left" Class="flex-grow-1 pl-2" Style="height: fit-content;" Typo="Typo.h6">Ко всем категориям</MudText>
+                </MudButton>
+                <div class="flex-grow-1 d-flex flex-column justify-center">
+                    
+                    <div>
+                        @foreach (var nu in _currentCategory.Items)
+                        {
+                            <MudButton Class="d-flex pa-2 align-center mx-auto" Style="color: var(--mud-palette-text-primary);" OnClick="() => Navigation.NavigateTo(nu.Link)">
+                                <MudText Align="Align.Center" Class="flex-grow-1" Style="height: fit-content;" @onclick="() => Navigation.NavigateTo(nu.Link)" Typo="Typo.h6">@nu.Name</MudText>
+                            </MudButton>
+                        }
+                    </div>
+
+                </div>
+            }
+        </div>
     </MudHidden>
 
     <MudHidden Breakpoint="Breakpoint.MdAndDown">
@@ -31,7 +62,7 @@
             <div style="display: flex; justify-content: center; gap: 20px;">
                 @foreach (var nu in _navUnits)
                 {
-                    <MudButton Href="@nu.Category.Link" Style="font-size: var(--mud-typography-body1-size); font-weight: 600;" @onmouseover="() => ShowMenu(nu)">@nu.Category.Name</MudButton>
+                    <MudButton Href="@nu.Category.Link" Style="font-size: var(--mud-typography-body1-size); font-weight: 600;" @onmouseover="() => OnDesctopCategoryHover(nu)">@nu.Category.Name</MudButton>
                 }
             </div>
 
@@ -42,20 +73,16 @@
             </div>
         </div>
 
-        <!-- Выпадающее меню -->
-        @if (!_menuHidden)
-        {
-            <MudPaper Class="d-flex justify-center absolute"
-                      Style=@($"top: 100%; left: 0; right: 0; background-color: #F8F8F8; width: 100%; padding: 20px;")
-                      Elevation="1"
-                      @onmouseleave="HideMenu">
+        <MudPaper Class="d-flex justify-center absolute"
+                  Style=@("transition: all 0.7s ease 0s; -webkit-transition: all 0.7s ease 0s; overflow: hidden; top: 100%; left: 0; right: 0; background-color: #F8F8F8; width: 100%;" + (_currentCategory == null ? "height: 0; padding: 0 20px 0 20px;" : "padding: 20px;"))
+                  Elevation="0"
+                  @onmouseleave="HideMenu">
+            @if (_currentCategory != null &&  _currentCategory.Items != null && _currentCategory.Items.Count() > 0)
+            {
                 <div class="resize-width" style="display: grid; grid-template-columns: repeat(@_menuSubCategoriesBatchAmount, 1fr); gap: 20px; text-align: center;">
 
 
-                    <!-- Первый столбец с названием категории -->
-                    <div style="font-size: 24px; font-weight: 700; text-align: left;">
-                        @_currentCategory.Category.Name
-                    </div>
+                    <MudText @onclick="() => Navigation.NavigateTo(_currentCategory.Category.Link)" Align="Align.Left" Typo="Typo.body1">@_currentCategory.Category.Name</MudText>
 
                     <!-- Столбцы с подкатегориями -->
                     @for (int i = 0; i < _menuSubCategoriesBatchAmount; i++)
@@ -66,24 +93,25 @@
                         <div style="color: #BDBDBD; font-size: 15px; font-weight: 700; text-align: left;">
                             @if (SubCategoriesCount - LocalCopy * _menuSubCategoriesBatchCount > 0)
                             {
-                                foreach (var ni in _currentCategory.Items.Skip(LocalCopy * _menuSubCategoriesBatchCount).Take(_menuSubCategoriesBatchCount))
+                                foreach (var navItem in _currentCategory.Items.Skip(LocalCopy * _menuSubCategoriesBatchCount).Take(_menuSubCategoriesBatchCount))
                                 {
-                                    <MudButton Href="@ni.Link" Style="display: block; margin: 5px 0;">@ni.Name</MudButton>
+                                    <MudButton Href="@navItem.Link" Style="display: block; margin: 5px 0; font-size: calc(var(--mud-typography-body2-size) - 3px)">@navItem.Name</MudButton>
                                 }
                             }
                         </div>
                     }
                 </div>
-            </MudPaper>
-        }
+            }
+        </MudPaper>
+
     </MudHidden>
 
 </MudAppBar>
 
 @code {
-    private NavigationUnit _currentCategory;
+    private NavigationUnit? _currentCategory;
     private IEnumerable<NavigationUnit> _navUnits = new NavigationUnit[0];
-    private bool _menuHidden = true;
+    private bool _isMenuHidden = true;
     private static int _menuSubCategoriesBatchCount = 4;
     private static int _menuSubCategoriesBatchAmount = 5;
 
@@ -97,18 +125,30 @@
         Navigation.NavigateTo("/");
     }
 
-    private void ShowMenu(NavigationUnit nu)
+    private void OnDesctopCategoryHover(NavigationUnit nu)
     {
-        if (nu.Items.Count() > 0)
+        if (nu != null && nu.Items != null && nu.Items.Count() > 0 && nu != _currentCategory)
         {
+            Console.WriteLine($"New category hovered - {nu.Category.Name}");
             _currentCategory = nu;
-            _menuHidden = false;
         }
     }
 
     private void HideMenu()
     {
-        _menuHidden = true;
+        _currentCategory = null;
+    }
+
+    private void OnMobileCategoryClick(NavigationUnit nu)
+    {
+        if (nu.Items.Any())
+        {
+            _currentCategory = nu;
+        }
+        else
+        {
+            Navigation.NavigateTo(nu.Category.Link);
+        }
     }
 
 }

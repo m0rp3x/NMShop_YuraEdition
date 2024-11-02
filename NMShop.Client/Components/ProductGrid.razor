@@ -17,7 +17,7 @@
             var (minPrice, minDiscountPrice) = p.GetMinPriceAndDiscount();
             bool willShowDiscountPrice = minDiscountPrice is not null && minDiscountPrice != 0 && minDiscountPrice < minPrice;
 
-            <MudItem xs="6" lg="4" xl="3" Class="">
+            <MudItem xs="6" lg="4" xl="3" Style="transition: all 0.3s ease 0s; -webkit-transition: all 0.3s ease 0s;">
                 <div @onclick="() => GoToProduct(p)" class="cursor-pointer pa-xs-1 pa-lg-4 pa-xl-6">
 
                     <div class="relative">

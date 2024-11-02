@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2992ba10-ac5c-4fd5-ab58-61a4d501a0e4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/BrandGallery.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/BrandGallery.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Components/ProductGrid.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/Cart.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/Search.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Services/CartService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Services/CartService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Shared/Models/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/37d2fa58-c36e-4551-8c01-bd0aedf7cad4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/eb6a7551-548d-4dd3-a997-ae32bb3fb39e.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/Footer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/Footer.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../NMShop.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/../NMShop.Client/Layout/NavMenu.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

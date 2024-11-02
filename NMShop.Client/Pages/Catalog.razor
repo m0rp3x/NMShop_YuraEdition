@@ -19,6 +19,18 @@
         <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-9 pt-4 pb-2" Style="background-color: white;">
 
             <div class="d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
+
+                <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                    <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.body1"
+                             @onmouseover="() => {_isFilterButtonHovered = true;}"
+                             @onmouseout="() => {_isFilterButtonHovered = false;}"
+                             @onclick="() => {_isDrawerOpened = !_isDrawerOpened;}"
+                             style=@(FilterButtonStyle + "width: 100%")>
+                        @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
+                        <MudIcon Class="ml-1" Icon="@Icons.Material.Outlined.FilterAlt" />
+                    </MudText>
+                </MudHidden>
+
                 <MudButton Style="flex-shrink: 0;" Class="py-1 px-3" @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
 
                 <input placeholder="Найти"
@@ -27,6 +39,24 @@
                        type="text"
                        @bind="Filter.SearchQuery"
                        size="50" />
+
+                <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                    <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
+                        <MudText Class="mr-2" Typo="Typo.body1" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
+                        <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.body1" Inline="true">@CurrentSortOption.Name</MudText>
+                        <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateZ(-180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" />
+                        <div class="absolute" style=@($"border-radius: 20px; width: 100%; transition: all 1s ease 0s; overflow: hidden; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "left: 0; top: 120%; height: fit-content;" : "height: 0px;"))>
+                            @foreach (SortOption so in SortOptions)
+                            {
+                                <MudText @onclick="() => OnSortOptionChanged(so)"
+                                         @onmouseover="() => {so.IsHovered = true;}"
+                                         @onmouseout="() => {so.IsHovered = false;}"
+                                         Style=@("transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
+                                         Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
+                            }
+                        </div>
+                    </div>
+                </MudHidden>
 
                 <MudCheckBox T="bool" @bind-Value="Filter.InStock" Label="Только в наличии" />
 
@@ -149,21 +179,23 @@
                     <MudIcon Class="ml-1" Icon="@Icons.Material.Outlined.FilterAlt"/>
                 </MudText>
 
-                <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
-                    <MudText Class="mr-2" Typo="Typo.body1" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
-                    <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.body1" Inline="true">@CurrentSortOption.Name</MudText>
-                    <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateZ(-180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                    <div class="absolute" style=@($"border-radius: 20px; width: 100%; transition: all 1s ease 0s; overflow: hidden; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "left: 0; top: 120%; height: fit-content;" : "height: 0px;"))>
-                        @foreach (SortOption so in SortOptions)
-                        {
-                            <MudText @onclick="() => OnSortOptionChanged(so)"
-                                     @onmouseover="() => {so.IsHovered = true;}"
-                                     @onmouseout="() => {so.IsHovered = false;}"
-                                     Style=@("transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
-                                     Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
-                        }
+                <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                    <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
+                        <MudText Class="mr-2" Typo="Typo.body1" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
+                        <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.body1" Inline="true">@CurrentSortOption.Name</MudText>
+                        <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateZ(-180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" />
+                        <div class="absolute" style=@($"border-radius: 20px; width: 100%; transition: all 1s ease 0s; overflow: hidden; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "left: 0; top: 120%; height: fit-content;" : "height: 0px;"))>
+                            @foreach (SortOption so in SortOptions)
+                            {
+                                <MudText @onclick="() => OnSortOptionChanged(so)"
+                                         @onmouseover="() => {so.IsHovered = true;}"
+                                         @onmouseout="() => {so.IsHovered = false;}"
+                                         Style=@("transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
+                                         Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
+                            }
+                        </div>
                     </div>
-                </div>
+                </MudHidden>
 
                 <div class="d-flex align-center" style="cursor: pointer;" @onclick="ToggleSortDirection">
                     @if (Filter.IsAscending)
