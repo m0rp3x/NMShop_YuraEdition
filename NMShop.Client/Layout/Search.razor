@@ -7,19 +7,22 @@
 @inject SearchService SearchService
 
 <div @onclick=SearchService.ToggleSearch class="absolute"
-     style=@($"overflow: hidden; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); width: 100vw; z-index: {(int)ZEnum.AppBar - 1}; height: " + (SearchService.IsSearchOpen ? "100%;" : "0px;"))>
+     style=@($"overflow: hidden; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); width: 100vw; top: 100%; left: 0; right: 0; z-index: {(int)ZEnum.AppBar - 1}; height: " + (SearchService.IsSearchOpen ? "calc(100vh - 100%);" : "0px;"))>
 
     <div @onclick:stopPropagation
          class="mb-auto d-flex flex-column justify-center"
          style=@($"width: 100vw; height: 25vh; background-color: white; z-index: {(int)ZEnum.AppBar};")>
 
-        <div class="resize-width d-flex flex-column flex-md-row mx-auto mt-10" style="gap: 20px;">
+        <div class="resize-width d-flex flex-column flex-md-row mx-auto my-5" style="gap: 20px;">
             <input placeholder="Поиск"
                    style="max-width: 100%; font-size: var(--mud-typography-body1-size); color: #000000; font-weight: 400; -webkit-appearance: none; border: 1px solid #BDBDBD; resize: none; border-radius: 25px;"
                    class="d-flex flex-grow-1 px-5 py-3"
                    type="text"
-                   value="@_searchQuery" @onchange="@((ChangeEventArgs e) => _searchQuery = e.Value.ToString())"
+                   value="@_searchQuery"
+                   @oninput="OnInputChange"
+                   @onkeypress="HandleKeyPress"
                    size="50" />
+
 
             <MudText @onmouseover="() => {_isSearchButtonHovered = true;}"
                      @onmouseout="() => {_isSearchButtonHovered = false;}"
@@ -50,12 +53,26 @@
         SearchService.OnChange -= StateHasChanged;
     }
 
+    void OnInputChange(ChangeEventArgs e)
+    {
+        _searchQuery = e.Value.ToString();
+    }
+
     void GoToResults()
     {
         _isSearchButtonHovered = false;
         Navigation.NavigateTo("/catalog/" + new ProductFilter() { SearchQuery = _searchQuery }.ToQueryString());
         SearchService.ToggleSearch();
     }
+
+    void HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            GoToResults();
+        }
+    }
+
 }
 
 

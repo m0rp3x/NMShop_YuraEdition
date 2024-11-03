@@ -13,46 +13,60 @@
 
 <PageTitle>Каталог</PageTitle>
 
-<div class="d-flex flex-grow-1" style="width: 100%">
+
+<div class="d-flex flex-grow-1 varcontainer" style="width: 100%;">
     <MudDrawerContainer Style="width: 100%; position:relative;">
 
-        <MudDrawer Width="19vw" Height="100%" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-9 pt-4 pb-2" Style="background-color: white;">
+        <MudDrawer Width="var(--drawer-width)" Height="fit-content" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-md-5 pl-xl-9 pt-4 pb-2" Style="background-color: white;">
 
             <div class="d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
 
-                <MudHidden Breakpoint="Breakpoint.LgAndUp">
-                    <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.body1"
-                             @onmouseover="() => {_isFilterButtonHovered = true;}"
-                             @onmouseout="() => {_isFilterButtonHovered = false;}"
-                             @onclick="() => {_isDrawerOpened = !_isDrawerOpened;}"
-                             style=@(FilterButtonStyle + "width: 100%")>
+                <MudButton Style="flex-shrink: 0;" Class="py-1 px-3 mx-2 mx-md-0 mt-3" @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
+
+                <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <MudText Class="d-flex flex-grow-1 align-center justify-center px-4 py-2 mx-2 mt-3" Typo="Typo.body1"
+                             @onclick=ToggleDrawer
+                             Style="color: white; background-color: black; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; border: none; ">
                         @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
                         <MudIcon Class="ml-1" Icon="@Icons.Material.Outlined.FilterAlt" />
                     </MudText>
                 </MudHidden>
 
-                <MudButton Style="flex-shrink: 0;" Class="py-1 px-3" @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
-
                 <input placeholder="Найти"
-                       style="font-size: 17px; width: 100%; height: 50px; color: #000000; font-weight: 400; padding: 10px 22px; -webkit-appearance: none; border: 1px solid #BDBDBD; margin: 0; resize: none; border-radius: 25px;"
-                       class="mt-3"
+                       style="color: #000000; -webkit-appearance: none; border: 1px solid #BDBDBD; resize: none; border-radius: 25px;"
+                       class="px-2 px-md-4 py-2 mt-3 mx-2 mx-md-0 flex-grow-1 mud-typography-body1"
                        type="text"
                        @bind="Filter.SearchQuery"
                        size="50" />
 
-                <MudHidden Breakpoint="Breakpoint.LgAndUp">
-                    <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
-                        <MudText Class="mr-2" Typo="Typo.body1" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
-                        <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.body1" Inline="true">@CurrentSortOption.Name</MudText>
-                        <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateZ(-180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                        <div class="absolute" style=@($"border-radius: 20px; width: 100%; transition: all 1s ease 0s; overflow: hidden; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "left: 0; top: 120%; height: fit-content;" : "height: 0px;"))>
-                            @foreach (SortOption so in SortOptions)
+                <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <div class="d-flex justify-center mx-2 mt-3">
+                        <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-2 py-1 d-flex relative align-center justify-center flex-nowrap" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
+                            <MudText Class="mr-1" Typo="Typo.h6" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
+                            <MudText Class="mr-1" Style="color: #BDBDBD;" Typo="Typo.h6" Inline="true">@CurrentSortOption.Name</MudText>
+                            <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateZ(-180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" />
+                            <div class="absolute" style=@($"box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px; width: 100%; transition: all 0.4s ease 0s; overflow: hidden; left: 0; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "top: 120%; " : "top: 100%; height: 0;"))>
+                                @foreach (SortOption so in SortOptions)
+                                {
+                                    <MudText @onclick="() => OnSortOptionChanged(so)"
+                                             Style="background-color: white;"
+                                             Class="pa-2" Typo="Typo.h6">@so.Name</MudText>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-center ml-3" style="cursor: pointer;" @onclick="ToggleSortDirection">
+                            @if (Filter.IsAscending)
                             {
-                                <MudText @onclick="() => OnSortOptionChanged(so)"
-                                         @onmouseover="() => {so.IsHovered = true;}"
-                                         @onmouseout="() => {so.IsHovered = false;}"
-                                         Style=@("transition: all 0.6s ease 0s;" + (so.IsHovered ? "color: white; background-color: black;" : "color: black; background-color: white;"))
-                                         Class="pa-3 cursor-pointer" Typo="Typo.body1">@so.Name</MudText>
+                                <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down-alt">
+                                    <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293V3.5zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"></path>
+                                </svg>
+                            }
+                            else
+                            {
+                                <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down">
+                                    <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                                </svg>
                             }
                         </div>
                     </div>
@@ -162,29 +176,29 @@
 
         </MudDrawer>
 
-        <div class="d-flex justify-start align-center mud-height-full flex-column pa-10">
+        <div class="d-flex justify-start align-center mud-height-full flex-column pa-3 pa-md-4 pa-lg-6 pa-xl-8 pa-xxl-10">
 
-            <div class="d-flex mb-20" style="width: 100%; gap: 30px;">
+            <div class="d-flex mb-2 mb-md-4 mb-lg-5 mb-xl-7" style="width: 100%; z-index: 1;">
 
                 <MudText Style="color: #BDBDBD;" Typo="Typo.h4">Найдено: @(_productCount)</MudText>
 
                 <MudSpacer />
 
-                <MudText Class="d-flex align-center px-4 py-2" Typo="Typo.body1"
+                <MudText Class="d-flex align-center flex-nowrap px-2 py-1 px-md-4 py-md-2" Typo="Typo.body1"
                          @onmouseover="() => {_isFilterButtonHovered = true;}"
                          @onmouseout="() => {_isFilterButtonHovered = false;}"
-                         @onclick="() => {_isDrawerOpened = !_isDrawerOpened;}"
-                         style=@FilterButtonStyle>
+                         @onclick=ToggleDrawer
+                         Style=@GetFilterButtonStyle>
                     @((_isDrawerOpened ? "скрыть" : "показать") + " фильтр")
                     <MudIcon Class="ml-1" Icon="@Icons.Material.Outlined.FilterAlt"/>
                 </MudText>
 
                 <MudHidden Breakpoint="Breakpoint.MdAndDown">
-                    <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
+                    <div @onclick="() => {_isSortOptionOpened = !_isSortOptionOpened;}" class="ml-3 px-3 py-1 d-flex relative cursor-pointer align-center" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px;">
                         <MudText Class="mr-2" Typo="Typo.body1" Inline="true">СОРТИРОВАТЬ ПО:</MudText>
                         <MudText Class="mr-2" Style="color: #BDBDBD;" Typo="Typo.body1" Inline="true">@CurrentSortOption.Name</MudText>
                         <MudIcon Style=@("transition: all 0.6s ease 0s; " + (_isSortOptionOpened ? "transform: rotateZ(-180deg);" : null)) Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-                        <div class="absolute" style=@($"border-radius: 20px; width: 100%; transition: all 1s ease 0s; overflow: hidden; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "left: 0; top: 120%; height: fit-content;" : "height: 0px;"))>
+                        <div class="absolute" style=@($"box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); border-radius: 20px; width: 100%; transition: all 0.4s ease 0s; overflow: hidden; left: 0; z-index: {(int)ZEnum.SortOptionsDropDown};" + (_isSortOptionOpened ? "top: 120%; " : "top: 100%; height: 0;"))>
                             @foreach (SortOption so in SortOptions)
                             {
                                 <MudText @onclick="() => OnSortOptionChanged(so)"
@@ -195,26 +209,25 @@
                             }
                         </div>
                     </div>
+
+                    <div class="d-flex align-center ml-3" style="cursor: pointer;" @onclick="ToggleSortDirection">
+                        @if (Filter.IsAscending)
+                        {
+                            <svg height="30px" style="aspect-ratio: 1/1;" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down-alt">
+                                <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293V3.5zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"></path>
+                            </svg>
+                        }
+                        else
+                        {
+                            <svg height="30px" style="aspect-ratio: 1/1;" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down">
+                                <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
+                            </svg>
+                        }
+                    </div>
                 </MudHidden>
-
-                <div class="d-flex align-center" style="cursor: pointer;" @onclick="ToggleSortDirection">
-                    @if (Filter.IsAscending)
-                    {
-                        
-                        
-                        <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down-alt">
-                            <path d="M3.5 3.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 12.293V3.5zm4 .5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"></path>
-                        </svg>
-                    }
-                    else
-                    {
-                    <svg width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-sort-down">
-                        <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"></path>
-                    </svg>
-
-                    }
-                </div>
             </div>
+
+
 
             <ProductGrid Filter="Filter" UsePagination="true" OnProductCountChanged="OnProductCountChanged" />
         </div>
@@ -232,9 +245,11 @@
 
     private SortOption CurrentSortOption = SortOptions[0];
 
-    private string FilterButtonStyle =>
+    private string GetFilterButtonStyle =>
     "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; border: none; line-height: 1; "
     + (_isFilterButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+
+    private void ToggleDrawer() => _isDrawerOpened = !_isDrawerOpened;
 
     private List<BrandModel> Brands = new();
     private List<GenderModel> Genders = new();

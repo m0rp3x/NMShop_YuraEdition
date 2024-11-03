@@ -52,7 +52,7 @@
     </MudHidden>
 
     <MudHidden Breakpoint="Breakpoint.MdAndDown">
-        <div class="px-3 py-15" style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
+        <div class="px-3 " style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%;">
             <!-- Логотип слева -->
             <div class="d-flex" style="justify-self: start;">
                 <MudImage @onclick="NavigateMain" Src="/assets/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="45" Height="45" />
@@ -106,6 +106,8 @@
 
     </MudHidden>
 
+    <Search/>
+
 </MudAppBar>
 
 @code {
@@ -129,7 +131,6 @@
     {
         if (nu != null && nu.Items != null && nu.Items.Count() > 0 && nu != _currentCategory)
         {
-            Console.WriteLine($"New category hovered - {nu.Category.Name}");
             _currentCategory = nu;
         }
     }
