@@ -8,6 +8,7 @@
 @inject ClientDataProvider DataProvider
 @inject NavigationManager Navigation
 @inject CartService CartService
+@inject SearchService SearchService
 @inject IJSRuntime JS
 
 @page "/catalog/{productParentType}/{article}"
@@ -24,17 +25,17 @@
         <MudSpacer/>
     </div>
     <MudGrid>
-        <MudItem xs="8">
+        <MudItem xs="12" md="8">
             <MudCarousel Class="" Style="aspect-ratio: 1/0.75;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="false" TData="object">
                 @foreach (ProductImage pi in (product.Images.Count() < 1 ? new() { new() } : product.Images))
                 {
                     <MudCarouselItem Transition="Transition.Fade" Class="d-flex">
-                        <img class="d-flex flex-grow-1" src="@pi.Bytes.ToSrcString()" style="margin: 80px; max-width: calc(100% - 160px); height: auto; object-position: center; object-fit: cover;" />
+                        <img class="d-flex flex-grow-1" src="@pi.Bytes.ToSrcString()" style="margin: 1vw; max-width: calc(100% - 2vw); height: auto; object-position: center; object-fit: cover;" />
                     </MudCarouselItem>
                 }
             </MudCarousel>
         </MudItem>
-        <MudItem xs="4" Class="d-flex flex-column">
+        <MudItem xs="12" md="4" Class="d-flex flex-column">
 
             <div class="mb-2 d-flex" style="gap: 7px;">
                 @if (product.HasDiscount)
@@ -83,16 +84,16 @@
 
                 <div class="mud-divider-fullwidth mt-3 mb-7" style="min-height: 2px; max-height: 2px; background-color: rgba(26, 26, 26, 1);" />
 
-                <MudGrid Class="mb-7">
+                <MudGrid Class="mb-7" Spacing="0">
 
                     @foreach (PriceInfo pi in product.PriceInfos.OrderBy(p => p.Size))
                     {
                         bool isDiscounted = pi.DiscountPrice is not null && pi.DiscountPrice > 0;
 
-                        <MudItem xs="3" >
+                        <MudItem xs="4" md="3" Class="pa-2" >
                             <div @onmouseout="() => {pi.isHovered = false;}" @onmouseover="() => {pi.isHovered = true;}" @onclick="() => {seletedSize = pi;}" class="pa-1 d-flex flex-column align-center cursor-pointer" style=@($"transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 4px; background-color: " + (seletedSize == pi ? "rgba(26, 26, 26, 1)" : (pi.isHovered ? "#E6E6E6" : "#f2f2f2")) + ';')>
-                                <MudText Style=@("line-height: 1.2; color: " + (seletedSize == pi ? "white" : "black") + ';') Typo="Typo.h5">@(product.SizeDisplayType == "string" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
-                                <MudText Style=@("line-height: 1.2; color: " + (!isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.h6">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
+                                <MudText Style=@("text-wrap: nowrap; line-height: 1.2; color: " + (seletedSize == pi ? "white" : "black") + ';') Typo="Typo.h6">@(product.SizeDisplayType == "string" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
+                                <MudText Style=@("text-wrap: nowrap; line-height: 1.2; color: " + (!isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.body1">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
                             </div>
                         </MudItem>
                     }
@@ -101,37 +102,37 @@
             }
 
 
-            <MudText Style="background-color: #baff2450; border-radius: 8px;" Class="px-2 py-1 mt-auto mb-10" Typo="Typo.h6">Товар прошел проверку на качество</MudText>
+            <MudText Style="background-color: #baff2450; border-radius: 8px;" Class="px-2 py-1 mt-auto mb-6 mb-md-8 mb-lg-10" Typo="Typo.h5">Товар прошел проверку на качество</MudText>
 
         </MudItem>
     </MudGrid>
 
-    <div >
+    <div class="mb-2" style="width: 100%; box-sizing: border-box;">
 
-        <div class="d-flex mb-7">
+        <div class="d-flex" style="overflow-x: scroll; max-width: 100%; box-sizing: border-box;">
 
             @foreach(var ib in InfoButtons)
             {
-                <MudButton OnClick="() => OnInfoButtonClick(ib)" Style=@("border-radius: 0; border-bottom: 1px solid " + (selectedInfo == ib ? "black;" : "#E6E6E6;"))>
-                    <MudText Typo="Typo.h5" Style="font-weight: 500;">@ib.Label</MudText>
+                <MudButton OnClick="() => OnInfoButtonClick(ib)" Style=@("min-width: fit-content; border-radius: 0; border-bottom: 1px solid " + (selectedInfo == ib ? "black;" : "#E6E6E6;"))>
+                    <MudText Typo="Typo.h5" Style="text-wrap: nowrap; font-weight: 500;">@ib.Label</MudText>
                 </MudButton>
             }
 
         </div>
 
-        <div class="mb-7">
+        <div class="pa-2">
             @if (selectedInfo.Code == null)
             {
 
                 <MudGrid Spacing="10" Justify="Justify.SpaceBetween">
 
-                    <MudItem xs="8">
+                    <MudItem xs="12" md="8">
                         <MudText Typo="Typo.h6">
                             @product.Description
                         </MudText>
                     </MudItem>
 
-                    <MudItem xs="4">
+                    <MudItem xs="12" md="4">
 
                         <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
                             <MudText Typo="Typo.h6" Style="color: #666666;">Артикул</MudText>
@@ -172,24 +173,23 @@
     </div>
 
 
-    <MudPaper Class="pa-4" Elevation="0" Style="text-align: center;  margin-top: 120px; margin-bottom: 120px;">
+    <MudPaper Class="pa-4 my-13 my-md-15 my-lg-17" Elevation="0" Style="text-align: center;">
         <MudText Typo="Typo.h5" Class="mb-2">ПРОДОЛЖИТЬ ПОКУПКИ</MudText>
         <MudText Typo="Typo.body1" Align="Align.Center" Style="max-width: 600px; margin: 30px auto; word-wrap: break-word;">
-             Найдите то, что вы хотите, в один клик. Всего один клик, не стесняйтесь продолжить.
+            Найдите то, что вы хотите, в один клик. Всего один клик, не стесняйтесь продолжить.
         </MudText>
 
-        <MudGrid Justify="Justify.Center">
-            <MudItem>
-                <MudButton Variant="Variant.Outlined" Color="Color.Dark" Class="w-100">ПОИСК</MudButton>
-            </MudItem>
-            <MudItem>
-                <MudButton Variant="Variant.Outlined" Href="@GetCategoryUrl()" Color="Color.Dark" EndIcon="@Icons.Material.Filled.ArrowForward" Class="w-100">
-                    Вернутся в категорию
-                </MudButton>
-            </MudItem>
-        </MudGrid>
+        <div style="display: flex; gap: 16px; justify-content: center; margin-top: 20px;">
+            <MudButton OnClick="SearchService.ToggleSearch" Variant="Variant.Outlined" Color="Color.Dark" Style="">
+                ПОИСК
+            </MudButton>
 
+            <MudButton Variant="Variant.Outlined" Href="@GetCategoryUrl()" Color="Color.Dark" EndIcon="@Icons.Material.Filled.ArrowForward" Style="width: fit-content;">
+                Вернуться в категорию
+            </MudButton>
+        </div>
     </MudPaper>
+
     
 
 </MudContainer>
@@ -209,9 +209,9 @@
 
     private IEnumerable<ReferenceTopic> refInfoList = new List<ReferenceTopic>();
 
-    private InfoButton selectedInfo = new();
+    static List<InfoButton> InfoButtons = new ();
 
-    static List<InfoButton> InfoButtons = new();
+    private InfoButton selectedInfo = new();
 
     private bool _isRedirecting = false;
 
@@ -226,12 +226,15 @@
             {
                 seletedSize = lowestPriceInfo;
             }
-            refInfoList = await DataProvider.GetChildTopicsByParentCodeAsync("product_page_reference_info");
 
-            InfoButtons = new List<InfoButton>
+            if(InfoButtons.Count() == 0)
             {
-                new() { Label = "Детали", Code = null }
-            }.Concat(refInfoList.Select(rt => new InfoButton { Label = rt.Name, Code = rt.Code })).ToList();
+                InfoButtons = new List<InfoButton> { new() { Label = "Детали", Code = null } };
+                selectedInfo = InfoButtons.FirstOrDefault();
+                refInfoList = await DataProvider.GetChildTopicsByParentCodeAsync("product_page_reference_info");
+                InfoButtons = InfoButtons.Concat(refInfoList.Select(rt => new InfoButton { Label = rt.Name, Code = rt.Code })).ToList();
+            }
+            
         }
         else Navigation.NavigateTo("/notFound");
     }

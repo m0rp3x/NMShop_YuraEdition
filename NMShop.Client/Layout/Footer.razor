@@ -1,5 +1,5 @@
 ﻿<div>
-    <MudGrid Class="footer px-5 py-4" Spacing="0">
+    <MudGrid Class="footer px-5 py-4" Spacing="6">
         <!-- Разделы -->
         <MudItem xs="12" sm="3">
             <h4>РАЗДЕЛЫ</h4>
@@ -34,7 +34,7 @@
         </MudItem>
 
         <!-- Социальные иконки -->
-        <MudItem xs="12" sm="3" Spacing="2">
+        <MudItem xs="12" sm="3">
             <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
                 <img src="/assets/icons/vk.svg" alt="VK" style="width:100%; aspect-ratio: 1/1;" />
             </MudButton>
@@ -51,20 +51,23 @@
                 <img src="/assets/icons/whatsapp.svg" alt="WhatsApp" style="width:100%; aspect-ratio: 1/1; " />
             </MudButton>
         </MudItem>
-    </MudGrid>
 
-    <!-- Грид для копирайта и политики -->
-    <MudGrid Class="footer-bottom" Spacing="0">
+
         <!-- Копирайт под блоком "Разделы" -->
-        <MudItem xs="12" sm="6" Class="footer-item">
-            <div class="footer-copyright" style="display: flex; justify-content: space-between; align-items: center;">
+        <MudItem xs="12" sm="3">
+            <div class="footer-copyright">
                 <p>2018-2024 © Neo Mei</p>
+            </div>
+        </MudItem>
+
+        <MudItem xs="12" sm="3">
+            <div class="footer-copyright">
                 <p style="margin-right: 310px;">ВСЕ ПРАВА ЗАЩИЩЕНЫ</p> <!-- Перемещаем правее -->
             </div>
         </MudItem>
 
         <!-- Политики и соглашения под блоком "Контакты" -->
-        <MudItem xs="12" sm="6">
+        <MudItem xs="12" sm="3">
             <div class="footer-policies">
                 <ul>
                     <li><a href="/PrivacyPolicy">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a></li>
