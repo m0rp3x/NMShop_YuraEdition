@@ -8,7 +8,7 @@
 @inject ClientDataProvider DataProvider
 @inject NavigationManager Navigation
 @inject CartService CartService
-@inject SearchService SearchService
+@inject LayoutService LayoutService
 @inject IJSRuntime JS
 
 @page "/catalog/{productParentType}/{article}"
@@ -68,12 +68,8 @@
             <MudText Class="d-flex align-center justify-center px-4 py-4 mb-4" Typo="Typo.h5"
                      @onmouseover="() => {_isAddToCartButtonHovered = true;}"
                      @onmouseout="() => {_isAddToCartButtonHovered = false;}"
-                     @onclick="() => {
-                                        if(selectedInfo != null) {
-                                            CartService.AddProduct(product, seletedSize);
-                                            CartService.ToggleCart();}
-                                     }"
-                     style=@AddToCartButtonStyle>
+                     @onclick="() => AddToCart(product, seletedSize)"
+                     Style=@AddToCartButtonStyle>
                 Добавить в корзину
             </MudText>
 
@@ -180,7 +176,7 @@
         </MudText>
 
         <div style="display: flex; gap: 16px; justify-content: center; margin-top: 20px;">
-            <MudButton OnClick="SearchService.ToggleSearch" Variant="Variant.Outlined" Color="Color.Dark" Style="">
+            <MudButton OnClick="LayoutService.ToggleSearch" Variant="Variant.Outlined" Color="Color.Dark" Style="">
                 ПОИСК
             </MudButton>
 
@@ -234,7 +230,7 @@
                 refInfoList = await DataProvider.GetChildTopicsByParentCodeAsync("product_page_reference_info");
                 InfoButtons = InfoButtons.Concat(refInfoList.Select(rt => new InfoButton { Label = rt.Name, Code = rt.Code })).ToList();
             }
-            
+
         }
         else Navigation.NavigateTo("/notFound");
     }
@@ -256,6 +252,15 @@
         else
         {
             Navigation.NavigateTo("/notFound");
+        }
+    }
+
+    void AddToCart(ProductDto product, PriceInfo? seletedSize)
+    {
+        if (seletedSize != null)
+        {
+            CartService.AddProduct(product, seletedSize);
+            LayoutService.ToggleCart();
         }
     }
 

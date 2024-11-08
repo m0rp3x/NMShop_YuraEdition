@@ -1,13 +1,11 @@
-﻿@using NMShop.Client.Services;
-@using NMShop.Client.Components;
-
+﻿@using NMShop.Client.Components;
+@using NMShop.Client.Services;
 @implements IDisposable
-
 @inject NavigationManager Navigation;
-@inject SearchService SearchService
+@inject LayoutService LayoutService;
 
-<div @onclick=SearchService.ToggleSearch class="absolute"
-     style=@($"overflow: hidden; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); width: 100vw; top: 100%; left: 0; right: 0; z-index: {(int)ZEnum.AppBar - 1}; height: " + (SearchService.IsSearchOpen ? "calc(100vh - 100%);" : "0px;"))>
+<div @onclick="LayoutService.ToggleSearch" class="absolute"
+     style=@($"overflow: hidden; transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); width: 100vw; top: 100%; left: 0; right: 0; z-index: {(int)ZEnum.AppBar - 1}; height: " + (LayoutService.IsSearchOpen ? "calc(100vh - 100%);" : "0px;"))>
 
     <div @onclick:stopPropagation
          class="mb-auto d-flex flex-column justify-center"
@@ -36,21 +34,21 @@
 @code {
 
     private bool _isSearchButtonHovered = false;
-
     private string _searchQuery = string.Empty;
 
     private string SearchButtonStyle =>
-    "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; text-align: center; border-radius: 25px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); "
-    + (_isSearchButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+        "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; text-align: center; border-radius: 25px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); "
+        + (_isSearchButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+
 
     protected override void OnInitialized()
     {
-        SearchService.OnChange += StateHasChanged;
+        LayoutService.OnChange += StateHasChanged;
     }
 
     public void Dispose()
     {
-        SearchService.OnChange -= StateHasChanged;
+        LayoutService.OnChange -= StateHasChanged;
     }
 
     void OnInputChange(ChangeEventArgs e)
@@ -62,7 +60,7 @@
     {
         _isSearchButtonHovered = false;
         Navigation.NavigateTo("/catalog/" + new ProductFilter() { SearchQuery = _searchQuery }.ToQueryString());
-        SearchService.ToggleSearch();
+        LayoutService.ToggleSearch();
     }
 
     void HandleKeyPress(KeyboardEventArgs e)
@@ -72,8 +70,4 @@
             GoToResults();
         }
     }
-
 }
-
-
-

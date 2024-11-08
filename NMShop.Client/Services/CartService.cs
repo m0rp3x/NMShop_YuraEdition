@@ -9,7 +9,7 @@ namespace NMShop.Client.Services
 {
     public class CartService
     {
-        private readonly IJSRuntime _jsRuntime;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ClientDataProvider _dataProvider;
         public event Action OnChange;
         private List<CartItem> _items = new List<CartItem>();
@@ -18,15 +18,14 @@ namespace NMShop.Client.Services
         private string? _promoCodeError;
         private CheckoutForm? _checkoutForm; // Поле для формы
 
-        public CartService(IJSRuntime jsRuntime, ClientDataProvider dataProvider)
+        public CartService(IServiceProvider serviceProvider, ClientDataProvider dataProvider)
         {
-            _jsRuntime = jsRuntime;
+            _serviceProvider = serviceProvider;
             _dataProvider = dataProvider;
             InitializeCartAsync();
         }
 
         public IReadOnlyList<CartItem> Items => _items.AsReadOnly();
-        public bool IsCartOpen => _isCartOpen;
         public PromoCode? AppliedPromoCode => _appliedPromoCode;
         public string? PromoCodeError => _promoCodeError;
         public CheckoutForm? CheckoutForm => _checkoutForm; // Предоставление формы
@@ -34,16 +33,20 @@ namespace NMShop.Client.Services
         // Метод для инициализации корзины и формы из localStorage
         public async Task InitializeCartAsync()
         {
-            var savedCart = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "cartItems");
-            if (!string.IsNullOrEmpty(savedCart))
+            using (var scope = _serviceProvider.CreateScope())
             {
-                _items = JsonSerializer.Deserialize<List<CartItem>>(savedCart) ?? new List<CartItem>();
-            }
+                var jsRuntime = scope.ServiceProvider.GetRequiredService<IJSRuntime>();
+                var savedCart = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "cartItems");
+                if (!string.IsNullOrEmpty(savedCart))
+                {
+                    _items = JsonSerializer.Deserialize<List<CartItem>>(savedCart) ?? new List<CartItem>();
+                }
 
-            var savedCheckoutForm = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "checkoutForm");
-            if (!string.IsNullOrEmpty(savedCheckoutForm))
-            {
-                _checkoutForm = JsonSerializer.Deserialize<CheckoutForm>(savedCheckoutForm) ?? new CheckoutForm();
+                var savedCheckoutForm = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "checkoutForm");
+                if (!string.IsNullOrEmpty(savedCheckoutForm))
+                {
+                    _checkoutForm = JsonSerializer.Deserialize<CheckoutForm>(savedCheckoutForm) ?? new CheckoutForm();
+                }
             }
 
             NotifyStateChanged();
@@ -54,7 +57,11 @@ namespace NMShop.Client.Services
         {
             _checkoutForm = form;
             var serializedForm = JsonSerializer.Serialize(_checkoutForm);
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "checkoutForm", serializedForm);
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var jsRuntime = scope.ServiceProvider.GetRequiredService<IJSRuntime>();
+                await jsRuntime.InvokeVoidAsync("localStorage.setItem", "checkoutForm", serializedForm);
+            }
         }
 
         // Метод для очистки формы и корзины
@@ -63,7 +70,11 @@ namespace NMShop.Client.Services
             _items.Clear();
             _appliedPromoCode = null;
             _promoCodeError = null;
-            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "cartItems");
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var jsRuntime = scope.ServiceProvider.GetRequiredService<IJSRuntime>();
+                await jsRuntime.InvokeVoidAsync("localStorage.removeItem", "cartItems");
+            }
         }
 
         public async void AddProduct(ProductDto product, PriceInfo priceInfo, int quantity = 1)
@@ -108,12 +119,6 @@ namespace NMShop.Client.Services
                 await SaveCartToLocalStorageAsync();
                 NotifyStateChanged();
             }
-        }
-
-        public void ToggleCart()
-        {
-            _isCartOpen = !_isCartOpen;
-            NotifyStateChanged();
         }
 
         public decimal GetTotalCartPriceWithoutDiscount()
@@ -190,7 +195,11 @@ namespace NMShop.Client.Services
         private async Task SaveCartToLocalStorageAsync()
         {
             var serializedCart = JsonSerializer.Serialize(_items);
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "cartItems", serializedCart);
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var jsRuntime = scope.ServiceProvider.GetRequiredService<IJSRuntime>();
+                await jsRuntime.InvokeVoidAsync("localStorage.setItem", "cartItems", serializedCart);
+            }
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();

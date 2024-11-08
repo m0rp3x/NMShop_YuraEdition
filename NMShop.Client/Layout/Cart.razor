@@ -5,9 +5,10 @@
 
 @inject NavigationManager Navigation;
 @inject CartService CartService
+@inject LayoutService LayoutService
 
-<div @onclick=CartService.ToggleCart class="absolute"
-     style=@($"overflow: hidden; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); height: 100vh; z-index: {(int)ZEnum.Cart - 1}; width: " + (CartService.IsCartOpen ? "100vw;" : "0px"))>
+<div @onclick="LayoutService.ToggleCart" class="absolute"
+     style=@($"overflow: hidden; transition: all 0.4s ease 0s; -webkit-transition: all 0.4s ease 0s; backdrop-filter: blur(10px); background: linear-gradient(0deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0.14)), rgba(255, 255, 255, 0.4); height: 100vh; z-index: {(int)ZEnum.Cart - 1}; width: " + (LayoutService.IsCartOpen ? "100vw;" : "0px"))>
 
     <div @onclick:stopPropagation
          class="ml-auto d-flex flex-column justify-space-between pt-6"
@@ -17,10 +18,10 @@
             <div class="d-flex justify-space-between">
                 <MudText Typo="Typo.h4">Корзина</MudText>
 
-                <MudIconButton OnClick="CartService.ToggleCart" Icon="@Icons.Material.Filled.Close" Size="Size.Large" />
+                <MudIconButton OnClick="LayoutService.ToggleCart" Icon="@Icons.Material.Filled.Close" Size="Size.Large" />
             </div>
 
-            @if (CartService.IsCartOpen)
+            @if (LayoutService.IsCartOpen)
             {
                 <CartItemsGrid />
             }
@@ -60,18 +61,20 @@
     protected override void OnInitialized()
     {
         CartService.OnChange += StateHasChanged;
+        LayoutService.OnChange += StateHasChanged;
     }
 
     public void Dispose()
     {
         CartService.OnChange -= StateHasChanged;
+        LayoutService.OnChange += StateHasChanged;
     }
 
     void GoToCheckOut()
     {
         _isCheckoutButtonHovered = false;
         Navigation.NavigateTo("/checkout");
-        CartService.ToggleCart();
+        LayoutService.IsCartOpen = false;
     }
 }
 

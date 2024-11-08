@@ -38,7 +38,10 @@
               <node kind="schema" qname="@" />
             </node>
             <node kind="database" qname="postgres">
-              <node kind="schema" qname="NMShop" />
+              <node kind="schema">
+                <name qname="NMShop" />
+                <name qname="TestTaskSchema" />
+              </node>
             </node>
           </node>
         </introspection-scope>

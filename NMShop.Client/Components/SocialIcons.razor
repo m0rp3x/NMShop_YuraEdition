@@ -1,0 +1,37 @@
+﻿<div class="d-flex" style="gap: 10px;">
+    @foreach (var icon in Icons)
+    {
+        <MudButton Href="@icon.LinkUrl" Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; height:45px; min-width: unset;">
+            <img src="/assets/icons/@(icon.SvgName).svg" alt="@icon.SvgName" style="width:100%;" />
+        </MudButton>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<IconData> Icons { get; set; } = new List<IconData> 
+    {
+        new()
+        {
+            SvgName = "vk"
+        },
+        new()
+        {
+            SvgName = "telegram"
+        },
+        new()
+        {
+            SvgName = "youtube"
+        },
+        new()
+        {
+            SvgName = "whatsapp"
+        }
+    };
+
+    public class IconData
+    {
+        public string SvgName = string.Empty;
+        public string LinkUrl = string.Empty;
+    }
+}

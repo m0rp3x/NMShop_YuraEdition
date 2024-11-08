@@ -1,10 +1,13 @@
-﻿@inherits LayoutComponentBase
+﻿@using NMShop.Client.Services;
+@implements IDisposable
+@inherits LayoutComponentBase
+@inject LayoutService LayoutService
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
-<MudLayout Class="d-flex flex-column" Style="min-height: 100vh; max-width: 100vw; overflow-x: hidden;">
+<MudLayout Class="d-flex flex-column" Style=@("min-height: 100vh; max-width: 100vw; overflow-x: hidden;" + (LayoutService.LockScroll ? "max-height: 100vh; overflow-y: hidden;" : null))>
     
     <Cart/>
 
@@ -60,6 +63,8 @@
             LayoutProperties = new LayoutProperties(),
                 Typography = _customTypography
             };
+
+        LayoutService.OnChange += StateHasChanged;
     }
 
     private void DarkModeToggle()
@@ -67,6 +72,10 @@
         _isDarkMode = !_isDarkMode;
     }
 
+    public void Dispose()
+    {
+        LayoutService.OnChange -= StateHasChanged;
+    }
 
 
     private readonly Typography _customTypography = new Typography
@@ -148,8 +157,63 @@
                 LineHeight = 1.43,
                 LetterSpacing = ".01071em",
                 TextTransform = "none",
+            },
+            Overline = new Overline
+            {
+                FontFamily = new[] { "Unbounded", "Podkova", "Roboto", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 600,
+                FontSize = "0.75rem",
+                LineHeight = 2,
+                LetterSpacing = ".08333em",
+                TextTransform = "uppercase",
+            },
+            Caption = new Caption
+            {
+                FontFamily = new[] { "Unbounded", "Podkova", "Roboto", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 600,
+                FontSize = "0.875rem",
+                LineHeight = 1.66,
+                LetterSpacing = ".03333em",
+                TextTransform = "none",
+            },
+            Button = new Button
+            {
+                FontFamily = new[] { "Unbounded", "Podkova", "Roboto", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 700,
+                FontSize = "0.875rem",
+                LineHeight = 1.75,
+                LetterSpacing = ".02857em",
+                TextTransform = "uppercase",
+            },
+            Input = new Input
+            {
+                FontFamily = new[] { "Unbounded", "Podkova", "Roboto", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 400,
+                FontSize = "1rem",
+                LineHeight = 1.5,
+                LetterSpacing = "0",
+                TextTransform = "none",
+            },
+            Subtitle1 = new Subtitle1
+            {
+                FontFamily = new[] { "Unbounded", "Podkova", "Roboto", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 600,
+                FontSize = "1rem",
+                LineHeight = 1.75,
+                LetterSpacing = ".00938em",
+                TextTransform = "none",
+            },
+            Subtitle2 = new Subtitle2
+            {
+                FontFamily = new[] { "Unbounded", "Podkova", "Roboto", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 600,
+                FontSize = "0.875rem",
+                LineHeight = 1.57,
+                LetterSpacing = ".00714em",
+                TextTransform = "none",
             }
         };
+
 
 
 

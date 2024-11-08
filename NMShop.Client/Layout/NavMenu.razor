@@ -1,8 +1,7 @@
 ﻿@using NMShop.Client.Services;
 
 @inject NavigationManager Navigation
-@inject CartService CartService
-@inject SearchService SearchService
+@inject LayoutService LayoutService
 @inject ClientDataProvider DataProvider
 
 <MudAppBar Elevation="0" Style=@($"z-index: {(int)ZEnum.AppBar}") >
@@ -13,8 +12,8 @@
         <MudSpacer/>
 
         <div style="color: var(--mud-palette-text-primary);">
-            <MudIconButton OnClick="SearchService.ToggleSearch" Icon="@Icons.Material.Filled.Search" Color="Color.Inherit" />
-            <MudIconButton OnClick="CartService.ToggleCart" Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Inherit" />
+            <MudIconButton OnClick="LayoutService.ToggleSearch" Icon="@Icons.Material.Filled.Search" Color="Color.Inherit" />
+            <MudIconButton OnClick="LayoutService.ToggleCart" Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Inherit" />
             <MudIconButton OnClick="() => {_isMenuHidden = !_isMenuHidden;}" Icon="@Icons.Material.Filled.MenuOpen" Color="Color.Inherit" />
         </div>
 
@@ -68,8 +67,8 @@
 
             <!-- Иконки справа -->
             <div style="justify-self: end; display: flex; gap: 10px; color: var(--mud-palette-text-primary);">
-                <MudIconButton OnClick="SearchService.ToggleSearch" Icon="@Icons.Material.Filled.Search" Size="Size.Large" Color="Color.Inherit" />
-                <MudIconButton OnClick="CartService.ToggleCart" Icon="@Icons.Material.Outlined.ShoppingCart" Size="Size.Large" Color="Color.Inherit" />
+                <MudIconButton OnClick="LayoutService.ToggleSearch" Icon="@Icons.Material.Filled.Search" Size="Size.Large" Color="Color.Inherit" />
+                <MudIconButton OnClick="LayoutService.ToggleCart" Icon="@Icons.Material.Outlined.ShoppingCart" Size="Size.Large" Color="Color.Inherit" />
             </div>
         </div>
 
@@ -106,7 +105,7 @@
 
     </MudHidden>
 
-    <Search/>
+    <Search />
 
 </MudAppBar>
 

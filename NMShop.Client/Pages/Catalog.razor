@@ -17,9 +17,9 @@
 <div class="d-flex flex-grow-1 varcontainer" style="width: 100%;">
     <MudDrawerContainer Style="width: 100%; position:relative;">
 
-        <MudDrawer Width="var(--drawer-width)" Height="fit-content" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-md-5 pl-xl-9 pt-4 pb-2" Style="background-color: white;">
+        <MudDrawer Width="var(--drawer-width)" @bind-Open="@_isDrawerOpened" Elevation="0" Variant="@DrawerVariant.Persistent" Class="hovering pl-md-5 pl-xl-9 pt-4 pb-2" Style="background-color: white;">
 
-            <div class="d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden;">
+            <div class="d-flex flex-column" style="overflow-y: scroll; overflow-x: hidden; max-height: max(100vh, 100%);">
 
                 <MudButton Style="flex-shrink: 0;" Class="py-1 px-3 mx-2 mx-md-0 mt-3" @onclick="ResetFilters" Variant="Variant.Outlined" Color="Color.Dark">Сбросить фильтр</MudButton>
 

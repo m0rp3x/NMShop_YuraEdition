@@ -1,163 +1,175 @@
-﻿<div>
-    <MudGrid Class="footer px-5 py-4" Spacing="6">
-        <!-- Разделы -->
-        <MudItem xs="12" sm="3">
-            <h4>РАЗДЕЛЫ</h4>
-            <ul>
-                <li><a href="#">SALE</a></li>
-                <li><a href="#">ОБУВЬ</a></li>
-                <li><a href="#">ОДЕЖДА</a></li>
-                <li><a href="#">АКСЕССУАРЫ</a></li>
-            </ul>
-        </MudItem>
+﻿@using NMShop.Client.Components;
 
-        <!-- Информация -->
-        <MudItem xs="12" sm="3" Class="footer-item">
-            <h4>ИНФОРМАЦИЯ</h4>
-            <ul>
-                <li><a href="#">КОНТАКТЫ</a></li>
-                <li><a href="#">ДОСТАВКА</a></li>
-                <li><a href="#">ОПЛАТА</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">О НАС</a></li>
-            </ul>
-        </MudItem>
+<div class="pa-2 pa-md-4 pa-lg-6" style="background-color: black; color: white;">
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudGrid Class="footer px-5 py-4 mt-4 mt-md-0" Spacing="6">
+            @foreach (var sec in Sections)
+            {
+                <MudItem xs="12" sm="3">
+                    <h4 style="margin-bottom: 10px; font-weight: bold;">@sec.Title</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        @foreach (var link in sec.Links)
+                        {
+                            <li style="margin-bottom: 8px;">
+                                @if (string.IsNullOrWhiteSpace(link.Url))
+                                {
+                                    @link.Text
+                                }
+                                else
+                                {
+                                    <a href="@link.Url" style="color: white; text-decoration: none;">@link.Text</a>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </MudItem>
+            }
 
-        <!-- Контакты -->
-        <MudItem xs="12" sm="3">
-            <h4>КОНТАКТЫ</h4>
-            <ul>
-                <li>8 (800) 535-35-35</li>
-                <li>ЧАСЫ РАБОТЫ (С 11:00 ДО 22:00)</li>
-                <li>SUPPORT@EXAMPLE.COM</li>
-            </ul>
-        </MudItem>
+            <!-- Социальные иконки -->
+            <MudItem xs="12" sm="3">
+                <SocialIcons />
+            </MudItem>
 
-        <!-- Социальные иконки -->
-        <MudItem xs="12" sm="3">
-            <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
-                <img src="/assets/icons/vk.svg" alt="VK" style="width:100%; aspect-ratio: 1/1;" />
+            <!-- Копирайт -->
+            <MudItem xs="12" sm="3">
+                <div style="margin-top: 30px; padding-top: 10px;">
+                    <p style="font-size: 16px; font-weight: 600;">2018-2024 © Neo Mei</p>
+                </div>
+            </MudItem>
+
+            <MudItem xs="12" sm="3">
+                <div style="margin-top: 30px; padding-top: 10px;">
+                    <p style="margin-right: 310px; font-size: 16px; font-weight: 600;">ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+                </div>
+            </MudItem>
+
+            <!-- Политики и соглашения -->
+            <MudItem xs="12" sm="3">
+                <div>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        @foreach (var policy in Policies)
+                        {
+                            <li style="margin-bottom: 8px;">
+                                <a href="@policy.Url" style="color: white; text-decoration: none;">@policy.Text</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </MudItem>
+        </MudGrid>
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        @foreach (var sec in Sections)
+        {
+            <MudButton OnClick="() => ToggleSection(sec)" Class="my-3 p-0" Style="transition: all 0.25s ease-in-out; width: 100%; display: block; text-transform: none;">
+                <div class="d-flex mr-auto my-2">
+                    <MudText Class="align-self-center pt-1" Color="Color.Secondary" Typo="Typo.h5">@sec.Title</MudText>
+
+                    <div class="ml-auto" style=@("transition: all 0.25s ease-in-out; width: 40px; aspect-ratio: 1/1; color:white; background-image: url(assets/icons/ArrowIconWhite.svg); background-position: center; background-repeat: no-repeat;" + (OpenedSections.Contains(sec) ? "" : "transform: rotate(-90deg);")) />
+                </div>
+
+                <div style=@("transition: all 0.5s ease-in-out; overflow: hidden;" + (OpenedSections.Contains(sec) ? "border-top: 1px solid #b0b0b0;" : "max-height: 0;"))>
+                    <div style="text-align:left; font-style: normal; opacity: 0.9; padding: 20px; ">
+                        <ul style="list-style: none; padding: 0;">
+                            @foreach (var link in sec.Links)
+                            {
+                                <li style="margin-bottom: 8px;">
+                                    <a href="@link.Url" style="color: white; text-decoration: none;">@link.Text</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
             </MudButton>
+        }
 
-            <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
-                <img src="/assets/icons/telegram.svg" alt="Telegram" style="width:100%; aspect-ratio: 1/1; " />
-            </MudButton>
+        <div style="margin-top: 20px; padding-top: 10px;">
+            <p style="font-size: 16px; font-weight: 600;">2018-2024 © Neo Mei</p>
+            <p style="margin-right: 310px; font-size: 16px; font-weight: 600;">ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+        </div>
 
-            <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
-                <img src="/assets/icons/youtube.svg" alt="YouTube" style="width:100%; aspect-ratio: 1/1; " />
-            </MudButton>
+        <SocialIcons/>
+    </MudHidden>
 
-            <MudButton Class="pa-1" Style="border: 2px solid white; border-radius: 8px; width: 45px; min-width: unset;">
-                <img src="/assets/icons/whatsapp.svg" alt="WhatsApp" style="width:100%; aspect-ratio: 1/1; " />
-            </MudButton>
-        </MudItem>
-
-
-        <!-- Копирайт под блоком "Разделы" -->
-        <MudItem xs="12" sm="3">
-            <div class="footer-copyright">
-                <p>2018-2024 © Neo Mei</p>
-            </div>
-        </MudItem>
-
-        <MudItem xs="12" sm="3">
-            <div class="footer-copyright">
-                <p style="margin-right: 310px;">ВСЕ ПРАВА ЗАЩИЩЕНЫ</p> <!-- Перемещаем правее -->
-            </div>
-        </MudItem>
-
-        <!-- Политики и соглашения под блоком "Контакты" -->
-        <MudItem xs="12" sm="3">
-            <div class="footer-policies">
-                <ul>
-                    <li><a href="/PrivacyPolicy">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a></li>
-                    <li><a href="#">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</a></li>
-                    <li><a href="#">ДОГОВОР ОФЕРТЫ</a></li>
-                </ul>
-            </div>
-        </MudItem>
-    </MudGrid>
 </div>
 
-<style>
 
-    li, p {
-        font-size: 16px;
-        font-weight: 600;
+@code {
+    private HashSet<Section> OpenedSections = new();
+
+    private void ToggleSection(Section sec)
+    {
+        if (OpenedSections.Contains(sec))
+        {
+            OpenedSections.Remove(sec);
+        }
+        else
+        {
+            OpenedSections.Add(sec);
+        }
     }
 
-    .footer {
-        background-color: black;
-        color: white;
+    private List<Section> Sections = new List<Section>
+    {
+        new Section
+        {
+            Title = "РАЗДЕЛЫ",
+            Links = new List<Link>
+            {
+                new Link { Url = "#", Text = "SALE" },
+                new Link { Url = "#", Text = "ОБУВЬ" },
+                new Link { Url = "#", Text = "ОДЕЖДА" },
+                new Link { Url = "#", Text = "АКСЕССУАРЫ" }
+            }
+        },
+        new Section
+        {
+            Title = "ИНФОРМАЦИЯ",
+            Links = new List<Link>
+            {
+                new Link { Url = "#", Text = "КОНТАКТЫ" },
+                new Link { Url = "#", Text = "ДОСТАВКА" },
+                new Link { Url = "#", Text = "ОПЛАТА" },
+                new Link { Url = "#", Text = "FAQ" },
+                new Link { Url = "#", Text = "О НАС" }
+            }
+        },
+        new Section
+        {
+            Title = "КОНТАКТЫ",
+            Links = new List<Link>
+            {
+                new Link { Url = "", Text = "8 (800) 535-35-35" },
+                new Link { Url = "", Text = "ЧАСЫ РАБОТЫ (С 11:00 ДО 22:00)" },
+                new Link { Url = "", Text = "SUPPORT@EXAMPLE.COM" }
+            }
+        }
+    };
+
+    private List<Link> Policies = new List<Link>
+    {
+        new Link { Url = "/PrivacyPolicy", Text = "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ" },
+        new Link { Url = "#", Text = "ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ" },
+        new Link { Url = "#", Text = "ДОГОВОР ОФЕРТЫ" }
+    };
+
+    public class Section
+    {
+        public string Title { get; set; }
+        public List<Link> Links { get; set; }
     }
 
-    .footer h4 {
-        margin-bottom: 10px;
-        font-weight: bold;
+    public class Link
+    {
+        public string Url { get; set; }
+        public string Text { get; set; }
     }
 
-    .footer ul {
-        list-style: none;
-        padding: 0;
+    public class ContactInfo
+    {
+        public string Phone { get; set; }
+        public string WorkingHours { get; set; }
+        public string Email { get; set; }
     }
-
-    .footer li {
-            margin-bottom: 8px;
-    }
-
-    .footer li a {
-        color: white;
-        text-decoration: none;
-    }
-
-    .footer li a:hover {
-        text-decoration: underline;
-    }
-
-    .social-icons {
-        display: flex;
-        gap: 10px;
-    }
-
-    /* Грид для копирайта и политики */
-    .footer-bottom {
-        background-color: black;
-        color: white;
-        padding: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center; /* Вертикальное выравнивание всех элементов на одной высоте */
-    }
-
-    .footer-item {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .footer-policies ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .footer-policies li {
-        margin-bottom: 8px;
-    }
-
-    .footer-policies li a {
-        color: white;
-        text-decoration: none;
-    }
-
-    .footer-policies li a:hover {
-        text-decoration: underline;
-    }
-
-    .footer-rights {
-        margin-top: 30px; /* Отступ сверху для размещения под блоком "Информация" */
-        padding-top: 10px;
-    }
-</style>
-
-
+}

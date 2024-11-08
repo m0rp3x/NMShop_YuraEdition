@@ -17,10 +17,10 @@
                 <div class="d-flex mr-auto my-2">
                     <MudText Class="align-self-center pt-1" Typo="Typo.h5">@rt.Name</MudText>
 
-                    <div class="ml-auto" style=@("transition: all 0.25s ease-in-out; width: 40px; aspect-ratio: 1/1; border-radius: 10px; border: 1px solid #b0b0b0; background: #f0f0f0; background-image: url(assets/icons/ArrowIcon.svg); background-position: center; background-repeat: no-repeat;" + (OpenedTopics.Contains(rt.Code) ? "" : "transform: rotate(-90deg);")) />
+                    <div class="ml-auto" style=@("transition: all 0.25s ease-in-out; width: 40px; aspect-ratio: 1/1; border-radius: 10px; border: 1px solid #b0b0b0; background: #f0f0f0; background-image: url(assets/icons/ArrowIconBlack.svg); background-position: center; background-repeat: no-repeat;" + (OpenedTopics.Contains(rt.Code) ? "" : "transform: rotate(-90deg);")) />
                 </div>
 
-                <div style=@("transition: all 0.2s ease-in-out;" + (OpenedTopics.Contains(rt.Code) ? "border-top: 1px solid #b0b0b0; max-height: fit-content;" : "max-height: 0px;"))>
+                <div style=@("transition: all 0.5s ease-in-out; overflow: hidden;" + (OpenedTopics.Contains(rt.Code) ? "border-top: 1px solid #b0b0b0;" : "max-height: 0;"))>
                     <div style="text-align:left; font-style: normal; opacity: 0.9; padding: 20px; ">
                         <ReferenseInfoList Code="@rt.Code" />
                     </div>

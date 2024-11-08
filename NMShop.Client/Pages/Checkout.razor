@@ -17,12 +17,12 @@
 
 <div>
 
-    <MudText Class="mx-auto" Style="width: fit-content;" Typo="Typo.h5">ОФОРМЛЕНИЕ ЗАКАЗА</MudText>
+    <MudText Class="mx-auto my-3" Style="width: fit-content;" Typo="Typo.h5">ОФОРМЛЕНИЕ ЗАКАЗА</MudText>
 
-    <div class="d-flex mx-auto pt-7" style="width: fit-content; gap: 25px;">
+    <div class="d-flex flex-column flex-md-row mx-auto pt-md-3 pt-lg-5" style="width: fit-content; gap: 25px;">
 
         <MudForm @ref="checkoutForm" @bind-IsValid="isFormValid" @bind-Errors="@errors">
-            <div class="pa-5 d-flex flex-column" style="gap: 13px;">
+            <div class="pa-1 pa-md-3pa-lg-5 d-flex flex-column" style="gap: 13px;">
 
                 <MudText Typo="Typo.h6">ЛИЧНЫЕ ДАННЫЕ</MudText>
                 
@@ -49,7 +49,7 @@
 
                 @if(deliveryMethods != null)
                 {
-                    <div class="d-flex" style="gap: 13px;">
+                    <div class="d-flex flex-column flex-md-row" style="gap: 13px;">
                         <div style="gap: 13px;">
                             <MudText Typo="Typo.h6">СПОСОБ ДОСТАВКИ</MudText>
                             <MudRadioGroup Required="true" RequiredError="Выберите способ доставки" @bind-Value="Form.selectedDeliveryMethod">
@@ -98,7 +98,7 @@
 
             <MudText Typo="Typo.h6">ЕСЛИ У ВАС ЕСТЬ ПРОМОКОД, ВВЕДИТЕ ЕГО СЮДА</MudText>
 
-            <div class="d-flex" style="gap: 15px;">
+            <div class="d-flex flex-column flex-md-row" style="gap: 15px;">
                 <MudTextField Error="@(!string.IsNullOrEmpty(CartService.PromoCodeError))" ErrorText="@CartService.PromoCodeError" @bind-Value="promo" Placeholder="Введите промокод" />
                 <MudButton OnClick="async() => CartService.ApplyPromoCodeAsync(promo)" Variant="Variant.Filled" Color="Color.Primary">ПРИМЕНИТЬ</MudButton>
             </div>
@@ -129,7 +129,7 @@
                        Style=@FinalButtonStyle
                        @onclick="SubmitOrderAsync">ОФОРМИТЬ ЗАКАЗ</MudButton>
 
-            <MudText Typo="Typo.body2" Color="Color.Secondary">
+            <MudText Typo="Typo.body2" Color="Color.Primary">
                 Оформляя заказ, Вы подтверждаете согласие с <MudLink Href="#">Пользовательским соглашением</MudLink>,<br /><MudLink Href="#">Политикой конфиденциальности</MudLink> и <MudLink Href="#">Договором оферты</MudLink>.
             </MudText>
 
