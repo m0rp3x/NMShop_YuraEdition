@@ -1,6 +1,6 @@
 ﻿@using NMShop.Client.Components;
 
-<div class="pa-2 pa-md-4 pa-lg-6" style="background-color: black; color: white;">
+<div class="pa-2 pa-md-4 pa-lg-6" style="background-color: black; color: white; border-top-left-radius: 20px; border-top-right-radius: 20px;">
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <MudGrid Class="footer px-5 py-4 mt-4 mt-md-0" Spacing="6">
             @foreach (var sec in Sections)
@@ -62,15 +62,15 @@
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
         @foreach (var sec in Sections)
         {
-            <MudButton OnClick="() => ToggleSection(sec)" Class="my-3 p-0" Style="transition: all 0.25s ease-in-out; width: 100%; display: block; text-transform: none;">
+            <MudButton OnClick="() => ToggleSection(sec)" Class="" Style="width: 100%; display: block; text-transform: none;">
                 <div class="d-flex mr-auto my-2">
                     <MudText Class="align-self-center pt-1" Color="Color.Secondary" Typo="Typo.h5">@sec.Title</MudText>
 
-                    <div class="ml-auto" style=@("transition: all 0.25s ease-in-out; width: 40px; aspect-ratio: 1/1; color:white; background-image: url(assets/icons/ArrowIconWhite.svg); background-position: center; background-repeat: no-repeat;" + (OpenedSections.Contains(sec) ? "" : "transform: rotate(-90deg);")) />
+                    <div class="ml-auto" style=@("transition: all 0.5s ease-in-out; width: 40px; aspect-ratio: 1/1; color:white; background-image: url(assets/icons/ArrowIconWhite.svg); background-position: center; background-repeat: no-repeat;" + (OpenedSections.Contains(sec) ? "" : "transform: rotate(-90deg);")) />
                 </div>
 
-                <div style=@("transition: all 0.5s ease-in-out; overflow: hidden;" + (OpenedSections.Contains(sec) ? "border-top: 1px solid #b0b0b0;" : "max-height: 0;"))>
-                    <div style="text-align:left; font-style: normal; opacity: 0.9; padding: 20px; ">
+                <div style=@("border-bottom: 1px solid white; display: grid; transition: 0.5s grid-template-rows ease-in-out; " + (OpenedSections.Contains(sec) ? "grid-template-rows: 1fr;" : "grid-template-rows: 0fr;"))>
+                    <div class="pa-1" style="text-align:left; font-style: normal; opacity: 0.9; overflow: hidden;">
                         <ul style="list-style: none; padding: 0;">
                             @foreach (var link in sec.Links)
                             {
@@ -84,9 +84,8 @@
             </MudButton>
         }
 
-        <div style="margin-top: 20px; padding-top: 10px;">
-            <p style="font-size: 16px; font-weight: 600;">2018-2024 © Neo Mei</p>
-            <p style="margin-right: 310px; font-size: 16px; font-weight: 600;">ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+        <div class="my-4 mx-auto" style="width: fit-content;font-size: var(--mud-typography-h6-size);">
+            2018-2024 © Neo Mei
         </div>
 
         <SocialIcons/>
