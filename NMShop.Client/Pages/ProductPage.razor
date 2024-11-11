@@ -16,7 +16,7 @@
 <PageTitle>@product.Name</PageTitle>
 
 <MudContainer Class="mt-10" MaxWidth="MaxWidth.ExtraLarge">
-    <div class="d-flex relative" style=@($"color: #666666; gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
+    <div class="d-flex relative align-center" style=@($"color: #666666; gap: 7px; z-index: {(int)ZEnum.ProductPath};")>
         <MudLink Typo="Typo.h5" Color="Color.Inherit" Href="/catalog">Каталог</MudLink>
         /
         <MudLink Typo="Typo.h5" Color="Color.Inherit" Href=@("/catalog/" + new ProductFilter(){CategoryId = parentTypeId}.ToQueryString())>@productParentType</MudLink>
@@ -136,7 +136,7 @@
                             <MudSpacer />
 
                             <MudText Typo="Typo.h5">@product.Article</MudText>
-                            <MudIconButton  OnClick="CopyArticleToClipboard" Class="ml-3" Icon="@Icons.Material.Filled.ContentCopy" />
+                            <MudIconButton  OnClick="CopyArticleToClipboard" Class="ml-1 ml-md-2 ml-lg-3 pa-2" Icon="@Icons.Material.Filled.ContentCopy" />
                         </div>
 
                         <div class="d-flex align-center" style="border-bottom: 1px solid #E6E6E6;">
@@ -144,10 +144,8 @@
 
                             <MudSpacer />
 
-                            <MudButton Variant="Variant.Text" @onclick="() => RedirectToBrandPageByName(product.Brand)" Class="ml-3">
-                                <MudText Typo="Typo.h5">@product.Brand</MudText>
-                                <MudIcon Icon="@Icons.Material.Filled.ArrowForwardIos" />
-                            </MudButton>
+                            <MudText Typo="Typo.h5">@product.Brand</MudText>
+                            <MudIconButton OnClick="() => RedirectToBrandPageByName(product.Brand)" Class="ml-1 ml-md-2 ml-lg-3 pa-2" Icon="@Icons.Material.Filled.ArrowForwardIos" />
 
                         </div>
 
