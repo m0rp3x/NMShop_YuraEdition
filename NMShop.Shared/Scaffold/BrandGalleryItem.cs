@@ -19,5 +19,7 @@ public partial class BrandGalleryItem
 
     [ForeignKey("BrandId")]
     [InverseProperty("BrandGalleryItems")]
+    
+    [Display(AutoGenerateField = false)]
     public virtual Brand Brand { get; set; } = null!;
 }

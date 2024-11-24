@@ -22,12 +22,20 @@ public partial class ReferenceTopic
     public int? ParentTopicId { get; set; }
 
     [InverseProperty("ParentTopic")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<ReferenceTopic> InverseParentTopic { get; set; } = new List<ReferenceTopic>();
 
     [ForeignKey("ParentTopicId")]
     [InverseProperty("InverseParentTopic")]
+    [Display(AutoGenerateField = false)]
     public virtual ReferenceTopic? ParentTopic { get; set; }
 
     [InverseProperty("Topic")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<ReferenceContent> ReferenceContents { get; set; } = new List<ReferenceContent>();
+    
+    public override string ToString()
+    {
+        return Name;
+    }
 }

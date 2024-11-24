@@ -21,5 +21,8 @@ public partial class ProductImage
 
     [ForeignKey("ProductId")]
     [InverseProperty("ProductImages")]
+    [Display(AutoGenerateField = false)]
     public virtual Product Product { get; set; } = null!;
+    
+    
 }

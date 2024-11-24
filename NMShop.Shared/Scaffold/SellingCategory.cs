@@ -17,5 +17,10 @@ public partial class SellingCategory
     public string Name { get; set; } = null!;
 
     [InverseProperty("SellingCategory")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    public override string ToString()
+    {
+        return $"Категория: {Name}";
+    }
 }

@@ -41,27 +41,39 @@ public partial class Product
 
     [ForeignKey("BrandId")]
     [InverseProperty("Products")]
+    [Display(AutoGenerateField = false)]
     public virtual Brand Brand { get; set; } = null!;
 
     [ForeignKey("ColorId")]
     [InverseProperty("Products")]
+    [Display(AutoGenerateField = false)]
     public virtual ProductColor Color { get; set; } = null!;
 
     [ForeignKey("GenderId")]
     [InverseProperty("Products")]
+    [Display(AutoGenerateField = false)]
     public virtual Gender Gender { get; set; } = null!;
 
     [InverseProperty("Product")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
 
     [ForeignKey("ProductTypeId")]
     [InverseProperty("Products")]
+    [Display(AutoGenerateField = false)]
     public virtual ProductType ProductType { get; set; } = null!;
 
     [ForeignKey("SellingCategoryId")]
     [InverseProperty("Products")]
+    [Display(AutoGenerateField = false)]
     public virtual SellingCategory SellingCategory { get; set; } = null!;
 
     [InverseProperty("Product")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<StockInfo> StockInfos { get; set; } = new List<StockInfo>();
+    
+    public override string ToString()
+    {
+        return $"{Name} + {Article}";
+    }
 }

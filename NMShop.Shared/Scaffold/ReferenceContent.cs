@@ -20,14 +20,20 @@ public partial class ReferenceContent
 
     [StringLength(1000)]
     public string Content { get; set; } = null!;
-
     public bool IsBold { get; set; }
 
     [ForeignKey("TextSizeId")]
     [InverseProperty("ReferenceContents")]
+    [Display(AutoGenerateField = false)]
     public virtual TextSize TextSize { get; set; } = null!;
 
     [ForeignKey("TopicId")]
     [InverseProperty("ReferenceContents")]
+    [Display(AutoGenerateField = false)]
     public virtual ReferenceTopic Topic { get; set; } = null!;
+    
+    public override string ToString()
+    {
+        return Content;
+    }
 }

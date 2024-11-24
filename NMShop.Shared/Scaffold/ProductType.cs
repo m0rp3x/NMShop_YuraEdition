@@ -27,8 +27,15 @@ public partial class ProductType
 
     [ForeignKey("ParentTypeId")]
     [InverseProperty("InverseParentType")]
+    [Display(AutoGenerateField = false)]
     public virtual ProductType? ParentType { get; set; }
 
     [InverseProperty("ProductType")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    
+    public override string ToString()
+    {
+        return $"Тип Товара:{Name}";
+    }
 }
