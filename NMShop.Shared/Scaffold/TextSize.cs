@@ -17,5 +17,6 @@ public partial class TextSize
     public string Value { get; set; } = null!;
 
     [InverseProperty("TextSize")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<ReferenceContent> ReferenceContents { get; set; } = new List<ReferenceContent>();
 }

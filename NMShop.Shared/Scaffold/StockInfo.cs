@@ -27,9 +27,17 @@ public partial class StockInfo
     public int AmountInStock { get; set; }
 
     [InverseProperty("StockInfo")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<OrderPart> OrderParts { get; set; } = new List<OrderPart>();
 
     [ForeignKey("ProductId")]
     [InverseProperty("StockInfos")]
+    
+    [Display(AutoGenerateField = false)]
     public virtual Product Product { get; set; } = null!;
+    
+    public override string ToString()
+    {
+        return Product.Name + " - " + Size.ToString() + " x " + Price.ToString();
+    }
 }

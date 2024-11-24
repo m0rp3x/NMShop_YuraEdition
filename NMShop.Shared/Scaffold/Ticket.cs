@@ -34,9 +34,17 @@ public partial class Ticket
     public DateTime? Updatedat { get; set; }
 
     [InverseProperty("Ticket")]
+    
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Ticketmessage> Ticketmessages { get; set; } = new List<Ticketmessage>();
 
     [ForeignKey("Userid")]
     [InverseProperty("Tickets")]
+    [Display(AutoGenerateField = false)]
     public virtual User? User { get; set; }
+    
+    public override string ToString()
+    {
+        return Subject ?? base.ToString() + " ticket" + Description;
+    }
 }

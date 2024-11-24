@@ -22,9 +22,15 @@ public partial class NavigationItem
     public int? ParentItemId { get; set; }
 
     [InverseProperty("ParentItem")]
+    
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<NavigationItem> InverseParentItem { get; set; } = new List<NavigationItem>();
 
     [ForeignKey("ParentItemId")]
     [InverseProperty("InverseParentItem")]
+    
+    [Display(AutoGenerateField = false)]
     public virtual NavigationItem? ParentItem { get; set; }
+    
+    
 }

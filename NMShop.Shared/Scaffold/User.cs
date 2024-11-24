@@ -29,8 +29,11 @@ public partial class User
     public DateTime? Createdat { get; set; }
 
     [InverseProperty("User")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Ticketmessage> Ticketmessages { get; set; } = new List<Ticketmessage>();
 
     [InverseProperty("User")]
+    
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }

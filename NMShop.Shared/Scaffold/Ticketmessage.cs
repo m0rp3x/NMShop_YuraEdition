@@ -27,9 +27,16 @@ public partial class Ticketmessage
 
     [ForeignKey("Ticketid")]
     [InverseProperty("Ticketmessages")]
+    [Display(AutoGenerateField = false)]
     public virtual Ticket? Ticket { get; set; }
 
     [ForeignKey("Userid")]
     [InverseProperty("Ticketmessages")]
+    [Display(AutoGenerateField = false)]
     public virtual User? User { get; set; }
+    
+    public override string ToString()
+    {
+        return Message;
+    }
 }

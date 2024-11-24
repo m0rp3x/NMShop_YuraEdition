@@ -23,5 +23,11 @@ public partial class PromoCode
     public DateOnly? ExpirationDate { get; set; }
 
     [InverseProperty("PromoCode")]
+    [Display(AutoGenerateField = false)]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    
+    public override string ToString()
+    {
+        return $"Код: {Code}, Максимум использования: {MaxUsages}, Процент Скидки: {DiscountPercent}";
+    }
 }

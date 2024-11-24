@@ -22,9 +22,16 @@ public partial class OrderPart
 
     [ForeignKey("OrderId")]
     [InverseProperty("OrderParts")]
+    [Display(AutoGenerateField = false)]
     public virtual Order Order { get; set; } = null!;
 
     [ForeignKey("StockInfoId")]
     [InverseProperty("OrderParts")]
+    [Display(AutoGenerateField = false)]
     public virtual StockInfo StockInfo { get; set; } = null!;
+    
+    public override string ToString()
+    {
+        return Id + ", " + OrderId + ", " + StockInfoId + ", " + Amount;
+    }
 }
