@@ -48,30 +48,44 @@
                 }
             </div>
 
-            <MudText Typo="Typo.h3">@product.Name</MudText>
+            <MudText Typo="Typo.h4">@product.Name</MudText>
 
             <div class="my-5" style="gap: 23px;">
                 @if (seletedSize != null)
                 {
-
                     @if (seletedSize.DiscountPrice.HasValue)
                     {
                         <MudText Typo="Typo.h4" Style="line-height: 100%;" Color="Color.Error">
-                            <MudText Inline="true" Typo="Typo.h4" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">@seletedSize.DiscountPrice.ToPreFormatedString()</MudText> ₽
+                            <MudText Inline="true" Typo="Typo.h4" Style="line-height: 100%; font-weight: 800;" Color="Color.Error">
+                                @seletedSize.DiscountPrice.ToPreFormatedString()
+                            </MudText> ₽
                         </MudText>
                     }
 
-                    <MudText Typo="Typo.h4" Color="Color.Dark" Style=@("line-height: 100%; font-weight: 700;" + (product.HasDiscount ? "text-decoration: line-through; text-decoration-color: red;" : null))>@seletedSize.Price.ToPreFormatedString() ₽</MudText>
+                    @if (seletedSize.Price == 0)
+                    {
+                        <MudText Typo="Typo.h4" Color="Color.Error">Цена не указана</MudText>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h4" Color="Color.Dark" Style=@GetPriceStyle(seletedSize)>
+                            @seletedSize.Price.ToPreFormatedString() ₽
+                        </MudText>
+                    }
                 }
             </div>
 
+
             <MudText Class="d-flex align-center justify-center px-4 py-4 mb-4" Typo="Typo.h5"
-                     @onmouseover="() => {_isAddToCartButtonHovered = true;}"
-                     @onmouseout="() => {_isAddToCartButtonHovered = false;}"
-                     @onclick="() => AddToCart(product, seletedSize)"
-                     Style=@AddToCartButtonStyle>
+                     @onmouseover="() => { if (IsAddToCartEnabled) _isAddToCartButtonHovered = true; }"
+                     @onmouseout="() => { if (IsAddToCartEnabled) _isAddToCartButtonHovered = false; }"
+                     @onclick="() => { if (IsAddToCartEnabled) AddToCart(product, seletedSize); }"
+                     Style=@AddToCartButtonStyle
+                     Disabled="@(IsAddToCartEnabled == false)">
                 Добавить в корзину
             </MudText>
+
+
 
             @if (product.SizeDisplayType != "none")
             {
@@ -89,7 +103,14 @@
                         <MudItem xs="4" md="3" Class="pa-2" >
                             <div @onmouseout="() => {pi.isHovered = false;}" @onmouseover="() => {pi.isHovered = true;}" @onclick="() => {seletedSize = pi;}" class="pa-1 d-flex flex-column align-center cursor-pointer" style=@($"transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 4px; background-color: " + (seletedSize == pi ? "rgba(26, 26, 26, 1)" : (pi.isHovered ? "#E6E6E6" : "#f2f2f2")) + ';')>
                                 <MudText Style=@("text-wrap: nowrap; line-height: 1.2; color: " + (seletedSize == pi ? "white" : "black") + ';') Typo="Typo.h6">@(product.SizeDisplayType == "string" ? (ClothingSize)(int)pi.Size : pi.Size)</MudText>
-                                <MudText Style=@("text-wrap: nowrap; line-height: 1.2; color: " + (!isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.body1">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
+                                @if (pi.Price == 0)
+                                {
+                                    <MudText Style="text-wrap: nowrap; line-height: 1.2; color: red;" Typo="Typo.body1">-</MudText>
+                                }
+                                else
+                                {
+                                    <MudText Style=@("text-wrap: nowrap; line-height: 1.2; color: " + (!isDiscounted ? "rgba(153, 153, 153, 1)" : "#CA0D0D") + ';') Typo="Typo.body1">@(isDiscounted ? pi.DiscountPrice.ToPreFormatedString() : pi.Price) ₽</MudText>
+                                }
                             </div>
                         </MudItem>
                     }
@@ -159,7 +180,6 @@
                 <div class="d-flex flex-column" style="gap: 10px;">
 
                     <ReferenseInfoList Code="@selectedInfo.Code" />
-
                 </div>
             }
         </div>
@@ -208,7 +228,20 @@
     private InfoButton selectedInfo = new();
 
     private bool _isRedirecting = false;
+    
+    private bool IsAddToCartEnabled => seletedSize != null && seletedSize.Price > 0;
 
+    private string GetPriceStyle(PriceInfo selectedSize)
+    {
+        if (selectedSize.DiscountPrice.HasValue)
+        {
+            return "line-height: 100%; font-weight: 700; text-decoration: line-through; text-decoration-color: red;";
+        }
+        return "line-height: 100%; font-weight: 700;";
+    }
+
+
+    
     protected override async Task OnInitializedAsync()
     {
         if (!string.IsNullOrEmpty(article))
@@ -264,7 +297,8 @@
 
     private string AddToCartButtonStyle =>
         "transition: all 0.6s ease 0s; -webkit-transition: all 0.6s ease 0s; border-radius: 20px; cursor: pointer; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07); text-transform: uppercase; font-size: 14px; border: none; line-height: 1; "
-        + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : "color: white; background-color: black;");
+        + (_isAddToCartButtonHovered ? "color: black; background-color: white;" : (IsAddToCartEnabled ? "color: white; background-color: black;" : "color: #A9A9A9; background-color: #D3D3D3;cursor: not-allowed;"));
+
 
     private async Task OnInfoButtonClick(InfoButton infoButton)
     {
@@ -281,5 +315,4 @@
         public string Label = "Детали";
         public string? Code = null;
     }
-
 }
