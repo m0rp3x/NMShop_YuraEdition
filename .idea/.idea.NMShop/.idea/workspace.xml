@@ -12,8 +12,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Footer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Footer.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/CartItemsGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/CartItemsGrid.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +35,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/m0rp3x/NMShop_YuraEdition.git&quot;,
-    &quot;accountId&quot;: &quot;ae6dbae1-5274-43bb-b108-d3ae92f737cd&quot;
+    &quot;accountId&quot;: &quot;80e681f4-3b90-4992-9c50-9fde72e1311e&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -191,6 +191,8 @@
       <workItem from="1732744563447" duration="3060000" />
       <workItem from="1732808588104" duration="1427000" />
       <workItem from="1732922670938" duration="62000" />
+      <workItem from="1733325219682" duration="879000" />
+      <workItem from="1733606388054" duration="3999000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -368,7 +370,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729531979222</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="prices fix">
+      <option name="closed" value="true" />
+      <created>1733325477533</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1733325477533</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -412,7 +422,8 @@
     <MESSAGE value="спрогал кнопки для продукт паге" />
     <MESSAGE value="ордеры" />
     <MESSAGE value="footer fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="footer fix" />
+    <MESSAGE value="prices fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="prices fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

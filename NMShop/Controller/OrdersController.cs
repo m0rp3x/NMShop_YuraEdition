@@ -286,7 +286,8 @@ namespace NMShop.Controllers
 
             order.OrderStatusId = 1;
 
-            order.Total = order.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount);
+            order.Total = (order.OrderParts ?? Enumerable.Empty<OrderPart>())
+                .Sum(op => (op?.StockInfo?.DiscountPrice ?? op?.StockInfo?.Price ?? 0) * (op?.Amount ?? 0));
 
             if (discountPercent > 0)
             {
