@@ -299,9 +299,5 @@ namespace NMShop.Controllers
 
             return Ok("Заказ успешно оформлен"); 
         }
-
-
-
-
     }
 }

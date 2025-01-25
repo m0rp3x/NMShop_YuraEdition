@@ -12,8 +12,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/CartItemsGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/CartItemsGrid.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/appsettings.Production.json" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/appsettings.Production.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +23,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -35,12 +37,12 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/m0rp3x/NMShop_YuraEdition.git&quot;,
-    &quot;accountId&quot;: &quot;80e681f4-3b90-4992-9c50-9fde72e1311e&quot;
+    &quot;accountId&quot;: &quot;0bd793a8-67bb-4b31-bd5d-0e2e76b849c1&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/nulll/RiderProjects/NMShop_YuraEdition/NMShop.Client/Layout/Footer.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/nulll/RiderProjects/NMShop_YuraEdition/NMShop/Controller/OrdersController.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -59,8 +61,10 @@
     &quot;.NET Launch Settings Profile.NMShop: https.executor&quot;: &quot;Run&quot;,
     &quot;.NET Project.NMShop.Client.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nulll/RiderProjects/NMShop_YuraEdition/NMShop.sln&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -78,7 +82,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: https">
+  <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: http">
     <configuration name="NMShop.Client" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -119,6 +123,7 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
       <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
       <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
       <option name="SEND_DEBUG_REQUEST" value="1" />
@@ -192,7 +197,13 @@
       <workItem from="1732808588104" duration="1427000" />
       <workItem from="1732922670938" duration="62000" />
       <workItem from="1733325219682" duration="879000" />
-      <workItem from="1733606388054" duration="3999000" />
+      <workItem from="1733606388054" duration="6279000" />
+      <workItem from="1733613400239" duration="4249000" />
+      <workItem from="1733788670371" duration="585000" />
+      <workItem from="1734035156536" duration="599000" />
+      <workItem from="1734778300752" duration="1085000" />
+      <workItem from="1737786023809" duration="853000" />
+      <workItem from="1737830234412" duration="1056000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -378,7 +389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733325477533</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="order fix(no)">
+      <option name="closed" value="true" />
+      <created>1733610568992</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1733610568992</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -423,7 +442,8 @@
     <MESSAGE value="ордеры" />
     <MESSAGE value="footer fix" />
     <MESSAGE value="prices fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="prices fix" />
+    <MESSAGE value="order fix(no)" />
+    <option name="LAST_COMMIT_MESSAGE" value="order fix(no)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
