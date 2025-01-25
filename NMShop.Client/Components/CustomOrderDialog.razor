@@ -1,0 +1,37 @@
+﻿<MudDialog MaxWidth="MaxWidth.Small" Style="padding: 20px; background-color: #F0F4F5; border-radius: 12px;">
+    <DialogContent>
+        <MudText Typo="Typo.h5" Class="mb-4">Оформление индивидуального заказа</MudText>
+        <MudTextField Label="Ваше имя" @bind-Value="UserName" Required="true" Variant="Variant.Outlined" Class="mb-3" />
+        <MudTextField Label="Ваш номер телефона" @bind-Value="UserPhone" Required="true" Variant="Variant.Outlined" Class="mb-3" />
+        <MudTextField Label="Опишите модель товара" @bind-Value="ProductDescription" Variant="Variant.Outlined" Placeholder="Опишите модель товара (необязательно)" Lines="3" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SubmitForm">Отправить</MudButton>
+        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="Cancel">Закрыть</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public EventCallback<string> OnFormSubmitted { get; set; }
+
+    private string UserName { get; set; }
+    private string UserPhone { get; set; }
+    private string ProductDescription { get; set; }
+
+    private void SubmitForm()
+    {
+        Console.WriteLine($"Имя: {UserName}");
+        Console.WriteLine($"Телефон: {UserPhone}");
+        Console.WriteLine($"Описание: {ProductDescription}");
+
+        // Передача данных в родительский компонент
+        OnFormSubmitted.InvokeAsync("Форма успешно отправлена");
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
