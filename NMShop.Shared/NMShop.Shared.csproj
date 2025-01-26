@@ -7,12 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="DaData.ApiClient" Version="1.2.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="DaData.ApiClient" Version="1.2.2" />
     </ItemGroup>
 
 </Project>

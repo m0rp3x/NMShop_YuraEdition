@@ -31,5 +31,4 @@
   <ItemGroup>
     <ProjectReference Include="..\NMShop.Shared\NMShop.Shared.csproj" />
   </ItemGroup>
-
 </Project>

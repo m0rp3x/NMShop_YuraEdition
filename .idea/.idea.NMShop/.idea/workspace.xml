@@ -11,9 +11,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/CustomOrder.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop/Controller/CustomOrdersController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/CartItemsGrid.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/CartItemsGrid.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/CustomOrderCard.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/CustomOrderCard.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/CustomOrderDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/CustomOrderDialog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/NMShop.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/NMShop.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/NMShop.Shared.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/NMShop.Shared.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +26,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -47,37 +52,40 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2mZL5bDYXnpxDb9UYT2M0h9OA0d" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.NMShop: IIS Express.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.NMShop: http.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Launch Settings Profile.NMShop: https.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Project.NMShop.Client.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.NMShop: IIS Express.executor": "Run",
+    ".NET Launch Settings Profile.NMShop: http.executor": "Run",
+    ".NET Launch Settings Profile.NMShop: https.executor": "Debug",
+    ".NET Project.NMShop.Client.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;ChangesTree.GroupingKeys&quot;: [],
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;sqlserver.localdb&quot;,
-      &quot;sqlserver&quot;,
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [],
+    "DatabaseDriversLRU": [
+      "sqlserver.localdb",
+      "sqlserver",
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: https">
     <configuration name="NMShop.Client" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -199,6 +207,9 @@
       <workItem from="1732922670938" duration="62000" />
       <workItem from="1733325219682" duration="879000" />
       <workItem from="1733606388054" duration="3999000" />
+      <workItem from="1737905694190" duration="236000" />
+      <workItem from="1737906115091" duration="427000" />
+      <workItem from="1737906828768" duration="3072000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />

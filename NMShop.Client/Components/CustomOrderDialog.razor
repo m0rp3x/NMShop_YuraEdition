@@ -1,4 +1,9 @@
-﻿<MudDialog MaxWidth="MaxWidth.Small" Style="padding: 20px; background-color: #F0F4F5; border-radius: 12px;">
+﻿@using System.Net
+@using NMShop.Shared.Scaffold
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+<MudDialog MaxWidth="MaxWidth.Small" Style="padding: 20px; background-color: #F0F4F5; border-radius: 12px;">
     <DialogContent>
         <MudText Typo="Typo.h5" Class="mb-4">Оформление индивидуального заказа</MudText>
         <MudTextField Label="Ваше имя" @bind-Value="UserName" Required="true" Variant="Variant.Outlined" Class="mb-3" />
@@ -10,7 +15,10 @@
     </DialogActions>
 </MudDialog>
 
+
+
 @code {
+    
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
@@ -20,17 +28,43 @@
     private string UserPhone { get; set; }
     private string ProductDescription { get; set; }
 
-    private void SubmitForm()
+    private async Task SubmitForm()
     {
-        Console.WriteLine($"Имя: {UserName}");
-        Console.WriteLine($"Телефон: {UserPhone}");
-        Console.WriteLine($"Описание: {ProductDescription}");
+        // Создаём объект нового заказа
+        var newOrder = new CustomOrder
+        {
+            UserName = UserName,
+            UserPhone = UserPhone,
+            ProductDescription = ProductDescription,
+            CreatedAt = DateTime.UtcNow
+        };
 
-        // Передача данных в родительский компонент
-        OnFormSubmitted.InvokeAsync("Форма успешно отправлена");
+        try
+        {
+            
+            var response = await Http.PostAsJsonAsync("api/CustomOrders", newOrder);
 
-        MudDialog.Close(DialogResult.Ok(true));
+            if (response.IsSuccessStatusCode)
+            {
+                
+                await OnFormSubmitted.InvokeAsync("Форма успешно отправлена");
+                MudDialog.Close(DialogResult.Ok(true));
+            }
+            else
+            {
+               
+                Console.WriteLine($"Ошибка при сохранении заказа: {response.StatusCode}");
+                MudDialog.Close(DialogResult.Cancel());
+            }
+        }
+        catch (Exception ex)
+        {
+            
+            Console.WriteLine($"Ошибка: {ex.Message}");
+            MudDialog.Close(DialogResult.Cancel());
+        }
     }
+    
 
     private void Cancel() => MudDialog.Cancel();
 }
