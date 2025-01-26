@@ -61,6 +61,66 @@ namespace NMShop.Controllers
 
             return Ok(orders);
         }
+        [HttpPut("update-status/{id}")]
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] int newStatusId)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound("Заказ не найден.");
+            }
+
+            // Проверка статуса на корректность (если статусы фиксированы)
+            var validStatuses = new[] { 1, 2, 3, 4 };
+            if (!validStatuses.Contains(newStatusId))
+            {
+                return BadRequest("Некорректный статус заказа.");
+            }
+
+            // Обновление статуса
+            order.OrderStatusId = newStatusId;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ошибка обновления статуса заказа: {ex.Message}");
+            }
+
+            return NoContent();
+        }
+    
+        [HttpPut("update-delivery-date/{id}")]
+        public async Task<IActionResult> UpdateOrderDeliveryDate(int id, [FromBody] string newDeliveryDateRange)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound("Заказ не найден.");
+            }
+
+            // Проверка формата даты (если необходимо)
+            if (string.IsNullOrWhiteSpace(newDeliveryDateRange))
+            {
+                return BadRequest("Дата доставки не может быть пустой.");
+            }
+
+            // Обновление даты доставки
+            order.EstimatedDeliveryDateRange = newDeliveryDateRange;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Ошибка обновления даты доставки: {ex.Message}");
+            }
+
+            return NoContent();
+        }
 
 
 
