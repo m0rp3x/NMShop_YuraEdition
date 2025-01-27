@@ -1,5 +1,7 @@
-﻿using NMShop.Shared.Models;
+﻿using System.Net;
+using NMShop.Shared.Models;
 using System.Net.Http.Json;
+using System.Net.Http;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using NMShop.Shared.Scaffold;
@@ -324,5 +326,42 @@ namespace NMShop.Client.Services
                 return (false, $"Ошибка: {ex.Message}");
             }
         }
+        
+        public async Task<(bool isSuccess, string message)> SubmitFormAsync(string userName, string userPhone, string productDescription)
+        {
+            
+            var newOrder = new CustomOrder
+            {
+                UserName = userName,
+                UserPhone = userPhone,
+                ProductDescription = productDescription,
+                CreatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified)
+
+            };
+
+            if (newOrder == null)
+            {
+                return (false, "Форма заказа не может быть пустой.");
+            }
+
+            try
+            {
+                var response = await _http.PostAsJsonAsync("api/CustomOrders", newOrder);
+                Console.WriteLine(newOrder);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine(content);
+                    return (false, $"Ошибка сохранения заказа: {response.StatusCode}, {content}");
+                }
+                
+                return (true, "Форма успешно отправлена.");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Ошибка: {ex.Message}");
+            }
+        }
+
     }
 }
