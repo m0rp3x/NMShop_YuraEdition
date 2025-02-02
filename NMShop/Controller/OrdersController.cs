@@ -270,7 +270,7 @@ namespace NMShop.Controllers
             return Ok(promoCode.DiscountPercent);
         }
 
-        [HttpPost("submit-order")]
+        /*[HttpPost("submit-order")]
         public async Task<IActionResult> SubmitOrder([FromBody] CreateOrderDto orderDto)
         {
             if (orderDto == null)
@@ -369,7 +369,7 @@ namespace NMShop.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("Заказ успешно оформлен");
-        }
-
+        }*/
+        
     }
 }
