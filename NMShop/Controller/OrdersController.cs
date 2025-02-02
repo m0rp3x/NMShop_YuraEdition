@@ -308,14 +308,6 @@ namespace NMShop.Controllers
                 return BadRequest(new { message = "Заказ должен содержать хотя бы один товар." });
             }
 
-            foreach (var part in orderDto.OrderParts)
-            {
-                if (part.StockInfoId == 0)
-                {
-                    return BadRequest(new { message = "Поле 'StockInfoId' является обязательным для всех товаров." });
-                }
-            }
-
             int discountPercent = 0;
 
             if (!string.IsNullOrWhiteSpace(orderDto.PromoCode))
@@ -341,23 +333,43 @@ namespace NMShop.Controllers
 
             if (discountPercent > 0)
             {
-                order.PromoCodeId = (await _context.PromoCodes.FirstOrDefaultAsync(pc => EF.Functions.ILike(pc.Code, orderDto.PromoCode)))?.Id;
+                order.PromoCodeId = (await _context.PromoCodes
+                    .FirstOrDefaultAsync(pc => EF.Functions.ILike(pc.Code, orderDto.PromoCode)))?.Id;
             }
 
             order.OrderStatusId = 1;
 
-            order.Total = (order.OrderParts ?? Enumerable.Empty<OrderPart>())
-                .Sum(op => (op?.StockInfo?.DiscountPrice ?? op?.StockInfo?.Price ?? 0) * (op?.Amount ?? 0));
+            // Загружаем StockInfo из базы
+            var stockInfoDict = await _context.StockInfos
+                .Where(si => orderDto.OrderParts.Select(op => op.StockInfoId).Contains(si.Id))
+                .ToDictionaryAsync(si => si.Id);
+
+            foreach (var part in order.OrderParts)
+            {
+                if (stockInfoDict.TryGetValue(part.StockInfoId, out var stockInfo))
+                {
+                    part.StockInfo = stockInfo; // Присваиваем актуальные данные
+                }
+                else
+                {
+                    return BadRequest(new { message = $"Товар с StockInfoId {part.StockInfoId} не найден в базе." });
+                }
+            }
+
+            // Теперь корректно рассчитываем стоимость заказа
+            order.Total = order.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount);
 
             if (discountPercent > 0)
             {
-                order.Total -= order.Total * (discountPercent / 100m);
+                order.Total *= 1 - (discountPercent / 100m);
             }
 
+            Console.WriteLine($"Total before save: {order.Total}"); // Проверка перед сохранением
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
-            return Ok("Заказ успешно оформлен"); 
+            return Ok("Заказ успешно оформлен");
         }
+
     }
 }
