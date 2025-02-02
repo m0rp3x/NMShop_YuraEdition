@@ -1,28 +1,27 @@
 ﻿@using System.Net
 @using NMShop.Shared.Scaffold
+@using NMShop.Client.Services
 @using System.Net.Http.Json
-@inject HttpClient Http
+@inject ClientDataProvider ClientDataProvider
 
 <MudDialog MaxWidth="MaxWidth.Small" Style="padding: 20px; background-color: #F0F4F5; border-radius: 12px;">
     <DialogContent>
         <MudText Typo="Typo.h5" Class="mb-4">Оформление индивидуального заказа</MudText>
         <MudTextField Label="Ваше имя" @bind-Value="UserName" Required="true" Variant="Variant.Outlined" Class="mb-3" />
         <MudTextField Label="Ваш номер телефона" @bind-Value="UserPhone" Required="true" Variant="Variant.Outlined" Class="mb-3" />
-        <MudTextField Label="Опишите модель товара" @bind-Value="ProductDescription" Variant="Variant.Outlined" Placeholder="Опишите модель товара (необязательно)" Lines="3" />
+        <MudTextField Label="Опишите модель товара" @bind-Value="ProductDescription" Required="true" Variant="Variant.Outlined" Placeholder="Опишите модель товара" Lines="3" />
     </DialogContent>
     <DialogActions>
         <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SubmitForm">Отправить</MudButton>
     </DialogActions>
 </MudDialog>
 
-
-
 @code {
-    
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public EventCallback<string> OnFormSubmitted { get; set; }
+    [Parameter] 
+    public EventCallback<string> OnFormSubmitted { get; set; }
 
     private string UserName { get; set; }
     private string UserPhone { get; set; }
@@ -30,41 +29,25 @@
 
     private async Task SubmitForm()
     {
-        // Создаём объект нового заказа
-        var newOrder = new CustomOrder
+        if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(UserPhone) || string.IsNullOrWhiteSpace(ProductDescription))
         {
-            UserName = UserName,
-            UserPhone = UserPhone,
-            ProductDescription = ProductDescription,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        try
-        {
-            
-            var response = await Http.PostAsJsonAsync("api/CustomOrders", newOrder);
-
-            if (response.IsSuccessStatusCode)
-            {
-                
-                await OnFormSubmitted.InvokeAsync("Форма успешно отправлена");
-                MudDialog.Close(DialogResult.Ok(true));
-            }
-            else
-            {
-               
-                Console.WriteLine($"Ошибка при сохранении заказа: {response.StatusCode}");
-                MudDialog.Close(DialogResult.Cancel());
-            }
+            Console.WriteLine("Все поля формы должны быть заполнены.");
+            return;
         }
-        catch (Exception ex)
+
+        var (isSuccess, message) = await ClientDataProvider.SubmitFormAsync(UserName, UserPhone, ProductDescription);
+
+        if (isSuccess)
         {
-            
-            Console.WriteLine($"Ошибка: {ex.Message}");
+            await OnFormSubmitted.InvokeAsync(message);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+            Console.WriteLine(message);
             MudDialog.Close(DialogResult.Cancel());
         }
     }
-    
 
     private void Cancel() => MudDialog.Cancel();
 }
