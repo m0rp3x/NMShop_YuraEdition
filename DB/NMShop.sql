@@ -221,6 +221,14 @@ CREATE TABLE TicketMessages (
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
+CREATE TABLE CustomOrders (
+    Id SERIAL PRIMARY KEY, -- Уникальный идентификатор (автоинкремент)
+    UserName VARCHAR(100) NOT NULL, -- Имя пользователя
+    UserPhone VARCHAR(20) NOT NULL, -- Телефон пользователя
+    ProductDescription TEXT NOT NULL, -- Описание продукта
+    CreatedAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP -- Дата и время создания заказа
+);
+
 -- Add constraint to prevent deep inheritance chains in ProductTypes
 CREATE OR REPLACE FUNCTION check_parent_depth()
 RETURNS TRIGGER AS $$
