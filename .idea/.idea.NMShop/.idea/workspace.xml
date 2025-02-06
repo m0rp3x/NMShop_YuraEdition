@@ -12,7 +12,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/CategoryPreview.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/CategoryPreview.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/Extensions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +24,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -38,7 +42,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://C:/Users/nulll/RiderProjects/NMShop_YuraEdition/NMShop.Client/Layout/Footer.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8a03fcac5714437e83949a44ecf2e771c90920/6e/464f2557/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -46,7 +50,9 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2mZL5bDYXnpxDb9UYT2M0h9OA0d" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -58,6 +64,7 @@
     &quot;.NET Launch Settings Profile.NMShop: https.executor&quot;: &quot;Run&quot;,
     &quot;.NET Project.NMShop.Client.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -198,7 +205,20 @@
       <workItem from="1732922670938" duration="62000" />
       <workItem from="1733325219682" duration="879000" />
       <workItem from="1733606388054" duration="3999000" />
-      <workItem from="1738510254507" duration="2201000" />
+      <workItem from="1737905694190" duration="236000" />
+      <workItem from="1737906115091" duration="427000" />
+      <workItem from="1737906828768" duration="5400000" />
+      <workItem from="1737956552466" duration="1225000" />
+      <workItem from="1737957794764" duration="3180000" />
+      <workItem from="1737971912654" duration="831000" />
+      <workItem from="1738083063270" duration="148000" />
+      <workItem from="1738212001260" duration="253000" />
+      <workItem from="1738521208778" duration="6000" />
+      <workItem from="1738521279433" duration="2609000" />
+      <workItem from="1738660560040" duration="582000" />
+      <workItem from="1738742572336" duration="112000" />
+      <workItem from="1738788914649" duration="89000" />
+      <workItem from="1738872097831" duration="1216000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -384,7 +404,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733325477533</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="custom order db">
+      <option name="closed" value="true" />
+      <created>1737912652461</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1737912652461</updated>
+    </task>
+    <task id="LOCAL-00025" summary="fixxxxxxxxxxxxxxx">
+      <option name="closed" value="true" />
+      <created>1737959434873</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1737959434873</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,7 +441,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="BrandGallery как в Poizon" />
     <MESSAGE value="Галерея Брендов как в Poizon" />
     <MESSAGE value="ФУТЕР АХАХ" />
     <MESSAGE value="ИКОНКИ" />
@@ -429,21 +464,9 @@
     <MESSAGE value="ордеры" />
     <MESSAGE value="footer fix" />
     <MESSAGE value="prices fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="prices fix" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NMShop.Client/Components/BrandGallery.razor</url>
-          <line>1</line>
-          <properties isMultiMethodBreakpoint="true">
-            <option name="multiMethodBreakpoint" value="true" />
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="custom order db" />
+    <MESSAGE value="fixxxxxxxxxxxxxxx" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixxxxxxxxxxxxxxx" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

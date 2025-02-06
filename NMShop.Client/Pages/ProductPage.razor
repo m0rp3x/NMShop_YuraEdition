@@ -30,10 +30,13 @@
                 @foreach (ProductImage pi in (product.Images.Count() < 1 ? new() { new() } : product.Images))
                 {
                     <MudCarouselItem Transition="Transition.Fade" Class="d-flex">
-                        <img class="d-flex flex-grow-1" src="@pi.Bytes.ToSrcString()" style="margin: 1vw; max-width: calc(100% - 2vw); height: auto; object-position: center; object-fit: cover;" />
+                        <img class="d-flex flex-grow-1"
+                             src="@pi.Bytes.ToSrcString()"
+                             style="margin: 1vw; max-width: 60%; height: auto; object-fit: contain; object-position: center;" />
                     </MudCarouselItem>
                 }
             </MudCarousel>
+
         </MudItem>
         <MudItem xs="12" md="4" Class="d-flex flex-column">
 
@@ -177,8 +180,7 @@
             }
             else
             {
-                <div class="d-flex flex-column" style="gap: 10px;">
-
+                <div class="d-flex flex-column" style="gap: 10px; font-size: 14px;">
                     <ReferenseInfoList Code="@selectedInfo.Code" />
                 </div>
             }

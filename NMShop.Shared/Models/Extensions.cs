@@ -62,14 +62,14 @@ namespace NMShop.Shared.Models
                 Console.Error.WriteLine($"Не найдено записей цены товара {product.Name}, артикул {product.Article}");
                 return (0, null);
             }
+            
+            
+            var validPrices = product.PriceInfos.Where(p => p.Price > 0);
+            var minPrice = validPrices.Any() ? validPrices.Min(p => p.Price) : 0;
 
-            // Минимальная цена
-            var minPrice = product.PriceInfos.Min(p => p.Price);
-
-            // Минимальная цена со скидкой (если есть)
-            var minDiscountPrice = product.PriceInfos
-                .Where(p => p.DiscountPrice.HasValue)
-                .Min(p => p.DiscountPrice);
+            
+            var validDiscountPrices = validPrices.Where(p => p.DiscountPrice.HasValue && p.DiscountPrice > 0);
+            var minDiscountPrice = validDiscountPrices.Any() ? validDiscountPrices.Min(p => p.DiscountPrice) : null;
 
             return (minPrice, minDiscountPrice);
         }
@@ -83,5 +83,4 @@ namespace NMShop.Shared.Models
             throw new ArgumentNullException($"Unable to convert '{value}' to {typeof(TEnum).Name}");
         }
     }
-
 }
