@@ -12,11 +12,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/CategoryPreview.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/CategoryPreview.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/ProductPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Routes.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Components/Whythiswork.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Components/Whythiswork.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Footer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Footer.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,7 +215,7 @@
       <workItem from="1738660560040" duration="582000" />
       <workItem from="1738742572336" duration="112000" />
       <workItem from="1738788914649" duration="89000" />
-      <workItem from="1738872097831" duration="1216000" />
+      <workItem from="1738872097831" duration="4111000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -420,7 +417,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737959434873</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="fix cart, fix product description, fix min price display">
+      <option name="closed" value="true" />
+      <created>1738873361603</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1738873361603</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -441,7 +446,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Галерея Брендов как в Poizon" />
     <MESSAGE value="ФУТЕР АХАХ" />
     <MESSAGE value="ИКОНКИ" />
     <MESSAGE value="клиент-сервер" />
@@ -466,7 +470,8 @@
     <MESSAGE value="prices fix" />
     <MESSAGE value="custom order db" />
     <MESSAGE value="fixxxxxxxxxxxxxxx" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixxxxxxxxxxxxxxx" />
+    <MESSAGE value="fix cart, fix product description, fix min price display" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix cart, fix product description, fix min price display" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
