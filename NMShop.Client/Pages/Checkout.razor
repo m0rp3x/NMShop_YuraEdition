@@ -80,12 +80,13 @@
                 @if(paymentMethods != null)
                 {
                     <MudText Typo="Typo.h6">СПОСОБ ОПЛАТЫ</MudText>
-                    <MudRadioGroup Required="true" RequiredError="Выберите способ оплаты" @bind-Value="Form.selectedPaymentMethod">
+                    <MudRadioGroup Required="true" RequiredError="Выберите способ оплаты" @bind-Value="Form.selectedPaymentMethod" Style="margin-bottom: 50px;">
                         @foreach (var pm in paymentMethods)
                         {
                             <MudRadio Value="pm">@pm.Name</MudRadio>
                         }
                     </MudRadioGroup>
+
                 }
 
             </div>
@@ -130,7 +131,7 @@
                        @onclick="SubmitOrderAsync">ОФОРМИТЬ ЗАКАЗ</MudButton>
 
             <MudText Typo="Typo.body2" Color="Color.Primary">
-                Оформляя заказ, Вы подтверждаете согласие с <MudLink Href="#">Пользовательским соглашением</MudLink>,<br /><MudLink Href="#">Политикой конфиденциальности</MudLink> и <MudLink Href="#">Договором оферты</MudLink>.
+                Оформляя заказ, Вы подтверждаете согласие с <MudLink Href="#" Color="Color.Info">Пользовательским соглашением</MudLink>,<br /><MudLink Href="#" Color="Color.Info">Политикой конфиденциальности</MudLink> и <MudLink Href="#" Color="Color.Info">Договором оферты</MudLink>.
             </MudText>
 
         </div>
@@ -197,8 +198,9 @@
             }
             else
             {
-                Snackbar.Add($"Ошибка оформления заказа: {message}", Severity.Error);
+                Snackbar.Add("Заказ должен содержать хотя бы один товар.", Severity.Error);
             }
+
         }
         else
         {
