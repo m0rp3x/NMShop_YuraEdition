@@ -27,14 +27,14 @@ namespace NMShop.Client.Services
             {
                 var environment = serviceProvider.GetRequiredService<IWebAssemblyHostEnvironment>();
                 _baseUrl = environment.IsDevelopment()
-                    ? "http://localhost:5000"
+                    ? "https://www.kickrooms.ru"
                     : "https://www.kickrooms.ru";
             }
             else if (serviceProvider.GetService<IHostingEnvironment>() is not null)
             {
                 var environment = serviceProvider.GetRequiredService<IHostingEnvironment>();
                 _baseUrl = environment.IsDevelopment()
-                    ? "http://localhost:5000"
+                    ? "https://www.kickrooms.ru"
                     : "https://www.kickrooms.ru";
             }
             else

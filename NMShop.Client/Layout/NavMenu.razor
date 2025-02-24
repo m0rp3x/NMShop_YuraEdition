@@ -3,8 +3,8 @@
 @inject NavigationManager Navigation
 @inject LayoutService LayoutService
 @inject ClientDataProvider DataProvider
-
-<MudAppBar Elevation="0" Style=@($"z-index: {(int)ZEnum.AppBar}") >
+<!-- {(int)ZEnum.AppBar -->
+<MudAppBar Elevation="0" Style=@($"z-index: {(int)(ZEnum.AppBar)} ") >
 
     <MudHidden Breakpoint="Breakpoint.LgAndUp">
         <MudImage @onclick="NavigateMain" Src="/assets/icons/logo.svg" ObjectPosition="ObjectPosition.Center" Width="35" Height="35" />

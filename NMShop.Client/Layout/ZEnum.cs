@@ -2,7 +2,7 @@
 {
     public enum ZEnum
     {
-        AppBar = 10,
+        AppBar = 20,
         SortOptionsDropDown = 5,
         ProductPath = 2,
         Cart = 30,

@@ -13,8 +13,11 @@
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Footer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Footer.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Pages/Checkout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Pages/Checkout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/NavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/ZEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/ZEnum.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/wwwroot/assets/icons/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/wwwroot/assets/icons/logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop/wwwroot/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/wwwroot/favicon.ico" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +86,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: https">
+  <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: http">
     <configuration name="NMShop.Client" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -124,6 +127,7 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
       <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
       <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
       <option name="SEND_DEBUG_REQUEST" value="1" />
@@ -223,7 +227,8 @@
       <workItem from="1738916201575" duration="1389000" />
       <workItem from="1739535065503" duration="1956000" />
       <workItem from="1739560183540" duration="231000" />
-      <workItem from="1740312068224" duration="721000" />
+      <workItem from="1740312068224" duration="1299000" />
+      <workItem from="1740421657044" duration="3800000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -441,7 +446,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738914482638</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="fix checkout error&#10;fix work time&#10;fix Checkout links">
+      <option name="closed" value="true" />
+      <created>1740312969685</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1740312969685</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -462,7 +475,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="ИКОНКИ" />
     <MESSAGE value="клиент-сервер" />
     <MESSAGE value="Фильтры в каталоге" />
     <MESSAGE value="Починка каталога" />
@@ -487,7 +499,8 @@
     <MESSAGE value="fixxxxxxxxxxxxxxx" />
     <MESSAGE value="fix cart, fix product description, fix min price display" />
     <MESSAGE value="не трогать епта" />
-    <option name="LAST_COMMIT_MESSAGE" value="не трогать епта" />
+    <MESSAGE value="fix checkout error&#10;fix work time&#10;fix Checkout links" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix checkout error&#10;fix work time&#10;fix Checkout links" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
