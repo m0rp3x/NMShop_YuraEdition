@@ -10,14 +10,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
+    <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="фикс стоимости">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/NavMenu.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/ZEnum.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/ZEnum.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Services/ClientDataProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Client/wwwroot/assets/icons/logo.svg" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/wwwroot/assets/icons/logo.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop/wwwroot/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/wwwroot/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/BannerCarouselItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/BannerCarouselItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Brand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Brand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/BrandGalleryItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/BrandGalleryItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ContactMethod.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ContactMethod.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/DeliveryType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/DeliveryType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Gender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Gender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NavigationItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/NavigationItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Order.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Order.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/OrderPart.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/OrderPart.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/OrderStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/PaymentType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/PaymentType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ProductColor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ProductColor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ProductImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ProductImage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ProductType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ProductType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/PromoCode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/PromoCode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ReferenceContent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ReferenceContent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ReferenceTopic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/ReferenceTopic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/SellingCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/SellingCategory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/StockInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/StockInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/TextSize.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/TextSize.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Ticket.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Ticket.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Ticketmessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Ticketmessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/User.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +43,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="firstShow" value="false" />
+    <option name="autoShow" value="false" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -36,16 +54,26 @@
     &quot;assignee&quot;: &quot;m0rp3x&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/m0rp3x/NMShop_YuraEdition.git&quot;,
-    &quot;accountId&quot;: &quot;80e681f4-3b90-4992-9c50-9fde72e1311e&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/m0rp3x/NMShop_YuraEdition.git",
+    "accountId": "9f1d7202-1a97-40ff-8a54-c95ad77a6254"
   }
-}</component>
+}]]></component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8a03fcac5714437e83949a44ecf2e771c90920/6e/464f2557/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop.Client/Components/CategoryPreview.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop.Client/_Imports.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop_YuraEdition/NMShop.Shared/Models/OrderDTO.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop_YuraEdition/NMShop.Shared/Models/ProductDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Models/ProductFilter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Shared/Scaffold/NMShopContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop/AppMappingProfile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop/Components/App.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/koval/RiderProjects/NMShop_YuraEdition/NMShop/Controller/OrdersController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop/Controller/TicketController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NMShop/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -229,6 +257,7 @@
       <workItem from="1739560183540" duration="231000" />
       <workItem from="1740312068224" duration="1299000" />
       <workItem from="1740421657044" duration="3800000" />
+      <workItem from="1741094514888" duration="4596000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -454,7 +483,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740312969685</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="фикс стоимости">
+      <option name="closed" value="true" />
+      <created>1741104501626</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1741104501626</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +512,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="клиент-сервер" />
     <MESSAGE value="Фильтры в каталоге" />
     <MESSAGE value="Починка каталога" />
     <MESSAGE value="Фильтры для товарных категорий" />
@@ -500,7 +536,8 @@
     <MESSAGE value="fix cart, fix product description, fix min price display" />
     <MESSAGE value="не трогать епта" />
     <MESSAGE value="fix checkout error&#10;fix work time&#10;fix Checkout links" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix checkout error&#10;fix work time&#10;fix Checkout links" />
+    <MESSAGE value="фикс стоимости" />
+    <option name="LAST_COMMIT_MESSAGE" value="фикс стоимости" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
