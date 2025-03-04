@@ -2,6 +2,12 @@
 
 public class ProductDto
 {
+    
+    public decimal Size { get; set; }
+    public decimal Price { get; set; }
+    public decimal? DiscountPrice { get; set; }
+    public int Amount { get; set; }
+    
     public int Id { get; set; }
     public string Name { get; set; } // Название товара
     public string Brand { get; set; } // Бренд товара

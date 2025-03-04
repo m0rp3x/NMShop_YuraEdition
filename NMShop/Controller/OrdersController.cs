@@ -31,6 +31,9 @@ namespace NMShop.Controllers
                 .Include(o => o.DeliveryType)
                 .Include(o => o.PaymentType)
                 .Include(o => o.OrderStatus)
+                .Include(o => o.OrderParts) // Включаем OrderParts
+                .ThenInclude(op => op.StockInfo) // Включаем StockInfo
+                .ThenInclude(si => si.Product) // Включаем Product
                 .Select(o => new OrderDto
                 {
                     Id = o.Id,
@@ -40,7 +43,18 @@ namespace NMShop.Controllers
                     PaymentTypeName = o.PaymentType.Name,
                     OrderStatusName = o.OrderStatus.Name,
                     ContactValue = o.ContactValue,
-                    //Total = o.OrderParts.Select(op => (op. .DiscountPrice ?? PriceInfo.Price) * Quantity)
+                    Total = o.Total ?? 0,
+                    // Добавляем информацию о товарах
+                    Products = o.OrderParts.Select(op => new ProductDto
+                    {
+                        Id = op.StockInfo.Product.Id,
+                        Name = op.StockInfo.Product.Name,
+                        Article = op.StockInfo.Product.Article,
+                        Size = op.StockInfo.Size,
+                        Price = op.StockInfo.Price,
+                        DiscountPrice = op.StockInfo.DiscountPrice,
+                        Amount = op.Amount
+                    }).ToList()
                 })
                 .ToListAsync();
 

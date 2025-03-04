@@ -9,7 +9,6 @@ public class OrderDto
     public string PaymentTypeName { get; set; }
     public string OrderStatusName { get; set; }
     public string ContactValue { get; set; }
-
     public decimal Total { get; set; }
-
+    public List<ProductDto> Products { get; set; } // Список товаров
 }
