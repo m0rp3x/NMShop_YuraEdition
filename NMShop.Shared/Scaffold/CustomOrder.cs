@@ -15,5 +15,5 @@ public partial class CustomOrder
 
     public string? ProductDescription { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime? CreatedAt = DateTime.UtcNow;
 }

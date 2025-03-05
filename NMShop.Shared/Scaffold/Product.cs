@@ -33,8 +33,8 @@ public partial class Product
 
     [Column("SellingCategory_Id")]
     public int SellingCategoryId { get; set; }
-
-    public DateOnly DateAdded { get; set; }
+    
+    public DateOnly DateAdded =  DateOnly.FromDateTime(DateTime.UtcNow);
 
     [Column("Color_Id")]
     public int ColorId { get; set; }

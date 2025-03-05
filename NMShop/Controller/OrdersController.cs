@@ -62,19 +62,23 @@ namespace NMShop.Controllers
         }
         
         [HttpGet("by-contact")]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByContact(string contactValue)
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByContact(string contactValue)
         {
-            var orders = await _context.Orders
-                .Where(o => o.ContactValue == contactValue)
-                .ToListAsync();
+            Console.WriteLine($"Received contactValue: '{contactValue}'");
 
-            if (orders == null || orders.Count == 0)
-            {
-                return NotFound();
-            }
+            contactValue = contactValue.Trim().ToLower();
+
+            var orders = await _context.Orders
+                .Where(o => o.ContactValue.Trim().ToLower() == contactValue)
+                .ToListAsync();
 
             return Ok(orders);
         }
+
+
+
+
+        
         [HttpPut("update-status/{id}")]
         public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] int newStatusId)
         {
