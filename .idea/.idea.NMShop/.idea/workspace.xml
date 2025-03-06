@@ -11,9 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9627f783-a930-43f4-8c1b-a65bb3780e7b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NMShop.Shared/Models/PromoCodeInfoDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop/appsettings.Development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NMShop/appsettings.Production.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NMShop/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/CustomOrder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/CustomOrder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Scaffold/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Client/Layout/Cart.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NMShop.Shared/Models/OrderDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop.Shared/Models/OrderDTO.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NMShop/Controller/OrdersController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,12 +36,12 @@
     &quot;assignee&quot;: &quot;m0rp3x&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/m0rp3x/NMShop_YuraEdition.git",
-    "accountId": "9f1d7202-1a97-40ff-8a54-c95ad77a6254"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/m0rp3x/NMShop_YuraEdition.git&quot;,
+    &quot;accountId&quot;: &quot;9f1d7202-1a97-40ff-8a54-c95ad77a6254&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/NMShop.Client/Components/CategoryPreview.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NMShop.Client/_Imports.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -67,35 +70,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.NMShop: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.NMShop: http.executor": "Run",
-    ".NET Launch Settings Profile.NMShop: https.executor": "Run",
-    ".NET Project.NMShop.Client.executor": "Run",
-    "Publish to folder.Unnamed.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.NMShop: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.NMShop: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.NMShop: https.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Project.NMShop.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "ChangesTree.GroupingKeys": [],
-    "DatabaseDriversLRU": [
-      "sqlserver.localdb",
-      "sqlserver",
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [],
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlserver.localdb&quot;,
+      &quot;sqlserver&quot;,
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: https">
+}</component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.NMShop: http">
     <configuration name="Unnamed" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/NMShop/bin/Release/net8.0/linux-x64/publish" target_framework="net8.0" uuid_high="6816436476690910314" uuid_low="-6277040259546955994" />
       <method v="2" />
@@ -244,6 +247,8 @@
       <workItem from="1740312068224" duration="1299000" />
       <workItem from="1740421657044" duration="3800000" />
       <workItem from="1741094514888" duration="8505000" />
+      <workItem from="1741191936381" duration="10575000" />
+      <workItem from="1741206074523" duration="4739000" />
     </task>
     <task id="LOCAL-00001" summary="BrandGallery как в Poizon">
       <option name="closed" value="true" />
@@ -485,7 +490,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741104888652</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="фиксы">
+      <option name="closed" value="true" />
+      <created>1741193759472</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1741193759472</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -506,7 +519,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Починка каталога" />
     <MESSAGE value="Фильтры для товарных категорий" />
     <MESSAGE value="жопа" />
     <MESSAGE value="фильтры и сортировка" />
@@ -531,7 +543,8 @@
     <MESSAGE value="fix checkout error&#10;fix work time&#10;fix Checkout links" />
     <MESSAGE value="фикс стоимости" />
     <MESSAGE value="Локализация бд" />
-    <option name="LAST_COMMIT_MESSAGE" value="Локализация бд" />
+    <MESSAGE value="фиксы" />
+    <option name="LAST_COMMIT_MESSAGE" value="фиксы" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

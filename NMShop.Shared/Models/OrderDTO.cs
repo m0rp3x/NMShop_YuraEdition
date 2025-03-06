@@ -11,4 +11,6 @@ public class OrderDto
     public string ContactValue { get; set; }
     public decimal Total { get; set; }
     public List<ProductDto> Products { get; set; } // Список товаров
+    public int? PromoCodeId { get; set; } // ID промокода
+    public PromoCodeInfoDto? PromoCodeInfo { get; set; } // Информация о промокоде
 }

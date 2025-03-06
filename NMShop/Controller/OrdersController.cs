@@ -23,58 +23,144 @@ namespace NMShop.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/orders
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+ // GET: api/orders
+[HttpGet]
+// GET: api/orders
+[HttpGet]
+public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+{
+    var orders = await _context.Orders
+        .Include(o => o.DeliveryType)
+        .Include(o => o.PaymentType)
+        .Include(o => o.OrderStatus)
+        .Include(o => o.OrderParts) // Включаем OrderParts
+            .ThenInclude(op => op.StockInfo) // Включаем StockInfo
+            .ThenInclude(si => si.Product) // Включаем Product
+        .Include(o => o.PromoCode) // Включаем промокод
+        .Select(o => new OrderDto
         {
-            var orders = await _context.Orders
-                .Include(o => o.DeliveryType)
-                .Include(o => o.PaymentType)
-                .Include(o => o.OrderStatus)
-                .Include(o => o.OrderParts) // Включаем OrderParts
-                .ThenInclude(op => op.StockInfo) // Включаем StockInfo
-                .ThenInclude(si => si.Product) // Включаем Product
-                .Select(o => new OrderDto
+            Id = o.Id,
+            ClientFullName = o.ClientFullName,
+            DeliveryAdress = o.DeliveryAdress,
+            DeliveryTypeName = o.DeliveryType.Name,
+            PaymentTypeName = o.PaymentType.Name,
+            OrderStatusName = o.OrderStatus.Name,
+            ContactValue = o.ContactValue,
+            Total = o.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount), // Рассчитываем Total
+            Products = o.OrderParts.Select(op => new ProductDto
+            {
+                Id = op.StockInfo.Product.Id,
+                Name = op.StockInfo.Product.Name,
+                Article = op.StockInfo.Product.Article,
+                Size = op.StockInfo.Size,
+                Price = op.StockInfo.Price,
+                DiscountPrice = op.StockInfo.DiscountPrice,
+                Amount = op.Amount
+            }).ToList(),
+            PromoCodeId = o.PromoCodeId, // Добавляем ID промокода
+            PromoCodeInfo = o.PromoCode != null && IsPromoCodesValid(o.PromoCode, _context) // Проверяем и добавляем информацию о промокоде
+                ? new PromoCodeInfoDto
                 {
-                    Id = o.Id,
-                    ClientFullName = o.ClientFullName,
-                    DeliveryAdress = o.DeliveryAdress,
-                    DeliveryTypeName = o.DeliveryType.Name,
-                    PaymentTypeName = o.PaymentType.Name,
-                    OrderStatusName = o.OrderStatus.Name,
-                    ContactValue = o.ContactValue,
-                    Total = o.Total ?? 0,
-                    // Добавляем информацию о товарах
-                    Products = o.OrderParts.Select(op => new ProductDto
-                    {
-                        Id = op.StockInfo.Product.Id,
-                        Name = op.StockInfo.Product.Name,
-                        Article = op.StockInfo.Product.Article,
-                        Size = op.StockInfo.Size,
-                        Price = op.StockInfo.Price,
-                        DiscountPrice = op.StockInfo.DiscountPrice,
-                        Amount = op.Amount
-                    }).ToList()
-                })
-                .ToListAsync();
+                    Code = o.PromoCode.Code,
+                    DiscountPercent = o.PromoCode.DiscountPercent,
+                    ExpirationDate = o.PromoCode.ExpirationDate
+                }
+                : null
+        })
+        .ToListAsync();
 
-            return Ok(orders);
-        }
-        
-        [HttpGet("by-contact")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersByContact(string contactValue)
+    // Применяем скидку к каждому заказу, если есть действительный промокод
+    foreach (var order in orders)
+    {
+        if (order.PromoCodeInfo != null)
         {
-            Console.WriteLine($"Received contactValue: '{contactValue}'");
-
-            contactValue = contactValue.Trim().ToLower();
-
-            var orders = await _context.Orders
-                .Where(o => o.ContactValue.Trim().ToLower() == contactValue)
-                .ToListAsync();
-
-            return Ok(orders);
+            order.Total -= order.Total * (order.PromoCodeInfo.DiscountPercent / 100m);
         }
+    }
 
+    return Ok(orders);
+}
+
+private static bool IsPromoCodesValid(PromoCode promoCode, NMShopContext context)
+{
+    // Проверяем, не истек ли срок действия промокода
+    if (promoCode.ExpirationDate.HasValue && promoCode.ExpirationDate < DateOnly.FromDateTime(DateTime.Today))
+    {
+        return false; // Промокод истек
+    }
+
+    // Проверяем, не превышено ли максимальное количество использований
+    if (promoCode.MaxUsages > 0)
+    {
+        int usagesCount = context.Orders.Count(o => o.PromoCodeId == promoCode.Id);
+        if (usagesCount >= promoCode.MaxUsages)
+        {
+            return false; // Промокод использован максимальное количество раз
+        }
+    }
+
+    return true; // Промокод действителен
+}
+
+       [HttpGet("by-contact")]
+public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrdersByContact(string contactValue)
+{
+    Console.WriteLine($"Received contactValue: '{contactValue}'");
+
+    contactValue = contactValue.Trim().ToLower();
+
+    var orders = await _context.Orders
+        .Include(o => o.DeliveryType)
+        .Include(o => o.PaymentType)
+        .Include(o => o.OrderStatus)
+        .Include(o => o.OrderParts) // Включаем OrderParts
+            .ThenInclude(op => op.StockInfo) // Включаем StockInfo
+            .ThenInclude(si => si.Product) // Включаем Product
+        .Include(o => o.PromoCode) // Включаем промокод
+        .Where(o => o.ContactValue.Trim().ToLower() == contactValue) // Фильтруем по contactValue
+        .Select(o => new OrderDto
+        {
+            Id = o.Id,
+            ClientFullName = o.ClientFullName,
+            DeliveryAdress = o.DeliveryAdress,
+            DeliveryTypeName = o.DeliveryType.Name,
+            PaymentTypeName = o.PaymentType.Name,
+            OrderStatusName = o.OrderStatus.Name,
+            ContactValue = o.ContactValue,
+            Total = o.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount), // Рассчитываем Total
+            Products = o.OrderParts.Select(op => new ProductDto
+            {
+                Id = op.StockInfo.Product.Id,
+                Name = op.StockInfo.Product.Name,
+                Article = op.StockInfo.Product.Article,
+                Size = op.StockInfo.Size,
+                Price = op.StockInfo.Price,
+                DiscountPrice = op.StockInfo.DiscountPrice,
+                Amount = op.Amount
+            }).ToList(),
+            PromoCodeId = o.PromoCodeId, // Добавляем ID промокода
+            PromoCodeInfo = o.PromoCode != null && IsPromoCodesValid(o.PromoCode, _context) // Проверяем и добавляем информацию о промокоде
+                ? new PromoCodeInfoDto
+                {
+                    Code = o.PromoCode.Code,
+                    DiscountPercent = o.PromoCode.DiscountPercent,
+                    ExpirationDate = o.PromoCode.ExpirationDate
+                }
+                : null
+        })
+        .ToListAsync();
+
+    // Применяем скидку к каждому заказу, если есть действительный промокод
+    foreach (var order in orders)
+    {
+        if (order.PromoCodeInfo != null)
+        {
+            order.Total -= order.Total * (order.PromoCodeInfo.DiscountPercent / 100m);
+        }
+    }
+
+    return Ok(orders);
+}
 
 
 
@@ -141,49 +227,93 @@ namespace NMShop.Controllers
         }
 
 
-
-        // GET: api/orders/{id}
-        [HttpGet("{id}")]
-        public async Task<ActionResult<OrderDto>> GetOrder(int id)
+// GET: api/orders/{id}
+[HttpGet("{id}")]
+public async Task<ActionResult<OrderDto>> GetOrder(int id)
+{
+    var order = await _context.Orders
+        .Include(o => o.DeliveryType)
+        .Include(o => o.PaymentType)
+        .Include(o => o.OrderStatus)
+        .Include(o => o.OrderParts) // Включаем OrderParts
+            .ThenInclude(op => op.StockInfo) // Включаем StockInfo
+            .ThenInclude(si => si.Product) // Включаем Product
+        .Select(o => new OrderDto
         {
-            var order = await _context.Orders
-                .Include(o => o.DeliveryType)
-                .Include(o => o.PaymentType)
-                .Include(o => o.OrderStatus)
-                .Include(o => o.OrderParts)
-                    .ThenInclude(op => op.StockInfo)
-                .FirstOrDefaultAsync(o => o.Id == id);
-
-            if (order == null)
+            Id = o.Id,
+            ClientFullName = o.ClientFullName,
+            DeliveryAdress = o.DeliveryAdress,
+            DeliveryTypeName = o.DeliveryType.Name,
+            PaymentTypeName = o.PaymentType.Name,
+            OrderStatusName = o.OrderStatus.Name,
+            ContactValue = o.ContactValue,
+            Total = o.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount), // Рассчитываем Total
+            Products = o.OrderParts.Select(op => new ProductDto
             {
-                return NotFound();
-            }
+                Id = op.StockInfo.Product.Id,
+                Name = op.StockInfo.Product.Name,
+                Article = op.StockInfo.Product.Article,
+                Size = op.StockInfo.Size,
+                Price = op.StockInfo.Price,
+                DiscountPrice = op.StockInfo.DiscountPrice,
+                Amount = op.Amount
+            }).ToList(),
+            PromoCodeId = o.PromoCodeId // Добавляем ID промокода
+        })
+        .FirstOrDefaultAsync(o => o.Id == id);
 
-            decimal total = order.OrderParts.Sum(op => (op.StockInfo.DiscountPrice ?? op.StockInfo.Price) * op.Amount);
+    if (order == null)
+    {
+        return NotFound();
+    }
 
-            if (order.PromoCodeId.HasValue)
+    // Применяем скидку и добавляем информацию о промокоде, если он есть
+    if (order.PromoCodeId.HasValue)
+    {
+        var promoCode = await _context.PromoCodes
+            .FirstOrDefaultAsync(pc => pc.Id == order.PromoCodeId);
+
+        if (promoCode != null && IsPromoCodeValid(promoCode))
+        {
+            // Применяем скидку
+            order.Total -= order.Total * (promoCode.DiscountPercent / 100m);
+
+            // Добавляем информацию о промокоде в ответ
+            order.PromoCodeInfo = new PromoCodeInfoDto
             {
-                var promoCode = await _context.PromoCodes.FirstOrDefaultAsync(pc => pc.Id == order.PromoCodeId);
-                if (promoCode != null && promoCode.DiscountPercent > 0)
-                {
-                    total -= total * (promoCode.DiscountPercent / 100m);
-                }
-            }
-
-            OrderDto result = new()
-            {
-                Id = order.Id,
-                ClientFullName = order.ClientFullName,
-                DeliveryAdress = order.DeliveryAdress,
-                DeliveryTypeName = order.DeliveryType.Name,
-                PaymentTypeName = order.PaymentType.Name,
-                OrderStatusName = order.OrderStatus.Name,
-                ContactValue = order.ContactValue,
-                Total = total
+                Code = promoCode.Code,
+                DiscountPercent = promoCode.DiscountPercent,
+                ExpirationDate = promoCode.ExpirationDate
             };
-
-            return Ok(result);
         }
+    }
+
+    return Ok(order);
+}
+
+// Проверка действительности промокода
+private bool IsPromoCodeValid(PromoCode promoCode)
+{
+    // Проверяем, не истек ли срок действия промокода
+    if (promoCode.ExpirationDate.HasValue && promoCode.ExpirationDate < DateOnly.FromDateTime(DateTime.Today))
+    {
+        return false; // Промокод истек
+    }
+
+    // Проверяем, не превышено ли максимальное количество использований
+    if (promoCode.MaxUsages > 0)
+    {
+        int usagesCount = _context.Orders.Count(o => o.PromoCodeId == promoCode.Id);
+        if (usagesCount >= promoCode.MaxUsages)
+        {
+            return false; // Промокод использован максимальное количество раз
+        }
+    }
+
+    return true; // Промокод действителен
+}
+
+
 
         // POST: api/orders
         [HttpPost]
